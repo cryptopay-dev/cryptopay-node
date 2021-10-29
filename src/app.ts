@@ -1,18 +1,9 @@
-import axios from "axios";
 import base64 from "crypto-js/enc-base64";
 import sha1 from "crypto-js/sha1";
 import md5 from "crypto-js/md5";
 
 class CryptoPay {
-  private api_key;
-  private api_secret;
-  private callback_secret;
-
-  constructor(api_secret: any, api_key: any, callback_secret:any) {
-    this.api_key = api_key;
-    this.api_secret = api_secret;
-    this.callback_secret = callback_secret;
-  }
+  constructor(private api_secret: any,private api_key: any, private callback_secret:any) {}
 
   private headerCreator = (method: string, path: string, body: any) => {
     const date = new Date().toUTCString();
@@ -28,3 +19,6 @@ class CryptoPay {
     };
   };
 }
+
+
+const testObj = new CryptoPay('api_secret', 'api_key', 'callback_secret')

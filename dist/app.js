@@ -10,11 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 const enc_base64_1 = __importDefault(require("crypto-js/enc-base64"));
 const sha1_1 = __importDefault(require("crypto-js/sha1"));
 const md5_1 = __importDefault(require("crypto-js/md5"));
+const ratesSevices = __importStar(require("./services/ratesSevices"));
 class CryptoPay {
     constructor(api_secret, api_key, callback_secret) {
         this.api_secret = api_secret;
@@ -22,27 +30,25 @@ class CryptoPay {
         this.callback_secret = callback_secret;
         //Rates
         this.getRetes = () => __awaiter(this, void 0, void 0, function* () {
+            const path = "/api/rates";
+            const headers = this.headerCreator("GET", path);
             try {
-                const path = "/api/rates";
-                const headers = this.headerCreator("GET", path);
-                const response = yield axios_1.default.get(path, headers);
-                console.log({ response });
-                return response;
+                const data = yield ratesSevices.getRates(path, headers);
+                return data;
             }
-            catch (error) {
-                throw new Error("getRetes: " + error);
+            catch (err) {
+                throw err;
             }
         });
         this.getRetesByPair = (pair) => __awaiter(this, void 0, void 0, function* () {
+            const path = `/api/rates/${pair}`;
+            const headers = this.headerCreator("GET", path);
             try {
-                const path = `/api/rates/${pair}`;
-                const headers = this.headerCreator("GET", path);
-                const response = yield axios_1.default.get(path, headers);
-                console.log({ response });
-                return response;
+                const data = yield ratesSevices.getRetesByPair(path, headers);
+                return data;
             }
-            catch (error) {
-                throw new Error("getRetes: " + error);
+            catch (err) {
+                throw err;
             }
         });
         // Invoices

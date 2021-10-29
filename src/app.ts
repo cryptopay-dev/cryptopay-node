@@ -2,6 +2,9 @@ import axios from "axios";
 import base64 from "crypto-js/enc-base64";
 import sha1 from "crypto-js/sha1";
 import md5 from "crypto-js/md5";
+import { IInvoice } from "./interfaces/IInvoice";
+import { IHeaders } from "./interfaces/IHeaders";
+import * as ratesSevices from './services/ratesSevices'
 
 class CryptoPay {
   constructor(
@@ -12,32 +15,31 @@ class CryptoPay {
 
   //Rates
   public getRetes = async () => {
-    try {
       const path = "/api/rates";
       const headers = this.headerCreator("GET", path);
-      const response = await axios.get(path, headers);
-      console.log({ response });
-      return response;
-    } catch (error) {
-      throw new Error("getRetes: " + error);
-    }
+      try {
+        const data = await ratesSevices.getRates(path, headers);
+        return data;
+      } catch (err) {
+        throw err; 
+      }
+     
   }; 
 
   public getRetesByPair = async (pair: string) => {
-    try {
       const path = `/api/rates/${pair}`;
       const headers = this.headerCreator("GET", path);
-      const response = await axios.get(path, headers);
-      console.log({ response });
-      return response;
-    } catch (error) {
-      throw new Error("getRetes: " + error);
-    }
+      try {
+        const data = await ratesSevices.getRetesByPair(path, headers);
+        return data;
+      } catch (err) {
+        throw err;
+      }
   };
 
   // Invoices
 
-  public createInvoices = async (invoice:any) => {
+  public createInvoices = async (invoice:IInvoice) => {
     try {
       const path = `/api/invoices`;
       const headers = this.headerCreator("POST", path , invoice);
@@ -49,7 +51,7 @@ class CryptoPay {
     }
   };
 
-  private headerCreator = (method: string, path: string, body?: any) => {
+  private headerCreator = (method: string, path: string, body?: any): IHeaders => {
     const date = new Date().toUTCString();
     const contentType = "application/json";
     const bodyHash = body ? md5(body).toString() : "";

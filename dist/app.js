@@ -45,6 +45,19 @@ class CryptoPay {
                 throw new Error("getRetes: " + error);
             }
         });
+        // Invoices
+        this.createInvoices = (invoice) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/invoices`;
+                const headers = this.headerCreator("POST", path, invoice);
+                const response = yield axios_1.default.post(path, invoice, headers);
+                console.log({ response });
+                return response;
+            }
+            catch (error) {
+                throw new Error("getRetes: " + error);
+            }
+        });
         this.headerCreator = (method, path, body) => {
             const date = new Date().toUTCString();
             const contentType = "application/json";

@@ -21,13 +21,27 @@ class CryptoPay {
     } catch (error) {
       throw new Error("getRetes: " + error);
     }
-  };
+  }; 
 
   public getRetesByPair = async (pair: string) => {
     try {
       const path = `/api/rates/${pair}`;
       const headers = this.headerCreator("GET", path);
       const response = await axios.get(path, headers);
+      console.log({ response });
+      return response;
+    } catch (error) {
+      throw new Error("getRetes: " + error);
+    }
+  };
+
+  // Invoices
+
+  public createInvoices = async (invoice:any) => {
+    try {
+      const path = `/api/invoices`;
+      const headers = this.headerCreator("POST", path , invoice);
+      const response = await axios.post(path, invoice, headers);
       console.log({ response });
       return response;
     } catch (error) {

@@ -23,6 +23,17 @@ class CryptoPay {
     }
   };
 
+  public getRetesByPair = async (pair: string) => {
+    try {
+      const path = `/api/rates/${pair}`;
+      const headers = this.headerCreator("GET", path);
+      const response = await axios.get(path, headers);
+      console.log({ response });
+      return response;
+    } catch (error) {
+      throw new Error("getRetes: " + error);
+    }
+  };
 
   private headerCreator = (method: string, path: string, body?: any) => {
     const date = new Date().toUTCString();
@@ -43,4 +54,3 @@ class CryptoPay {
 }
 
 const testObj = new CryptoPay("api_secret", "api_key", "callback_secret");
-testObj.getRetes();

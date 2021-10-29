@@ -11,6 +11,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __importDefault(require("axios"));
 const enc_base64_1 = __importDefault(require("crypto-js/enc-base64"));
 const sha1_1 = __importDefault(require("crypto-js/sha1"));
 const md5_1 = __importDefault(require("crypto-js/md5"));
@@ -21,11 +22,28 @@ class CryptoPay {
         this.callback_secret = callback_secret;
         //Rates
         this.getRetes = () => __awaiter(this, void 0, void 0, function* () {
-            const path = '/api/rates';
-            const headers = this.headerCreator("GET", path);
-            // const response = await axios.get(path, headers)
-            // console.log({response})
-            // return response
+            try {
+                const path = "/api/rates";
+                const headers = this.headerCreator("GET", path);
+                const response = yield axios_1.default.get(path, headers);
+                console.log({ response });
+                return response;
+            }
+            catch (error) {
+                throw new Error("getRetes: " + error);
+            }
+        });
+        this.getRetesByPair = (pair) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/rates/${pair}`;
+                const headers = this.headerCreator("GET", path);
+                const response = yield axios_1.default.get(path, headers);
+                console.log({ response });
+                return response;
+            }
+            catch (error) {
+                throw new Error("getRetes: " + error);
+            }
         });
         this.headerCreator = (method, path, body) => {
             const date = new Date().toUTCString();
@@ -38,12 +56,11 @@ class CryptoPay {
                 headers: {
                     Date: date,
                     Authorization,
-                    'Content-Type': contentType
-                }
+                    "Content-Type": contentType,
+                },
             };
         };
     }
 }
-const testObj = new CryptoPay('api_secret', 'api_key', 'callback_secret');
-testObj.getRetes();
+const testObj = new CryptoPay("api_secret", "api_key", "callback_secret");
 //# sourceMappingURL=app.js.map

@@ -12,10 +12,10 @@ export const getRates = async (path: string, headers: IHeaders): Promise<IRate[]
   }
 };
 
-export const getRetesByPair = async (path: string, headers: IHeaders) => {
+export const getRetesByPair = async (path: string, headers: IHeaders):Promise<IRate> => {
   try {
     const response = await axios.get(path, { headers });
-    return response.data;
+    return response.data.data;
   } catch (err) {
     throw "getRetes: " + err;
   }

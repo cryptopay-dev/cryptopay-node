@@ -25,7 +25,7 @@ exports.getRates = (path, headers) => __awaiter(this, void 0, void 0, function* 
 exports.getRetesByPair = (path, headers) => __awaiter(this, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(path, { headers });
-        return response.data;
+        return response.data.data;
     }
     catch (err) {
         throw "getRetes: " + err;

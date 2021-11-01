@@ -35,7 +35,7 @@ export const getListInvoces = async (
   }
 };
 
-export const getListInvoceByInvoiceId = async (
+export const getInvoceByPathWithParams = async (
   path: string,
   headers: IHeaders
 ): Promise<IInvoiceResult> => {

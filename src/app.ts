@@ -60,6 +60,16 @@ class CryptoPay {
     }
   }
 
+  public getListInvoceByInvoiceId =async (invoice_id:string) =>{
+    try {
+      const path = `/api/invoices`;
+      const headers = this.headerCreator("GET", path, {invoice_id} );
+      return  await invocesService.getListInvoceByInvoiceId(`${this.uri}${path}`, invoice_id, headers);
+    } catch (err) {
+      throw err;
+    }
+  }
+
 
   private headerCreator = (method: string, path: string, body?: any): IHeaders => {
     const date = new Date().toUTCString();

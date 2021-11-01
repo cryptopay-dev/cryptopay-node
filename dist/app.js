@@ -73,6 +73,16 @@ class CryptoPay {
                 throw err;
             }
         });
+        this.getListInvoceByInvoiceId = (invoice_id) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/invoices`;
+                const headers = this.headerCreator("GET", path, { invoice_id });
+                return yield invocesService.getListInvoceByInvoiceId(`${this.uri}${path}`, invoice_id, headers);
+            }
+            catch (err) {
+                throw err;
+            }
+        });
         this.headerCreator = (method, path, body) => {
             const date = new Date().toUTCString();
             const contentType = "application/json";

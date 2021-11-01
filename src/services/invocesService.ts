@@ -34,3 +34,20 @@ export const getListInvoces = async (
     throw "getListInvoces: " + err;
   }
 };
+
+export const getListInvoceByInvoiceId = async (
+  path: string,
+  invoice_id: string,
+  headers: IHeaders
+): Promise<IInvoiceResult> => {
+  try {
+    const response = await axios.get(path, {
+      headers,
+      params: { invoice_id },
+    });
+    return response.data;
+  } catch (err) {
+    console.log("getListInvoceByInvoiceId: ", err);
+    throw "getListInvoceByInvoiceId: " + err;
+  }
+};

@@ -1,5 +1,5 @@
 export interface IExchange {
-    description:string,
+    description?:string,
     pair:string,
     rate:string, 
     fee:string,

@@ -12,26 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
-exports.getRates = (path, headers) => __awaiter(this, void 0, void 0, function* () {
+exports.createInvoice = (path, invoice, headers) => __awaiter(this, void 0, void 0, function* () {
     try {
-        console.log(headers);
-        const response = yield axios_1.default.get(path, headers);
-        // console.log({ response });
+        const response = yield axios_1.default.post(path, invoice, headers);
         return response.data;
     }
     catch (err) {
-        console.log("getRetes: ", err);
-        throw "getRetes: " + err;
+        console.log("createInvoice: ", err);
+        throw "createInvoice: " + err;
     }
 });
-exports.getRetesByPair = (path, headers) => __awaiter(this, void 0, void 0, function* () {
-    try {
-        const response = yield axios_1.default.get(path, headers);
-        console.log({ response });
-        return response.data;
-    }
-    catch (err) {
-        throw "getRetes: " + err;
-    }
-});
-//# sourceMappingURL=ratesSevices.js.map
+//# sourceMappingURL=invocesService.js.map

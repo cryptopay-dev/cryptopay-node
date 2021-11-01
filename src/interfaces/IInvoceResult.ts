@@ -2,7 +2,6 @@ import { IExchange } from "./IExchange";
 import { IInvoiceTransaction } from "./IInvoiceTransaction";
 
 export interface IInvoiceResult {
-  data: {
     id: string;
     custom_id: string | null;
     customer_id: string | null;
@@ -27,7 +26,6 @@ export interface IInvoiceResult {
     hosted_page_url: string;
     created_at: string;
     expires_at: string;
-  };
 }
 
 enum invoiceStatusEnum {

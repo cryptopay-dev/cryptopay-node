@@ -61,8 +61,19 @@ class CryptoPay {
                 const data = yield invocesService.createInvoice(`${this.uri}${path}`, invoice, headers);
                 return data;
             }
-            catch (error) {
-                throw new Error("getRetes: " + error);
+            catch (err) {
+                throw err;
+            }
+        });
+        this.getListInvoces = (customer_id, starting_after) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/invoices`;
+                const headers = this.headerCreator("GET", path, { customer_id, starting_after });
+                const data = yield invocesService.getListInvoces(`${this.uri}${path}`, customer_id, starting_after, headers);
+                return data;
+            }
+            catch (err) {
+                throw err;
             }
         });
         this.headerCreator = (method, path, body) => {

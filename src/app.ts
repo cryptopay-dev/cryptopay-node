@@ -47,11 +47,21 @@ class CryptoPay {
       const headers = this.headerCreator("POST", path , invoice);
       const data = await invocesService.createInvoice(`${this.uri}${path}`, invoice, headers);
       return data;
-    } catch (error) {
-      throw new Error("getRetes: " + error);
+    } catch (err) {
+      throw err;
     }
   };
 
+  public getListInvoces =async (customer_id:string , starting_after:string) =>{
+    try {
+      const path = `/api/invoices`;
+      const headers = this.headerCreator("GET", path, {customer_id , starting_after} );
+      const data = await invocesService.getListInvoces(`${this.uri}${path}`, customer_id, starting_after, headers);
+      return data;
+    } catch (err) {
+      throw err;
+    }
+  }
 
 
   private headerCreator = (method: string, path: string, body?: any): IHeaders => {

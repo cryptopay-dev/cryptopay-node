@@ -22,4 +22,17 @@ exports.createInvoice = (path, invoice, headers) => __awaiter(this, void 0, void
         throw "createInvoice: " + err;
     }
 });
+exports.getListInvoces = (path, customer_id, starting_after, headers) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.get(path, {
+            headers,
+            params: { customer_id, starting_after },
+        });
+        return response.data;
+    }
+    catch (err) {
+        console.log("getListInvoces: ", err);
+        throw "getListInvoces: " + err;
+    }
+});
 //# sourceMappingURL=invocesService.js.map

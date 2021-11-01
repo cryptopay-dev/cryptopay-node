@@ -21,8 +21,7 @@ class CryptoPay {
       const path = "/api/rates";
       const headers = this.headerCreator("GET", path); 
       try {
-        const data = await ratesSevices.getRates(`${this.uri}${path}`, headers);
-        return data;
+        return await ratesSevices.getRates(`${this.uri}${path}`, headers);
       } catch (err) {
         throw err; 
       }
@@ -45,8 +44,7 @@ class CryptoPay {
     try {
       const path = `/api/invoices`;
       const headers = this.headerCreator("POST", path , invoice);
-      const data = await invocesService.createInvoice(`${this.uri}${path}`, invoice, headers);
-      return data;
+      return await invocesService.createInvoice(`${this.uri}${path}`, invoice, headers);
     } catch (err) {
       throw err;
     }
@@ -56,8 +54,7 @@ class CryptoPay {
     try {
       const path = `/api/invoices`;
       const headers = this.headerCreator("GET", path, {customer_id , starting_after} );
-      const data = await invocesService.getListInvoces(`${this.uri}${path}`, customer_id, starting_after, headers);
-      return data;
+      return  await invocesService.getListInvoces(`${this.uri}${path}`, customer_id, starting_after, headers);
     } catch (err) {
       throw err;
     }

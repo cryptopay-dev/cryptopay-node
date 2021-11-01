@@ -95,6 +95,16 @@ class CryptoPay {
                 throw err;
             }
         });
+        this.getRecalculateInvoices = (invoice_id, force_commit) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/invoices/${invoice_id}/recalculations`;
+                const headers = this.headerCreator("POST", path);
+                return yield invocesService.getInvoceByPathWithParamsAndBody(`${this.uri}${path}`, { force_commit }, headers);
+            }
+            catch (err) {
+                throw err;
+            }
+        });
         this.headerCreator = (method, path, body) => {
             const date = new Date().toUTCString();
             const contentType = "application/json";
@@ -118,8 +128,8 @@ const test = () => __awaiter(this, void 0, void 0, function* () {
     const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
     const testObj = new CryptoPay(api_secret, api_key, callback_secret);
     // const resp = await testObj.getRetes();
-    const resp = yield testObj.getRetesByPair('XRP/ZAR');
-    console.log('resp=======', resp);
+    // const resp = await testObj.getRetesByPair("XRP/ZAR");
+    // console.log("resp=======", resp);
 });
 test();
 //# sourceMappingURL=app.js.map

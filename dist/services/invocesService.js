@@ -43,8 +43,21 @@ exports.getInvoceByPathWithParams = (path, headers) => __awaiter(this, void 0, v
         return response.data;
     }
     catch (err) {
-        console.log("getListInvoceByInvoiceId: ", err);
-        throw "getListInvoceByInvoiceId: " + err;
+        console.log("getInvoceByPathWithParams: ", err);
+        throw "getInvoceByPathWithParams: " + err;
+    }
+});
+exports.getInvoceByPathWithParamsAndBody = (path, bodyParams, headers) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.post(path, {
+            headers,
+            body: Object.assign({}, bodyParams)
+        });
+        return response.data;
+    }
+    catch (err) {
+        console.log("getInvoceByPathWithParamsAndBody: ", err);
+        throw "getInvoceByPathWithParamsAndBody: " + err;
     }
 });
 //# sourceMappingURL=invocesService.js.map

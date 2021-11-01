@@ -45,7 +45,26 @@ export const getInvoceByPathWithParams = async (
     });
     return response.data;
   } catch (err) {
-    console.log("getListInvoceByInvoiceId: ", err);
-    throw "getListInvoceByInvoiceId: " + err;
+    console.log("getInvoceByPathWithParams: ", err);
+    throw "getInvoceByPathWithParams: " + err;
   }
 };
+
+export const getInvoceByPathWithParamsAndBody = async (
+    path: string,
+    bodyParams:any,
+    headers: IHeaders
+    ) =>{
+        try {
+            const response = await axios.post(path, {
+                headers,
+                body:{
+                    ...bodyParams 
+                }
+              });
+        return response.data;
+        } catch (err) {
+            console.log("getInvoceByPathWithParamsAndBody: ", err);
+            throw "getInvoceByPathWithParamsAndBody: " + err;
+        }
+}

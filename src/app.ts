@@ -62,9 +62,9 @@ class CryptoPay {
 
   public getListInvoceByInvoiceId =async (invoice_id:string) =>{
     try {
-      const path = `/api/invoices`;
+      const path = `/api/invoices/${invoice_id}`;
       const headers = this.headerCreator("GET", path, {invoice_id} );
-      return  await invocesService.getListInvoceByInvoiceId(`${this.uri}${path}`, invoice_id, headers);
+      return  await invocesService.getListInvoceByInvoiceId(`${this.uri}${path}`, headers);
     } catch (err) {
       throw err;
     }

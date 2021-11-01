@@ -35,11 +35,10 @@ exports.getListInvoces = (path, customer_id, starting_after, headers) => __await
         throw "getListInvoces: " + err;
     }
 });
-exports.getListInvoceByInvoiceId = (path, invoice_id, headers) => __awaiter(this, void 0, void 0, function* () {
+exports.getListInvoceByInvoiceId = (path, headers) => __awaiter(this, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(path, {
             headers,
-            params: { invoice_id },
         });
         return response.data;
     }

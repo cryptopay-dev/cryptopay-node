@@ -75,9 +75,9 @@ class CryptoPay {
         });
         this.getListInvoceByInvoiceId = (invoice_id) => __awaiter(this, void 0, void 0, function* () {
             try {
-                const path = `/api/invoices`;
+                const path = `/api/invoices/${invoice_id}`;
                 const headers = this.headerCreator("GET", path, { invoice_id });
-                return yield invocesService.getListInvoceByInvoiceId(`${this.uri}${path}`, invoice_id, headers);
+                return yield invocesService.getListInvoceByInvoiceId(`${this.uri}${path}`, headers);
             }
             catch (err) {
                 throw err;

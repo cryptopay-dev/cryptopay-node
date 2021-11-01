@@ -2,6 +2,7 @@ import axios from "axios";
 import { IHeaders } from "../interfaces/IHeaders";
 import { IInvoiceResult } from "../interfaces/IInvoceResult";
 import { IInvoiceParams } from "../interfaces/IInvoiceParams";
+import { IInvoiceRecalculationResult } from "../interfaces/IInvoiceRecalculationResult";
 
 export const createInvoice = async (
   path: string,
@@ -54,7 +55,7 @@ export const getInvoceByPathWithParamsAndBody = async (
     path: string,
     bodyParams:any,
     headers: IHeaders
-    ) =>{
+    ): Promise<IInvoiceRecalculationResult>=>{
         try {
             const response = await axios.post(path, {
                 headers,

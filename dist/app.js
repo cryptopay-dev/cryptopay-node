@@ -25,7 +25,7 @@ const enc_utf8_1 = __importDefault(require("crypto-js/enc-utf8"));
 const ratesSevices = __importStar(require("./services/ratesSevices"));
 const invocesService = __importStar(require("./services/invocesService"));
 class CryptoPay {
-    constructor(api_secret, api_key, callback_secret, uri = 'https://business-sandbox.cryptopay.me') {
+    constructor(api_secret, api_key, callback_secret, uri = "https://business-sandbox.cryptopay.me") {
         this.api_secret = api_secret;
         this.api_key = api_key;
         this.callback_secret = callback_secret;
@@ -45,8 +45,7 @@ class CryptoPay {
             const path = `/api/rates/${pair}`;
             const headers = this.headerCreator("GET", path);
             try {
-                const data = yield ratesSevices.getRetesByPair(`${this.uri}${path}`, headers);
-                return data;
+                return yield ratesSevices.getRetesByPair(`${this.uri}${path}`, headers);
             }
             catch (err) {
                 throw err;
@@ -66,7 +65,10 @@ class CryptoPay {
         this.getListInvoces = (customer_id, starting_after) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const path = `/api/invoices`;
-                const headers = this.headerCreator("GET", path, { customer_id, starting_after });
+                const headers = this.headerCreator("GET", path, {
+                    customer_id,
+                    starting_after,
+                });
                 return yield invocesService.getListInvoces(`${this.uri}${path}`, customer_id, starting_after, headers);
             }
             catch (err) {
@@ -110,9 +112,13 @@ class CryptoPay {
         };
     }
 }
-const callback_secret = 'sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE';
-const api_key = '7AA2P-w0RxZXG-_K4cRngQ';
-const api_secret = 'NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc';
-// const testObj = new CryptoPay(api_secret, api_key, callback_secret);
-// testObj.getRetes()
+const test = () => __awaiter(this, void 0, void 0, function* () {
+    const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
+    const api_key = "7AA2P-w0RxZXG-_K4cRngQ";
+    const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
+    const testObj = new CryptoPay(api_secret, api_key, callback_secret);
+    const resp = yield testObj.getRetes();
+    console.log('resp=======', resp);
+});
+test();
 //# sourceMappingURL=app.js.map

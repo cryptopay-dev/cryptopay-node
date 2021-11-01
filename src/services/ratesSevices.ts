@@ -1,11 +1,11 @@
 import axios from "axios";
 import { IHeaders } from "../interfaces/IHeaders";
+import { IRate } from "../interfaces/IRate";
 
-export const getRates = async (path: string, headers: IHeaders) => {
+export const getRates = async (path: string, headers: IHeaders): Promise<IRate[]> => {
   try {
-    console.log(headers);
     const response = await axios.get(path, { headers });
-    return response.data;
+    return response.data.data;
   } catch (err) {
     console.log("getRetes: ", err);
     throw "getRetes: " + err;

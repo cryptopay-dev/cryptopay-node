@@ -14,9 +14,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 exports.getRates = (path, headers) => __awaiter(this, void 0, void 0, function* () {
     try {
-        console.log(headers);
         const response = yield axios_1.default.get(path, { headers });
-        return response.data;
+        return response.data.data;
     }
     catch (err) {
         console.log("getRetes: ", err);

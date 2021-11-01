@@ -2,10 +2,10 @@ import axios from "axios";
 import base64 from "crypto-js/enc-base64";
 import sha1 from "crypto-js/sha1";
 import md5 from "crypto-js/md5";
-import utf8 from 'crypto-js/enc-utf8';
+import utf8 from "crypto-js/enc-utf8";
 import { IHeaders } from "./interfaces/IHeaders";
-import * as ratesSevices from './services/ratesSevices'
-import * as invocesService from './services/invocesService'
+import * as ratesSevices from "./services/ratesSevices";
+import * as invocesService from "./services/invocesService";
 import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 
 class CryptoPay {
@@ -13,81 +13,106 @@ class CryptoPay {
     private api_secret: any,
     private api_key: any,
     private callback_secret: any,
-    private uri:string = 'https://business-sandbox.cryptopay.me'
+    private uri: string = "https://business-sandbox.cryptopay.me"
   ) {}
 
   //Rates
   public getRetes = async () => {
-      const path = "/api/rates";
-      const headers = this.headerCreator("GET", path); 
-      try {
-        return await ratesSevices.getRates(`${this.uri}${path}`, headers);
-      } catch (err) {
-        throw err; 
-      }
-  }; 
+    const path = "/api/rates";
+    const headers = this.headerCreator("GET", path);
+    try {
+      return await ratesSevices.getRates(`${this.uri}${path}`, headers);
+    } catch (err) {
+      throw err;
+    }
+  };
 
   public getRetesByPair = async (pair: string) => {
-      const path = `/api/rates/${pair}`;
-      const headers = this.headerCreator("GET", path);
-      try {
-        const data = await ratesSevices.getRetesByPair(`${this.uri}${path}`, headers);
-        return data;
-      } catch (err) {
-        throw err;
-      }
+    const path = `/api/rates/${pair}`;
+    const headers = this.headerCreator("GET", path);
+    try {
+      return await ratesSevices.getRetesByPair(`${this.uri}${path}`, headers);
+    } catch (err) {
+      throw err;
+    }
   };
 
   // Invoices
 
-  public createInvoice = async (invoice:IInvoiceParams) => {
+  public createInvoice = async (invoice: IInvoiceParams) => {
     try {
       const path = `/api/invoices`;
-      const headers = this.headerCreator("POST", path , invoice);
-      return await invocesService.createInvoice(`${this.uri}${path}`, invoice, headers);
+      const headers = this.headerCreator("POST", path, invoice);
+      return await invocesService.createInvoice(
+        `${this.uri}${path}`,
+        invoice,
+        headers
+      );
     } catch (err) {
       throw err;
     }
   };
 
-  public getListInvoces =async (customer_id:string , starting_after:string) =>{
+  public getListInvoces = async (
+    customer_id: string,
+    starting_after: string
+  ) => {
     try {
       const path = `/api/invoices`;
-      const headers = this.headerCreator("GET", path, {customer_id , starting_after} );
-      return  await invocesService.getListInvoces(`${this.uri}${path}`, customer_id, starting_after, headers);
+      const headers = this.headerCreator("GET", path, {
+        customer_id,
+        starting_after,
+      });
+      return await invocesService.getListInvoces(
+        `${this.uri}${path}`,
+        customer_id,
+        starting_after,
+        headers
+      );
     } catch (err) {
       throw err;
     }
-  }
+  };
 
-  public getListInvoceByInvoiceId =async (invoice_id:string) =>{
+  public getListInvoceByInvoiceId = async (invoice_id: string) => {
     try {
       const path = `/api/invoices/${invoice_id}`;
-      const headers = this.headerCreator("GET", path );
-      return  await invocesService.getInvoceByPathWithParams(`${this.uri}${path}`, headers);
+      const headers = this.headerCreator("GET", path);
+      return await invocesService.getInvoceByPathWithParams(
+        `${this.uri}${path}`,
+        headers
+      );
     } catch (err) {
       throw err;
     }
-  }
+  };
 
-  public getListInvoceByCustomId =async (custom_id:string) =>{
+  public getListInvoceByCustomId = async (custom_id: string) => {
     try {
       const path = `/api/invoices/custom_id/${custom_id}`;
-      const headers = this.headerCreator("GET", path );
-      return  await invocesService.getInvoceByPathWithParams(`${this.uri}${path}`, headers);
+      const headers = this.headerCreator("GET", path);
+      return await invocesService.getInvoceByPathWithParams(
+        `${this.uri}${path}`,
+        headers
+      );
     } catch (err) {
       throw err;
     }
-  }
+  };
 
-
-  private headerCreator = (method: string, path: string, body?: any): IHeaders => {
+  private headerCreator = (
+    method: string,
+    path: string,
+    body?: any
+  ): IHeaders => {
     const date = new Date().toUTCString();
     const contentType = "application/json";
     const bodyHash = body ? md5(body).toString() : "";
 
     const StringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
-    const signature = base64.stringify(sha1(this.api_secret, utf8.parse(StringToSign)))
+    const signature = base64.stringify(
+      sha1(this.api_secret, utf8.parse(StringToSign))
+    );
     const Authorization = `HMAC ${this.api_key}:${signature}`;
     return {
       headers: {
@@ -99,8 +124,13 @@ class CryptoPay {
   };
 }
 
-const callback_secret ='sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE'
-const api_key= '7AA2P-w0RxZXG-_K4cRngQ'
-const api_secret='NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc'
-// const testObj = new CryptoPay(api_secret, api_key, callback_secret);
-// testObj.getRetes()
+const test = async () => {
+  const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
+  const api_key = "7AA2P-w0RxZXG-_K4cRngQ";
+  const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
+  const testObj = new CryptoPay(api_secret, api_key, callback_secret);
+  const resp = await testObj.getRetes();
+  console.log( 'resp=======', resp );
+};
+
+test()

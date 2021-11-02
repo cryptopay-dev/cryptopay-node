@@ -106,7 +106,7 @@ class CryptoPay {
   ) => {
     try {
       const path = `/api/invoices/${invoice_id}/recalculations`;
-      const headers = this.headerCreator("POST", path);
+      const headers = this.headerCreator("POST", path, { force_commit });
       return await invocesService.getInvoceByPathWithParamsAndBody(
         `${this.uri}${path}`,
         { force_commit },

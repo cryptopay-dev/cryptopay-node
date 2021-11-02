@@ -98,7 +98,7 @@ class CryptoPay {
         this.getRecalculateInvoices = (invoice_id, force_commit) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const path = `/api/invoices/${invoice_id}/recalculations`;
-                const headers = this.headerCreator("POST", path);
+                const headers = this.headerCreator("POST", path, { force_commit });
                 return yield invocesService.getInvoceByPathWithParamsAndBody(`${this.uri}${path}`, { force_commit }, headers);
             }
             catch (err) {

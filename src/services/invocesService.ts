@@ -105,3 +105,18 @@ export const createInvoiceRefund = async (
     throw "createInvoiceRefund: " + err;
   }
 };
+
+export const getListInvoiceRefund = async (
+  path: string,
+  headers: IHeaders
+): Promise<IInvoiceRefundResult[]> => {
+  try {
+    const response = await axios.get(path, {
+      headers,
+    });
+    return response.data.data;
+  } catch (err) {
+    console.log("getListInvoiceRefund: ", err);
+    throw "getListInvoiceRefund: " + err;
+  }
+};

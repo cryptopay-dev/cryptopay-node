@@ -147,7 +147,14 @@ class CryptoPay {
     }
   };
 
-  
+  public getListInvoiceRefund = async (invoice_id: string) => {
+    try {
+      const path = `/api/invoices/${invoice_id}/refunds`;
+      const headers = this.headerCreator("GET", path);
+    } catch (err) {
+      throw err;
+    }
+  };
 
   private headerCreator = (
     method: string,

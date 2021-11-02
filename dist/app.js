@@ -125,6 +125,15 @@ class CryptoPay {
                 throw err;
             }
         });
+        this.getListInvoiceRefund = (invoice_id) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/invoices/${invoice_id}/refunds`;
+                const headers = this.headerCreator("GET", path);
+            }
+            catch (err) {
+                throw err;
+            }
+        });
         this.headerCreator = (method, path, body) => {
             const date = new Date().toUTCString();
             const contentType = "application/json";

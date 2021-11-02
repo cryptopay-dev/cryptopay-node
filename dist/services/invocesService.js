@@ -85,4 +85,16 @@ exports.createInvoiceRefund = (path, bodyParams, headers) => __awaiter(this, voi
         throw "createInvoiceRefund: " + err;
     }
 });
+exports.getListInvoiceRefund = (path, headers) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.get(path, {
+            headers,
+        });
+        return response.data.data;
+    }
+    catch (err) {
+        console.log("getListInvoiceRefund: ", err);
+        throw "getListInvoiceRefund: " + err;
+    }
+});
 //# sourceMappingURL=invocesService.js.map

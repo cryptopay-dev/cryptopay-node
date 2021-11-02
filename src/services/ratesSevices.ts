@@ -8,7 +8,7 @@ export const getRates = async (path: string, headers: IHeaders): Promise<IRate[]
     return response.data.data;
   } catch (err) {
     console.log("getRetes: ", err);
-    throw "getRetes: " + err;
+    throw  err;
   }
 };
 

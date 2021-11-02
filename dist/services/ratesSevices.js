@@ -19,7 +19,7 @@ exports.getRates = (path, headers) => __awaiter(this, void 0, void 0, function* 
     }
     catch (err) {
         console.log("getRetes: ", err);
-        throw "getRetes: " + err;
+        throw err;
     }
 });
 exports.getRetesByPair = (path, headers) => __awaiter(this, void 0, void 0, function* () {

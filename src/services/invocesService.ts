@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { IHeaders } from "../interfaces/IHeaders";
 import { IInvoiceResult } from "../interfaces/IInvoceResult";
 import { IInvoiceListResult } from "../interfaces/IInvoiceListResult";
@@ -12,10 +12,10 @@ export const createInvoice = async (
   headers: IHeaders
 ): Promise<IInvoiceResult> => {
   try {
-    const response = await axios.post(path, invoice, headers);
+    const response = await axios.post(path, { ...invoice }, { ...headers });
     return response.data;
   } catch (err) {
-    console.log("createInvoice: ", err);
+    console.log("createInvoice: ", (err as AxiosError).response);
     throw "createInvoice: " + err;
   }
 };

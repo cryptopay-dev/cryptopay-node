@@ -24,6 +24,7 @@ const md5_1 = __importDefault(require("crypto-js/md5"));
 const enc_utf8_1 = __importDefault(require("crypto-js/enc-utf8"));
 const ratesSevices = __importStar(require("./services/ratesSevices"));
 const invocesService = __importStar(require("./services/invocesService"));
+const invoiceParamsToTest_1 = require("./dataToTesting/invoiceParamsToTest");
 class CryptoPay {
     constructor(api_secret, api_key, callback_secret, uri = "https://business-sandbox.cryptopay.me") {
         this.api_secret = api_secret;
@@ -158,7 +159,8 @@ const test = () => __awaiter(this, void 0, void 0, function* () {
     const testObj = new CryptoPay(api_secret, api_key, callback_secret);
     // const resp = await testObj.getRetes();
     // const resp = await testObj.getRetesByPair("XRP/ZAR");
-    // console.log("resp=======", resp);
+    const resp = yield testObj.createInvoice(invoiceParamsToTest_1.invoiceParamsToTest);
+    console.log("resp=======", resp);
 });
 test();
 //# sourceMappingURL=app.js.map

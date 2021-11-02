@@ -7,6 +7,7 @@ import { IHeaders } from "./interfaces/IHeaders";
 import * as ratesSevices from "./services/ratesSevices";
 import * as invocesService from "./services/invocesService";
 import { IInvoiceParams } from "./interfaces/IInvoiceParams";
+import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 
 class CryptoPay {
   constructor(
@@ -42,7 +43,7 @@ class CryptoPay {
   public createInvoice = async (invoice: IInvoiceParams) => {
     try {
       const path = `/api/invoices`;
-      const headers = this.headerCreator("POST", path, invoice);
+      const headers = this.headerCreator("POST", path,  invoice );
       return await invocesService.createInvoice(
         `${this.uri}${path}`,
         invoice,
@@ -164,7 +165,6 @@ class CryptoPay {
     const date = new Date().toUTCString();
     const contentType = "application/json";
     const bodyHash = body ? md5(body).toString() : "";
-
     const StringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
     const signature = base64.stringify(
       sha1(this.api_secret, utf8.parse(StringToSign))
@@ -187,8 +187,9 @@ const test = async () => {
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
   // const resp = await testObj.getRetes();
   // const resp = await testObj.getRetesByPair("XRP/ZAR");
-
-  // console.log("resp=======", resp);
+  const resp = await testObj.createInvoice(invoiceParamsToTest);
+  console.log("resp=======", resp);
 };
 
 test();
+

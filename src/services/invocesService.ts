@@ -1,6 +1,7 @@
 import axios from "axios";
 import { IHeaders } from "../interfaces/IHeaders";
 import { IInvoiceResult } from "../interfaces/IInvoceResult";
+import { IInvoiceListResult } from "../interfaces/IInvoiceListResult";
 import { IInvoiceParams } from "../interfaces/IInvoiceParams";
 import { IInvoiceRecalculationResult } from "../interfaces/IInvoiceRecalculationResult";
 import { IInvoiceRefundResult } from "../interfaces/IInvoiceRefundResult";
@@ -24,7 +25,7 @@ export const getListInvoces = async (
   customer_id: string,
   starting_after: string,
   headers: IHeaders
-): Promise<IInvoiceResult[]> => {
+): Promise<IInvoiceListResult> => {
   try {
     const response = await axios.get(path, {
       headers,

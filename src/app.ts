@@ -147,6 +147,8 @@ class CryptoPay {
     }
   };
 
+  
+
   private headerCreator = (
     method: string,
     path: string,

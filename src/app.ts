@@ -133,6 +133,20 @@ class CryptoPay {
     }
   };
 
+  public createInvoiceRefund = async (invoice_id: string, address: string) => {
+    try {
+      const path = `/api/invoices/${invoice_id}/refunds`;
+      const headers = this.headerCreator("POST", path, { address });
+      return await invocesService.createInvoiceRefund(
+        `${this.uri}${path}`,
+        { address },
+        headers
+      );
+    } catch (err) {
+      throw err;
+    }
+  };
+
   private headerCreator = (
     method: string,
     path: string,

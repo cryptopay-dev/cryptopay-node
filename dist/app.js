@@ -115,6 +115,16 @@ class CryptoPay {
                 throw err;
             }
         });
+        this.createInvoiceRefund = (invoice_id, address) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/invoices/${invoice_id}/refunds`;
+                const headers = this.headerCreator("POST", path, { address });
+                return yield invocesService.createInvoiceRefund(`${this.uri}${path}`, { address }, headers);
+            }
+            catch (err) {
+                throw err;
+            }
+        });
         this.headerCreator = (method, path, body) => {
             const date = new Date().toUTCString();
             const contentType = "application/json";

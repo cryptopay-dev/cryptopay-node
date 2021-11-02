@@ -3,6 +3,7 @@ import { IHeaders } from "../interfaces/IHeaders";
 import { IInvoiceResult } from "../interfaces/IInvoceResult";
 import { IInvoiceParams } from "../interfaces/IInvoiceParams";
 import { IInvoiceRecalculationResult } from "../interfaces/IInvoiceRecalculationResult";
+import { IInvoiceRefundResult } from "../interfaces/IInvoiceRefundResult";
 
 export const createInvoice = async (
   path: string,
@@ -82,5 +83,24 @@ export const getRecalculateInvoicesByIds = async (
   } catch (err) {
     console.log("getRecalculateInvoicesByIds: ", err);
     throw "getRecalculateInvoicesByIds: " + err;
+  }
+};
+
+export const createInvoiceRefund = async (
+  path: string,
+  bodyParams: any,
+  headers: IHeaders
+): Promise<IInvoiceRefundResult> => {
+  try {
+    const response = await axios.post(path, {
+      headers,
+      body: {
+        ...bodyParams,
+      },
+    });
+    return response.data.data;
+  } catch (err) {
+    console.log("createInvoiceRefund: ", err);
+    throw "createInvoiceRefund: " + err;
   }
 };

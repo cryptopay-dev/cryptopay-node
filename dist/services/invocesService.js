@@ -72,4 +72,17 @@ exports.getRecalculateInvoicesByIds = (path, headers) => __awaiter(this, void 0,
         throw "getRecalculateInvoicesByIds: " + err;
     }
 });
+exports.createInvoiceRefund = (path, bodyParams, headers) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.post(path, {
+            headers,
+            body: Object.assign({}, bodyParams),
+        });
+        return response.data.data;
+    }
+    catch (err) {
+        console.log("createInvoiceRefund: ", err);
+        throw "createInvoiceRefund: " + err;
+    }
+});
 //# sourceMappingURL=invocesService.js.map

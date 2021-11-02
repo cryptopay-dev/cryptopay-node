@@ -51,23 +51,36 @@ export const getInvoceByPathWithParams = async (
   }
 };
 
+export const getRecalculateInvoices = async (
+  path: string,
+  bodyParams: any,
+  headers: IHeaders
+): Promise<IInvoiceRecalculationResult> => {
+  try {
+    const response = await axios.post(path, {
+      headers,
+      body: {
+        ...bodyParams,
+      },
+    });
+    return response.data.data;
+  } catch (err) {
+    console.log("getInvoceByPathWithParamsAndBody: ", err);
+    throw "getInvoceByPathWithParamsAndBody: " + err;
+  }
+};
 
-
-export const getInvoceByPathWithParamsAndBody = async (
-    path: string,
-    bodyParams:any,
-    headers: IHeaders
-    ): Promise<IInvoiceRecalculationResult>=>{
-        try {
-            const response = await axios.post(path, {
-                headers,
-                body:{
-                    ...bodyParams 
-                }
-              });
-        return response.data;
-        } catch (err) {
-            console.log("getInvoceByPathWithParamsAndBody: ", err);
-            throw "getInvoceByPathWithParamsAndBody: " + err;
-        }
-}
+export const getRecalculateInvoicesByIds = async (
+  path: string,
+  headers: IHeaders
+): Promise<IInvoiceRecalculationResult> => {
+  try {
+    const response = await axios.post(path, {
+      headers,
+    });
+    return response.data.data;
+  } catch (err) {
+    console.log("getRecalculateInvoicesByIds: ", err);
+    throw "getRecalculateInvoicesByIds: " + err;
+  }
+};

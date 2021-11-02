@@ -47,17 +47,29 @@ exports.getInvoceByPathWithParams = (path, headers) => __awaiter(this, void 0, v
         throw "getInvoceByPathWithParams: " + err;
     }
 });
-exports.getInvoceByPathWithParamsAndBody = (path, bodyParams, headers) => __awaiter(this, void 0, void 0, function* () {
+exports.getRecalculateInvoices = (path, bodyParams, headers) => __awaiter(this, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, {
             headers,
-            body: Object.assign({}, bodyParams)
+            body: Object.assign({}, bodyParams),
         });
-        return response.data;
+        return response.data.data;
     }
     catch (err) {
         console.log("getInvoceByPathWithParamsAndBody: ", err);
         throw "getInvoceByPathWithParamsAndBody: " + err;
+    }
+});
+exports.getRecalculateInvoicesByIds = (path, headers) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.post(path, {
+            headers,
+        });
+        return response.data.data;
+    }
+    catch (err) {
+        console.log("getRecalculateInvoicesByIds: ", err);
+        throw "getRecalculateInvoicesByIds: " + err;
     }
 });
 //# sourceMappingURL=invocesService.js.map

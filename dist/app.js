@@ -99,7 +99,17 @@ class CryptoPay {
             try {
                 const path = `/api/invoices/${invoice_id}/recalculations`;
                 const headers = this.headerCreator("POST", path, { force_commit });
-                return yield invocesService.getInvoceByPathWithParamsAndBody(`${this.uri}${path}`, { force_commit }, headers);
+                return yield invocesService.getRecalculateInvoices(`${this.uri}${path}`, { force_commit }, headers);
+            }
+            catch (err) {
+                throw err;
+            }
+        });
+        this.getRecalculateInvoicesByIds = (invoice_id, recalculation_id) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
+                const headers = this.headerCreator("POST", path);
+                return yield invocesService.getRecalculateInvoicesByIds(`${this.uri}${path}`, headers);
             }
             catch (err) {
                 throw err;

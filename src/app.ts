@@ -107,9 +107,25 @@ class CryptoPay {
     try {
       const path = `/api/invoices/${invoice_id}/recalculations`;
       const headers = this.headerCreator("POST", path, { force_commit });
-      return await invocesService.getInvoceByPathWithParamsAndBody(
+      return await invocesService.getRecalculateInvoices(
         `${this.uri}${path}`,
         { force_commit },
+        headers
+      );
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  public getRecalculateInvoicesByIds = async (
+    invoice_id: string,
+    recalculation_id: string
+  ) => {
+    try {
+      const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
+      const headers = this.headerCreator("POST", path);
+      return await invocesService.getRecalculateInvoicesByIds(
+        `${this.uri}${path}`,
         headers
       );
     } catch (err) {

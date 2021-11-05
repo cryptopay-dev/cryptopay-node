@@ -1,8 +1,7 @@
-import axios from "axios";
 import base64 from "crypto-js/enc-base64";
 import sha1 from "crypto-js/sha1";
 import md5 from "crypto-js/md5";
-import utf8 from "crypto-js/enc-utf8";
+import CryptoJS from 'crypto-js'
 import moment from 'moment'
 import { IHeaders } from "./interfaces/IHeaders";
 import * as ratesSevices from "./services/ratesSevices";
@@ -164,38 +163,24 @@ class CryptoPay {
     }
   };
 
-  private headerCreator = (
-    method: string,
+  private headerCreator( method: string,
     path: string,
-    body?: any
-  ): IHeaders => {
-    // const date = new Date().toISOString(); //toUTCString  / toISOString
-    const date = moment().utc().format("YYYY-MM-DD HH:mm:ss UTC")
-    console.log({date})
-    const date2 = new Date()
-    console.log({date2})
-
-    const contentType = "application/json";
-    const bodyHash = body ? md5(JSON.stringify(body)) + "\n" : "";
-    const StringToSign = `${method}\n${bodyHash}${contentType}\n${date}\n${path}`;
-    // console.log(StringToSign)
-    const signature = base64.stringify(
-      // sha1(StringToSign,this.api_secret )
-      sha1(this.api_secret, utf8.parse(StringToSign))
-    );    
-    // const signature = 'l4qayXp8dOHft2Yk//T1CH6KDGI='
-    console.log({signature})
-    // 2021-11-04 11:48:13 UTC
-
-    const Authorization = `HMAC ${this.api_key}:${signature}`;
-    return {
-      headers: {
-        Date: date,
-        Authorization,
-        "Content-Type": contentType,
-      },
-    };
-  };
+    body?: any) {
+        const date = moment().format("YYYY-MM-DDTHH:mm:ssZ")
+         const contentType = 'application/json'; 
+        const bodyHash = body ? CryptoJS.MD5(JSON.stringify(body)).toString() : ''; 
+        const stringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`; 
+        const signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(stringToSign, this.api_secret));
+        console.log(`HMAC ${this.api_key}:${signature}`)
+        return {
+          headers: {
+            Date: date,
+            Authorization: `HMAC ${this.api_key}:${signature}`,
+            "Content-Type": contentType,
+          },
+        };
+  
+    }
 }
 
 const test = async () => {
@@ -207,8 +192,25 @@ const test = async () => {
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
   // const resp = await testObj.getRetes();
   // const resp = await testObj.getRetesByPair("XRP/ZAR");
-  const resp = await testObj.createInvoice(invoiceParamsToTest);
-  console.log("resp=======", resp);
+  try {
+    const resp = await testObj.createInvoice(invoiceParamsToTest);
+    console.log("resp=======", resp);
+  } catch(err) {
+    console.log('[err]', err);
+  }
+
 };
 
+
+
+// signRequest(pm.request, pm.variables.get('api_key'), pm.variables.get('api_secret')); 
+
 test();
+
+// curl "https://business-sandbox.cryptopay.me/api/invoices" \
+//      -H 'Authorization: HMAC D-d6gn9axIWNPn5cPIukoA:6xw9PuCoSQQj1qXUTdre+w3SDlI=' \
+//      -H 'Content-Type: application/json' \
+//      -H 'Date: 2021-11-05T14:40:13+02:00'
+
+
+     //2021-11-05T14:13:29+03:00

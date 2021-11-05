@@ -18,10 +18,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const enc_base64_1 = __importDefault(require("crypto-js/enc-base64"));
-const sha1_1 = __importDefault(require("crypto-js/sha1"));
-const md5_1 = __importDefault(require("crypto-js/md5"));
-const enc_utf8_1 = __importDefault(require("crypto-js/enc-utf8"));
+const crypto_js_1 = __importDefault(require("crypto-js"));
 const moment_1 = __importDefault(require("moment"));
 const ratesSevices = __importStar(require("./services/ratesSevices"));
 const invocesService = __importStar(require("./services/invocesService"));
@@ -141,30 +138,20 @@ class CryptoPay {
                 throw err;
             }
         });
-        this.headerCreator = (method, path, body) => {
-            // const date = new Date().toISOString(); //toUTCString  / toISOString
-            const date = moment_1.default().utc().format("YYYY-MM-DD HH:mm:ss UTC");
-            console.log({ date });
-            const date2 = new Date();
-            console.log({ date2 });
-            const contentType = "application/json";
-            const bodyHash = body ? md5_1.default(JSON.stringify(body)) + "\n" : "";
-            const StringToSign = `${method}\n${bodyHash}${contentType}\n${date}\n${path}`;
-            // console.log(StringToSign)
-            const signature = enc_base64_1.default.stringify(
-            // sha1(StringToSign,this.api_secret )
-            sha1_1.default(this.api_secret, enc_utf8_1.default.parse(StringToSign)));
-            // const signature = 'l4qayXp8dOHft2Yk//T1CH6KDGI='
-            console.log({ signature });
-            // 2021-11-04 11:48:13 UTC
-            const Authorization = `HMAC ${this.api_key}:${signature}`;
-            return {
-                headers: {
-                    Date: date,
-                    Authorization,
-                    "Content-Type": contentType,
-                },
-            };
+    }
+    headerCreator(method, path, body) {
+        const date = moment_1.default().format("YYYY-MM-DDTHH:mm:ssZ");
+        const contentType = 'application/json';
+        const bodyHash = body ? crypto_js_1.default.MD5(JSON.stringify(body)).toString() : '';
+        const stringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
+        const signature = crypto_js_1.default.enc.Base64.stringify(crypto_js_1.default.HmacSHA1(stringToSign, this.api_secret));
+        console.log(`HMAC ${this.api_key}:${signature}`);
+        return {
+            headers: {
+                Date: date,
+                Authorization: `HMAC ${this.api_key}:${signature}`,
+                "Content-Type": contentType,
+            },
         };
     }
 }
@@ -177,8 +164,19 @@ const test = () => __awaiter(this, void 0, void 0, function* () {
     const testObj = new CryptoPay(api_secret, api_key, callback_secret);
     // const resp = await testObj.getRetes();
     // const resp = await testObj.getRetesByPair("XRP/ZAR");
-    const resp = yield testObj.createInvoice(invoiceParamsToTest_1.invoiceParamsToTest);
-    console.log("resp=======", resp);
+    try {
+        const resp = yield testObj.createInvoice(invoiceParamsToTest_1.invoiceParamsToTest);
+        console.log("resp=======", resp);
+    }
+    catch (err) {
+        console.log('[err]', err);
+    }
 });
+// signRequest(pm.request, pm.variables.get('api_key'), pm.variables.get('api_secret')); 
 test();
+// curl "https://business-sandbox.cryptopay.me/api/invoices" \
+//      -H 'Authorization: HMAC D-d6gn9axIWNPn5cPIukoA:6xw9PuCoSQQj1qXUTdre+w3SDlI=' \
+//      -H 'Content-Type: application/json' \
+//      -H 'Date: 2021-11-05T14:40:13+02:00'
+//2021-11-05T14:13:29+03:00
 //# sourceMappingURL=app.js.map

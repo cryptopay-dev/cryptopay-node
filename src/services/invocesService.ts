@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { IHeaders } from "../interfaces/IHeaders";
 import { IInvoiceResult } from "../interfaces/IInvoceResult";
 import { IInvoiceListResult } from "../interfaces/IInvoiceListResult";
@@ -15,7 +15,7 @@ export const createInvoice = async (
     const response = await axios.post(path,  invoice , headers );
     return response.data;
   } catch (err) {
-    console.log("createInvoice: ", (err as AxiosError).response);
+    console.log("createInvoice: ", (((err as AxiosError).response) as AxiosResponse).data );
     throw "createInvoice: " + err;
   }
 };

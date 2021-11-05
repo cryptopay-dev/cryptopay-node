@@ -18,7 +18,7 @@ exports.createInvoice = (path, invoice, headers) => __awaiter(this, void 0, void
         return response.data;
     }
     catch (err) {
-        console.log("createInvoice: ", err.response);
+        console.log("createInvoice: ", (err.response).data);
         throw "createInvoice: " + err;
     }
 });

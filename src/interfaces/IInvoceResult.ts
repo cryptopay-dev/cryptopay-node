@@ -1,5 +1,10 @@
 import { IExchange } from "./IExchange";
 import { IInvoiceTransaction } from "./IInvoiceTransaction";
+/**
+ *
+ * @export
+ * @interface IInvoiceResult
+ */
 
 export interface IInvoiceResult {
     id: string;

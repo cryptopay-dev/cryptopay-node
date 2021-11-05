@@ -1,5 +1,11 @@
 import { IRisk } from "./IRisk";
 
+/**
+ *
+ * @export
+ * @interface IInvoiceRefundResult
+ */
+
 export interface IInvoiceRefundResult {
   id: string;
   invoice_id: string;

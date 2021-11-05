@@ -1,3 +1,9 @@
+/**
+ *
+ * @export
+ * @interface IInvoiceParams
+ */
+
 export interface IInvoiceParams {
   price_amount: string;
   price_currency: string;

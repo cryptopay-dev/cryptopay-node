@@ -1,4 +1,9 @@
 "use strict";
+/**
+ *
+ * @export
+ * @interface IInvoiceListResult
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 var levelEnum;
 (function (levelEnum) {

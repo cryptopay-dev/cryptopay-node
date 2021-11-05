@@ -1,7 +1,13 @@
+/**
+ *
+ * @export
+ * @interface IHeaders
+ */
+
 export interface IHeaders {
     headers:{
-        Date: string,
+        Date: string | any,
         Authorization: string,
-        "Content-Type": string
+        "Content-Type": string,
     }
 }

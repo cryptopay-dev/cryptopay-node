@@ -1,4 +1,9 @@
 import { IExchange } from "./IExchange";
+/**
+ *
+ * @export
+ * @interface IInvoiceRecalculationResult
+ */
 
 export interface IInvoiceRecalculationResult {
     id: string;

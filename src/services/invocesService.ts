@@ -12,7 +12,7 @@ export const createInvoice = async (
   headers: IHeaders
 ): Promise<IInvoiceResult> => {
   try {
-    const response = await axios.post(path, { ...invoice }, { ...headers });
+    const response = await axios.post(path,  invoice , headers );
     return response.data;
   } catch (err) {
     console.log("createInvoice: ", (err as AxiosError).response);

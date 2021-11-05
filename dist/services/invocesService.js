@@ -14,7 +14,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __importDefault(require("axios"));
 exports.createInvoice = (path, invoice, headers) => __awaiter(this, void 0, void 0, function* () {
     try {
-        const response = yield axios_1.default.post(path, Object.assign({}, invoice), Object.assign({}, headers));
+        const response = yield axios_1.default.post(path, invoice, headers);
         return response.data;
     }
     catch (err) {

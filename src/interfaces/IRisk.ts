@@ -1,3 +1,9 @@
+/**
+ *
+ * @export
+ * @interface IInvoiceListResult
+ */
+
 export interface IRisk {
   description?: string;
   score: number;

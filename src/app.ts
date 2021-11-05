@@ -3,11 +3,18 @@ import base64 from "crypto-js/enc-base64";
 import sha1 from "crypto-js/sha1";
 import md5 from "crypto-js/md5";
 import utf8 from "crypto-js/enc-utf8";
+import moment from 'moment'
 import { IHeaders } from "./interfaces/IHeaders";
 import * as ratesSevices from "./services/ratesSevices";
 import * as invocesService from "./services/invocesService";
 import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
+
+/**
+ *
+ * @export
+ * @class CryptoPay
+ */
 
 class CryptoPay {
   constructor(
@@ -43,7 +50,7 @@ class CryptoPay {
   public createInvoice = async (invoice: IInvoiceParams) => {
     try {
       const path = `/api/invoices`;
-      const headers = this.headerCreator("POST", path,  invoice );
+      const headers = this.headerCreator("POST", path, invoice);
       return await invocesService.createInvoice(
         `${this.uri}${path}`,
         invoice,
@@ -162,13 +169,24 @@ class CryptoPay {
     path: string,
     body?: any
   ): IHeaders => {
-    const date = new Date().toUTCString();
+    // const date = new Date().toISOString(); //toUTCString  / toISOString
+    const date = moment().utc().format("YYYY-MM-DD HH:mm:ss UTC")
+    console.log({date})
+    const date2 = new Date()
+    console.log({date2})
+
     const contentType = "application/json";
-    const bodyHash = body ? md5(body).toString() : "";
-    const StringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
+    const bodyHash = body ? md5(JSON.stringify(body)) + "\n" : "";
+    const StringToSign = `${method}\n${bodyHash}${contentType}\n${date}\n${path}`;
+    // console.log(StringToSign)
     const signature = base64.stringify(
+      // sha1(StringToSign,this.api_secret )
       sha1(this.api_secret, utf8.parse(StringToSign))
-    );
+    );    
+    // const signature = 'l4qayXp8dOHft2Yk//T1CH6KDGI='
+    console.log({signature})
+    // 2021-11-04 11:48:13 UTC
+
     const Authorization = `HMAC ${this.api_key}:${signature}`;
     return {
       headers: {
@@ -182,8 +200,10 @@ class CryptoPay {
 
 const test = async () => {
   const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
-  const api_key = "7AA2P-w0RxZXG-_K4cRngQ";
-  const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
+  // const api_key = "7AA2P-w0RxZXG-_K4cRngQ";
+  // const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
+  const api_key = "D-d6gn9axIWNPn5cPIukoA";
+  const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
   // const resp = await testObj.getRetes();
   // const resp = await testObj.getRetesByPair("XRP/ZAR");
@@ -192,4 +212,3 @@ const test = async () => {
 };
 
 test();
-

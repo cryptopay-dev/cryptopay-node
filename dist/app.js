@@ -22,7 +22,6 @@ const crypto_js_1 = __importDefault(require("crypto-js"));
 const moment_1 = __importDefault(require("moment"));
 const ratesSevices = __importStar(require("./services/ratesSevices"));
 const invocesService = __importStar(require("./services/invocesService"));
-const invoiceParamsToTest_1 = require("./dataToTesting/invoiceParamsToTest");
 /**
  *
  * @export
@@ -60,7 +59,7 @@ class CryptoPay {
             try {
                 const path = `/api/invoices`;
                 const headers = this.headerCreator("POST", path, invoice);
-                return yield invocesService.createInvoice(`${this.uri}${path}`, invoice, headers);
+                return yield invocesService.createInvoice(`${this.uri}${path}`, headers, invoice);
             }
             catch (err) {
                 throw err;
@@ -69,11 +68,8 @@ class CryptoPay {
         this.getListInvoces = (customer_id, starting_after) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const path = `/api/invoices`;
-                const headers = this.headerCreator("GET", path, {
-                    customer_id,
-                    starting_after,
-                });
-                return yield invocesService.getListInvoces(`${this.uri}${path}`, customer_id, starting_after, headers);
+                const headers = this.headerCreator("GET", path);
+                return yield invocesService.getListInvoces(`${this.uri}${path}`, headers, customer_id, starting_after);
             }
             catch (err) {
                 throw err;
@@ -99,11 +95,11 @@ class CryptoPay {
                 throw err;
             }
         });
-        this.getRecalculateInvoices = (invoice_id, force_commit) => __awaiter(this, void 0, void 0, function* () {
+        this.getRecalculateInvoices = (invoice_id, force_commit = true) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const path = `/api/invoices/${invoice_id}/recalculations`;
                 const headers = this.headerCreator("POST", path, { force_commit });
-                return yield invocesService.getRecalculateInvoices(`${this.uri}${path}`, { force_commit }, headers);
+                return yield invocesService.getRecalculateInvoices(`${this.uri}${path}`, headers, force_commit);
             }
             catch (err) {
                 throw err;
@@ -123,7 +119,7 @@ class CryptoPay {
             try {
                 const path = `/api/invoices/${invoice_id}/refunds`;
                 const headers = this.headerCreator("POST", path, { address });
-                return yield invocesService.createInvoiceRefund(`${this.uri}${path}`, { address }, headers);
+                return yield invocesService.createInvoiceRefund(`${this.uri}${path}`, headers, address);
             }
             catch (err) {
                 throw err;
@@ -133,6 +129,7 @@ class CryptoPay {
             try {
                 const path = `/api/invoices/${invoice_id}/refunds`;
                 const headers = this.headerCreator("GET", path);
+                return yield invocesService.getListInvoiceRefund(`${this.uri}${path}`, headers);
             }
             catch (err) {
                 throw err;
@@ -141,11 +138,10 @@ class CryptoPay {
     }
     headerCreator(method, path, body) {
         const date = moment_1.default().format("YYYY-MM-DDTHH:mm:ssZ");
-        const contentType = 'application/json';
-        const bodyHash = body ? crypto_js_1.default.MD5(JSON.stringify(body)).toString() : '';
+        const contentType = "application/json";
+        const bodyHash = body ? crypto_js_1.default.MD5(JSON.stringify(body)).toString() : "";
         const stringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
         const signature = crypto_js_1.default.enc.Base64.stringify(crypto_js_1.default.HmacSHA1(stringToSign, this.api_secret));
-        console.log(`HMAC ${this.api_key}:${signature}`);
         return {
             headers: {
                 Date: date,
@@ -162,21 +158,32 @@ const test = () => __awaiter(this, void 0, void 0, function* () {
     const api_key = "D-d6gn9axIWNPn5cPIukoA";
     const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
     const testObj = new CryptoPay(api_secret, api_key, callback_secret);
-    // const resp = await testObj.getRetes();
-    // const resp = await testObj.getRetesByPair("XRP/ZAR");
     try {
-        const resp = yield testObj.createInvoice(invoiceParamsToTest_1.invoiceParamsToTest);
+        // const resp = await testObj.getRetes(); //+
+        // const resp = await testObj.getRetesByPair("XRP/ZAR"); //+
+        // const resp = await testObj.createInvoice(invoiceParamsToTest); // +
+        // const resp = await testObj.getListInvoces(); //+
+        // const resp = await testObj.getListInvoceByInvoiceId('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085');  //+
+        // const resp = await testObj.getListInvoceByCustomId('PAYMENT-123'); //+
+        // const resp = await testObj.getRecalculateInvoices(
+        //   "4149435c-2ee7-4f2f-b906-32a1415240c9",
+        //   false
+        // ); //invoice_not_recalculatable
+        // const resp = await testObj.getRecalculateInvoicesByIds(
+        //   "", //?
+        //   "", //?
+        // ); //--
+        // const resp = await testObj.createInvoiceRefund(
+        //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085',
+        //   '2NA7eYDPh8VMGm7ZhaUkpPmWhyaq5bsjYi2'
+        // ); //'invoice status not refundable'
+        const resp = yield testObj.getListInvoiceRefund('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085' //?
+        );
         console.log("resp=======", resp);
     }
     catch (err) {
-        console.log('[err]', err);
+        console.log("[err]", err);
     }
 });
-// signRequest(pm.request, pm.variables.get('api_key'), pm.variables.get('api_secret')); 
 test();
-// curl "https://business-sandbox.cryptopay.me/api/invoices" \
-//      -H 'Authorization: HMAC D-d6gn9axIWNPn5cPIukoA:6xw9PuCoSQQj1qXUTdre+w3SDlI=' \
-//      -H 'Content-Type: application/json' \
-//      -H 'Date: 2021-11-05T14:40:13+02:00'
-//2021-11-05T14:13:29+03:00
 //# sourceMappingURL=app.js.map

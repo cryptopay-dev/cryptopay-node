@@ -1,8 +1,8 @@
 import base64 from "crypto-js/enc-base64";
 import sha1 from "crypto-js/sha1";
 import md5 from "crypto-js/md5";
-import CryptoJS from 'crypto-js'
-import moment from 'moment'
+import CryptoJS from "crypto-js";
+import moment from "moment";
 import { IHeaders } from "./interfaces/IHeaders";
 import * as ratesSevices from "./services/ratesSevices";
 import * as invocesService from "./services/invocesService";
@@ -52,8 +52,8 @@ class CryptoPay {
       const headers = this.headerCreator("POST", path, invoice);
       return await invocesService.createInvoice(
         `${this.uri}${path}`,
-        invoice,
-        headers
+        headers,
+        invoice
       );
     } catch (err) {
       throw err;
@@ -61,20 +61,17 @@ class CryptoPay {
   };
 
   public getListInvoces = async (
-    customer_id: string,
-    starting_after: string
+    customer_id?: string,
+    starting_after?: string
   ) => {
     try {
       const path = `/api/invoices`;
-      const headers = this.headerCreator("GET", path, {
-        customer_id,
-        starting_after,
-      });
+      const headers = this.headerCreator("GET", path);
       return await invocesService.getListInvoces(
         `${this.uri}${path}`,
+        headers,
         customer_id,
-        starting_after,
-        headers
+        starting_after
       );
     } catch (err) {
       throw err;
@@ -109,15 +106,15 @@ class CryptoPay {
 
   public getRecalculateInvoices = async (
     invoice_id: string,
-    force_commit: boolean
+    force_commit: boolean = true
   ) => {
     try {
       const path = `/api/invoices/${invoice_id}/recalculations`;
       const headers = this.headerCreator("POST", path, { force_commit });
       return await invocesService.getRecalculateInvoices(
         `${this.uri}${path}`,
-        { force_commit },
-        headers
+        headers,
+        force_commit
       );
     } catch (err) {
       throw err;
@@ -146,8 +143,8 @@ class CryptoPay {
       const headers = this.headerCreator("POST", path, { address });
       return await invocesService.createInvoiceRefund(
         `${this.uri}${path}`,
-        { address },
-        headers
+        headers,
+         address ,
       );
     } catch (err) {
       throw err;
@@ -158,29 +155,31 @@ class CryptoPay {
     try {
       const path = `/api/invoices/${invoice_id}/refunds`;
       const headers = this.headerCreator("GET", path);
+      return await invocesService.getListInvoiceRefund(
+        `${this.uri}${path}`,
+        headers
+      );
     } catch (err) {
       throw err;
     }
   };
 
-  private headerCreator( method: string,
-    path: string,
-    body?: any) {
-        const date = moment().format("YYYY-MM-DDTHH:mm:ssZ")
-         const contentType = 'application/json'; 
-        const bodyHash = body ? CryptoJS.MD5(JSON.stringify(body)).toString() : ''; 
-        const stringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`; 
-        const signature = CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(stringToSign, this.api_secret));
-        console.log(`HMAC ${this.api_key}:${signature}`)
-        return {
-          headers: {
-            Date: date,
-            Authorization: `HMAC ${this.api_key}:${signature}`,
-            "Content-Type": contentType,
-          },
-        };
-  
-    }
+  private headerCreator(method: string, path: string, body?: any) {
+    const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
+    const contentType = "application/json";
+    const bodyHash = body ? CryptoJS.MD5(JSON.stringify(body)).toString() : "";
+    const stringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
+    const signature = CryptoJS.enc.Base64.stringify(
+      CryptoJS.HmacSHA1(stringToSign, this.api_secret)
+    );
+    return {
+      headers: {
+        Date: date,
+        Authorization: `HMAC ${this.api_key}:${signature}`,
+        "Content-Type": contentType,
+      },
+    };
+  }
 }
 
 const test = async () => {
@@ -190,27 +189,35 @@ const test = async () => {
   const api_key = "D-d6gn9axIWNPn5cPIukoA";
   const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
-  // const resp = await testObj.getRetes();
-  // const resp = await testObj.getRetesByPair("XRP/ZAR");
-  try {
-    const resp = await testObj.createInvoice(invoiceParamsToTest);
-    console.log("resp=======", resp);
-  } catch(err) {
-    console.log('[err]', err);
-  }
 
+  try {
+    // const resp = await testObj.getRetes(); //+
+    // const resp = await testObj.getRetesByPair("XRP/ZAR"); //+
+    // const resp = await testObj.createInvoice(invoiceParamsToTest); // +
+    // const resp = await testObj.getListInvoces(); //+
+    // const resp = await testObj.getListInvoceByInvoiceId('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085');  //+
+    // const resp = await testObj.getListInvoceByCustomId('PAYMENT-123'); //+
+    // const resp = await testObj.getRecalculateInvoices(
+    //   "4149435c-2ee7-4f2f-b906-32a1415240c9",
+    //   false
+    // ); //invoice_not_recalculatable
+
+    // const resp = await testObj.getRecalculateInvoicesByIds(
+    //   "", //?
+    //   "", //?
+    // ); //--
+    // const resp = await testObj.createInvoiceRefund(
+    //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085',
+    //   '2NA7eYDPh8VMGm7ZhaUkpPmWhyaq5bsjYi2'
+    // ); //'invoice status not refundable'
+
+    const resp = await testObj.getListInvoiceRefund(
+      'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085' 
+      );  //+- data: []
+    console.log("resp=======", resp);
+  } catch (err) {
+    console.log("[err]", err);
+  }
 };
 
-
-
-// signRequest(pm.request, pm.variables.get('api_key'), pm.variables.get('api_secret')); 
-
 test();
-
-// curl "https://business-sandbox.cryptopay.me/api/invoices" \
-//      -H 'Authorization: HMAC D-d6gn9axIWNPn5cPIukoA:6xw9PuCoSQQj1qXUTdre+w3SDlI=' \
-//      -H 'Content-Type: application/json' \
-//      -H 'Date: 2021-11-05T14:40:13+02:00'
-
-
-     //2021-11-05T14:13:29+03:00

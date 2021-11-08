@@ -60,7 +60,7 @@ export const getInvoceByPathWithParams = async (
   }
 };
 
-export const getRecalculateInvoices = async (
+export const CreateRecalculateInvoices = async (
   path: string,
   headers: IHeaders,
   force_commit: boolean
@@ -71,13 +71,13 @@ export const getRecalculateInvoices = async (
   } catch (err) {
     console.log(
       "getInvoceByPathWithParamsAndBody: ",
-      ((err as AxiosError).response as AxiosResponse).data
+      ((err as AxiosError).response as AxiosResponse)
     );
     throw "getInvoceByPathWithParamsAndBody: " + err;
   }
 };
 
-export const getRecalculateInvoicesByIds = async (
+export const CommitRecalculateInvoicesByIds = async (
   path: string,
   headers: IHeaders
 ): Promise<IInvoiceRecalculationResult> => {

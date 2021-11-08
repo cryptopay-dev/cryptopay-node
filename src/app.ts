@@ -104,14 +104,14 @@ export class CryptoPay {
     }
   };
 
-  public CreateRecalculateInvoices = async (
+  public createRecalculateInvoices = async (
     invoice_id: string,
     force_commit: boolean = true
   ) => {
     try {
       const path = `/api/invoices/${invoice_id}/recalculations`;
       const headers = this.headerCreator("POST", path, { force_commit });
-      return await invocesService.CreateRecalculateInvoices(
+      return await invocesService.createRecalculateInvoices(
         `${this.uri}${path}`,
         headers,
         force_commit
@@ -121,14 +121,14 @@ export class CryptoPay {
     }
   };
 
-  public CommitRecalculateInvoicesByIds = async (
+  public commitRecalculateInvoicesByIds = async (
     invoice_id: string,
     recalculation_id: string
   ) => {
     try {
       const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
       const headers = this.headerCreator("POST", path);
-      return await invocesService.CommitRecalculateInvoicesByIds(
+      return await invocesService.commitRecalculateInvoicesByIds(
         `${this.uri}${path}`,
         headers
       );
@@ -197,7 +197,7 @@ const myTest = async () => {
     // const resp = await testObj.getListInvoces(); //+
     // const resp = await testObj.getListInvoceByInvoiceId('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085');  //+
     // const resp = await testObj.getListInvoceByCustomId('PAYMENT-123'); //+
-    const resp = await testObj.CreateRecalculateInvoices(
+    const resp = await testObj.createRecalculateInvoices(
       "4149435c-2ee7-4f2f-b906-32a1415240c9",
       true
     ); //invoice_not_recalculatable

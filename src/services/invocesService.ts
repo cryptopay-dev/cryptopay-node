@@ -60,7 +60,7 @@ export const getInvoceByPathWithParams = async (
   }
 };
 
-export const CreateRecalculateInvoices = async (
+export const createRecalculateInvoices = async (
   path: string,
   headers: IHeaders,
   force_commit: boolean
@@ -77,7 +77,7 @@ export const CreateRecalculateInvoices = async (
   }
 };
 
-export const CommitRecalculateInvoicesByIds = async (
+export const commitRecalculateInvoicesByIds = async (
   path: string,
   headers: IHeaders
 ): Promise<IInvoiceRecalculationResult> => {

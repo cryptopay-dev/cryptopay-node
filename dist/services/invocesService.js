@@ -42,7 +42,7 @@ exports.getInvoceByPathWithParams = (path, headers) => __awaiter(this, void 0, v
         throw "getInvoceByPathWithParams: " + err;
     }
 });
-exports.CreateRecalculateInvoices = (path, headers, force_commit) => __awaiter(this, void 0, void 0, function* () {
+exports.createRecalculateInvoices = (path, headers, force_commit) => __awaiter(this, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, { force_commit }, headers);
         return response.data.data;
@@ -52,7 +52,7 @@ exports.CreateRecalculateInvoices = (path, headers, force_commit) => __awaiter(t
         throw "getInvoceByPathWithParamsAndBody: " + err;
     }
 });
-exports.getRecalculateInvoicesByIds = (path, headers) => __awaiter(this, void 0, void 0, function* () {
+exports.commitRecalculateInvoicesByIds = (path, headers) => __awaiter(this, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, {
             headers,

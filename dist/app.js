@@ -95,21 +95,21 @@ class CryptoPay {
                 throw err;
             }
         });
-        this.CreateRecalculateInvoices = (invoice_id, force_commit = true) => __awaiter(this, void 0, void 0, function* () {
+        this.createRecalculateInvoices = (invoice_id, force_commit = true) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const path = `/api/invoices/${invoice_id}/recalculations`;
                 const headers = this.headerCreator("POST", path, { force_commit });
-                return yield invocesService.CreateRecalculateInvoices(`${this.uri}${path}`, headers, force_commit);
+                return yield invocesService.createRecalculateInvoices(`${this.uri}${path}`, headers, force_commit);
             }
             catch (err) {
                 throw err;
             }
         });
-        this.getRecalculateInvoicesByIds = (invoice_id, recalculation_id) => __awaiter(this, void 0, void 0, function* () {
+        this.commitRecalculateInvoicesByIds = (invoice_id, recalculation_id) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
                 const headers = this.headerCreator("POST", path);
-                return yield invocesService.getRecalculateInvoicesByIds(`${this.uri}${path}`, headers);
+                return yield invocesService.commitRecalculateInvoicesByIds(`${this.uri}${path}`, headers);
             }
             catch (err) {
                 throw err;
@@ -166,7 +166,7 @@ const myTest = () => __awaiter(this, void 0, void 0, function* () {
         // const resp = await testObj.getListInvoces(); //+
         // const resp = await testObj.getListInvoceByInvoiceId('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085');  //+
         // const resp = await testObj.getListInvoceByCustomId('PAYMENT-123'); //+
-        const resp = yield testObj.CreateRecalculateInvoices("4149435c-2ee7-4f2f-b906-32a1415240c9", true); //invoice_not_recalculatable
+        const resp = yield testObj.createRecalculateInvoices("4149435c-2ee7-4f2f-b906-32a1415240c9", true); //invoice_not_recalculatable
         // const resp = await testObj.getRecalculateInvoicesByIds(
         //   "", //?
         //   "", //?

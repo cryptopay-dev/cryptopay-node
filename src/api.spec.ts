@@ -33,7 +33,6 @@ describe("Rates", () => {
 describe("Invoice", () => {
   it("Create invoice has response", async () => {
     const resp = await cryptoPay.createInvoice(invoiceParamsToTest);
-    console.log({ resp });
     invoiceID = resp.id;
     address = resp.address;
     expect(resp).toBeTruthy();
@@ -43,6 +42,7 @@ describe("Invoice", () => {
     const resp = await cryptoPay.getListInvoces();
     expect(resp).toBeTruthy();
   });
+
   it("Get invoice by invoice id has response ", async () => {
     const resp = await cryptoPay.getInvoceByInvoiceId(invoiceID);
     expect(resp).toBeTruthy();

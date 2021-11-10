@@ -216,7 +216,7 @@ const myTest = async () => {
     //   );  //+- data: []
     // console.log("resp=======", resp);
   } catch (err) {
-    console.log("[err]", err);
+    // console.log("[err]", err);
   }
 };
 

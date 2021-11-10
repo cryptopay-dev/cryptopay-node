@@ -197,7 +197,7 @@ const myTest = () => __awaiter(void 0, void 0, void 0, function* () {
         // console.log("resp=======", resp);
     }
     catch (err) {
-        console.log("[err]", err);
+        // console.log("[err]", err);
     }
 });
 myTest();

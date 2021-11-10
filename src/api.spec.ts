@@ -1,13 +1,11 @@
 import CryptoPay from "./app";
 import { IRate } from "./interfaces/IRate";
-import { MockProxy } from "jest-mock-extended";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 import { ICustomError } from "./interfaces/ICustomError";
 const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
 const api_key = "D-d6gn9axIWNPn5cPIukoA";
 const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
 const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
-// // var assert = require('assert');
 let invoiceID = "";
 const custom_id = "PAYMENT-123"; // need to create dynamic
 let address = "";

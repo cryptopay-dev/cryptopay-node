@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getListInvoiceRefund = exports.createInvoiceRefund = exports.commitRecalculateInvoicesByIds = exports.createRecalculateInvoices = exports.getInvoceByPathWithParams = exports.getListInvoces = exports.createInvoice = void 0;
+exports.getListInvoiceRefund = exports.createInvoiceRefund = exports.commitRecalculateInvoicesByIds = exports.createRecalculateInvoices = exports.getInvoceByCustomId = exports.getListInvoces = exports.createInvoice = void 0;
 const axios_1 = __importDefault(require("axios"));
 const errorCreaterHelper_1 = require("../helpers/errorCreaterHelper");
 exports.createInvoice = (path, headers, invoice) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,7 +33,7 @@ exports.getListInvoces = (path, headers, customer_id, starting_after) => __await
         throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
-exports.getInvoceByPathWithParams = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getInvoceByCustomId = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(path, headers);
         return response.data.data;

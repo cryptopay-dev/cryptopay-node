@@ -18,7 +18,6 @@ const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
 const api_key = "D-d6gn9axIWNPn5cPIukoA";
 const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
 const cryptoPay = new app_1.default(api_secret, api_key, callback_secret);
-// // var assert = require('assert');
 let invoiceID = "";
 const custom_id = "PAYMENT-123"; // need to create dynamic
 let address = "";
@@ -65,12 +64,12 @@ describe("Invoice", () => {
         }
     }));
     it("Get list invoce by custom id has response ", () => __awaiter(void 0, void 0, void 0, function* () {
-        const resp = yield cryptoPay.getListInvoceByCustomId(custom_id);
+        const resp = yield cryptoPay.getInvoceByCustomId(custom_id);
         expect(resp).toBeTruthy();
     }));
     it("Get list invoce by custom id  with wrong param ", () => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            yield cryptoPay.getListInvoceByCustomId("wrong params");
+            yield cryptoPay.getInvoceByCustomId("wrong params");
         }
         catch (error) {
             expect(error).toBeTruthy();

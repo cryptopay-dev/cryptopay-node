@@ -82,7 +82,7 @@ export default class CryptoPay {
     try {
       const path = `/api/invoices/${invoice_id}`;
       const headers = this.headerCreator("GET", path);
-      return await invocesService.getInvoceByPathWithParams(
+      return await invocesService.getInvoceByCustomId(
         `${this.uri}${path}`,
         headers
       );
@@ -91,11 +91,11 @@ export default class CryptoPay {
     }
   };
 
-  public getListInvoceByCustomId = async (custom_id: string) => {
+  public getInvoceByCustomId = async (custom_id: string) => {
     try {
       const path = `/api/invoices/custom_id/${custom_id}`;
       const headers = this.headerCreator("GET", path);
-      return await invocesService.getInvoceByPathWithParams(
+      return await invocesService.getInvoceByCustomId(
         `${this.uri}${path}`,
         headers
       );

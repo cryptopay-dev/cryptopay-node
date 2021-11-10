@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
+import { CustomErrorCreater } from "../helpers/errorCreaterHelper";
 import { IHeaders } from "../interfaces/IHeaders";
 import { IInvoiceResult } from "../interfaces/IInvoceResult";
 import { IInvoiceListResult } from "../interfaces/IInvoiceListResult";
@@ -15,11 +16,7 @@ export const createInvoice = async (
     const response = await axios.post(path, invoice, headers);
     return response.data.data;
   } catch (err) {
-    console.log(
-      "createInvoice: ",
-      ((err as AxiosError).response as AxiosResponse).data
-    );
-    throw "createInvoice: " + err;
+      throw CustomErrorCreater(err)
   }
 };
 
@@ -36,11 +33,7 @@ export const getListInvoces = async (
     });
     return response.data.data;
   } catch (err) {
-    console.log(
-      "getListInvoces: ",
-      ((err as AxiosError).response as AxiosResponse).data
-    );
-    throw "getListInvoces: " + err;
+    throw CustomErrorCreater(err)
   }
 };
 
@@ -52,11 +45,7 @@ export const getInvoceByPathWithParams = async (
     const response = await axios.get(path, headers);
     return response.data.data;
   } catch (err) {
-    console.log(
-      "getInvoceByPathWithParams: ",
-      ((err as AxiosError).response as AxiosResponse).data
-    );
-    throw "getInvoceByPathWithParams: " + err;
+    throw CustomErrorCreater(err)
   }
 };
 
@@ -69,11 +58,7 @@ export const createRecalculateInvoices = async (
     const response = await axios.post(path, { force_commit }, headers);
     return response.data.data;
   } catch (err) {
-    console.log(
-      "getInvoceByPathWithParamsAndBody: ",
-      ((err as AxiosError).response as AxiosResponse)
-    );
-    throw "getInvoceByPathWithParamsAndBody: " + err;
+    throw CustomErrorCreater(err);
   }
 };
 
@@ -87,25 +72,20 @@ export const commitRecalculateInvoicesByIds = async (
     });
     return response.data.data;
   } catch (err) {
-    console.log(
-      "getRecalculateInvoicesByIds: ",
-      ((err as AxiosError).response as AxiosResponse).data
-    );
-    throw "getRecalculateInvoicesByIds: " + err;
+    throw CustomErrorCreater(err);
   }
 };
 
 export const createInvoiceRefund = async (
   path: string,
   headers: IHeaders,
-  address: string,
+  address: string
 ): Promise<IInvoiceRefundResult> => {
   try {
-    const response = await axios.post(path, {address} ,headers );
+    const response = await axios.post(path, { address }, headers);
     return response.data.data;
   } catch (err) {
-    console.log("createInvoiceRefund: ", ((err as AxiosError).response as AxiosResponse).data);
-    throw "createInvoiceRefund: " + err;
+    throw CustomErrorCreater(err);
   }
 };
 
@@ -119,7 +99,6 @@ export const getListInvoiceRefund = async (
     });
     return response.data;
   } catch (err) {
-    console.log("getListInvoiceRefund: ", ((err as AxiosError).response as AxiosResponse).data);
-    throw "getListInvoiceRefund: " + err;
+    throw CustomErrorCreater(err);
   }
 };

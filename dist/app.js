@@ -179,10 +179,7 @@ const myTest = () => __awaiter(void 0, void 0, void 0, function* () {
         // const resp = await testObj.getListInvoces(); //+
         // const resp = await testObj.getListInvoceByInvoiceId('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085');  //+
         // const resp = await testObj.getListInvoceByCustomId('PAYMENT-123'); //+
-        // const resp = await testObj.createRecalculateInvoices(
-        //   "28e658b5-138d-4f35-9360-8d6549d0b142",
-        //   true
-        // ); //invoice_not_recalculatable
+        const resp = yield testObj.createRecalculateInvoices("28e658b5-138d-4f35-9360-8d6549d0b142", true); //invoice_not_recalculatable
         // const resp = await testObj.getRecalculateInvoicesByIds(
         //   "", //?
         //   "", //?

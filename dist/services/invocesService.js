@@ -14,14 +14,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getListInvoiceRefund = exports.createInvoiceRefund = exports.commitRecalculateInvoicesByIds = exports.createRecalculateInvoices = exports.getInvoceByPathWithParams = exports.getListInvoces = exports.createInvoice = void 0;
 const axios_1 = __importDefault(require("axios"));
+const errorCreaterHelper_1 = require("../helpers/errorCreaterHelper");
 exports.createInvoice = (path, headers, invoice) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, invoice, headers);
         return response.data.data;
     }
     catch (err) {
-        console.log("createInvoice: ", err.response.data);
-        throw "createInvoice: " + err;
+        throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
 exports.getListInvoces = (path, headers, customer_id, starting_after) => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,8 +30,7 @@ exports.getListInvoces = (path, headers, customer_id, starting_after) => __await
         return response.data.data;
     }
     catch (err) {
-        console.log("getListInvoces: ", err.response.data);
-        throw "getListInvoces: " + err;
+        throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
 exports.getInvoceByPathWithParams = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,8 +39,7 @@ exports.getInvoceByPathWithParams = (path, headers) => __awaiter(void 0, void 0,
         return response.data.data;
     }
     catch (err) {
-        console.log("getInvoceByPathWithParams: ", err.response.data);
-        throw "getInvoceByPathWithParams: " + err;
+        throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
 exports.createRecalculateInvoices = (path, headers, force_commit) => __awaiter(void 0, void 0, void 0, function* () {
@@ -50,8 +48,7 @@ exports.createRecalculateInvoices = (path, headers, force_commit) => __awaiter(v
         return response.data.data;
     }
     catch (err) {
-        console.log("getInvoceByPathWithParamsAndBody: ", err.response);
-        throw "getInvoceByPathWithParamsAndBody: " + err;
+        throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
 exports.commitRecalculateInvoicesByIds = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
@@ -62,8 +59,7 @@ exports.commitRecalculateInvoicesByIds = (path, headers) => __awaiter(void 0, vo
         return response.data.data;
     }
     catch (err) {
-        console.log("getRecalculateInvoicesByIds: ", err.response.data);
-        throw "getRecalculateInvoicesByIds: " + err;
+        throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
 exports.createInvoiceRefund = (path, headers, address) => __awaiter(void 0, void 0, void 0, function* () {
@@ -72,8 +68,7 @@ exports.createInvoiceRefund = (path, headers, address) => __awaiter(void 0, void
         return response.data.data;
     }
     catch (err) {
-        console.log("createInvoiceRefund: ", err.response.data);
-        throw "createInvoiceRefund: " + err;
+        throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
 exports.getListInvoiceRefund = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
@@ -82,8 +77,7 @@ exports.getListInvoiceRefund = (path, headers) => __awaiter(void 0, void 0, void
         return response.data;
     }
     catch (err) {
-        console.log("getListInvoiceRefund: ", err.response.data);
-        throw "getListInvoiceRefund: " + err;
+        throw errorCreaterHelper_1.CustomErrorCreater(err);
     }
 });
 //# sourceMappingURL=invocesService.js.map

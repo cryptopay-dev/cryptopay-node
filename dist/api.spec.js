@@ -22,28 +22,64 @@ const api_key = "D-d6gn9axIWNPn5cPIukoA";
 const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
 const cryptoPay = new app_1.default(api_secret, api_key, callback_secret);
 // // var assert = require('assert');
+let invoiceID = '';
+const custom_id = 'PAYMENT-123'; // need to create dynamic
+let address = '';
+let recalculation_id = '';
 describe("Rates", () => {
-    it("Get Retes not to be null", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("Get Retes has response", () => __awaiter(void 0, void 0, void 0, function* () {
         const resp = yield cryptoPay.getRetes();
-        expect(resp).not.toBeNull();
+        expect(resp).toBeTruthy();
     }));
-    it("Get Retes By Pair not to be null", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("Get Retes By Pair has response", () => __awaiter(void 0, void 0, void 0, function* () {
         const resp = yield cryptoPay.getRetesByPair("BTC/EUR");
-        expect(resp).not.toBeNull();
+        expect(resp).toBeTruthy();
     }));
     it("Get Retes By Pair with wrong params", () => __awaiter(void 0, void 0, void 0, function* () {
-        // const resp = await cryptoPay.getRetesByPair("wrongParams");
-        // expect(resp.error.code).toBe('not_found');  /////// ((((
+        try {
+            yield cryptoPay.getRetesByPair("wrongParams");
+        }
+        catch (error) {
+            expect(error).toBeTruthy();
+        }
     }));
 });
 describe("Invoice", () => {
-    it("Create invoice not to be null", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("Create invoice has response", () => __awaiter(void 0, void 0, void 0, function* () {
         const resp = yield cryptoPay.createInvoice(invoiceParamsToTest_1.invoiceParamsToTest);
-        expect(resp).not.toBeNull();
+        console.log({ resp });
+        invoiceID = resp.id;
+        address = resp.address;
+        expect(resp).toBeTruthy();
     }));
-    it("Get list invoice not to be null", () => __awaiter(void 0, void 0, void 0, function* () {
+    it("Get list invoice has response ", () => __awaiter(void 0, void 0, void 0, function* () {
         const resp = yield cryptoPay.getListInvoces();
-        expect(resp).not.toBeNull();
+        expect(resp).toBeTruthy();
+    }));
+    it("Get invoice by invoice id has response ", () => __awaiter(void 0, void 0, void 0, function* () {
+        const resp = yield cryptoPay.getInvoceByInvoiceId(invoiceID);
+        expect(resp).toBeTruthy();
+    }));
+    it("Get list invoce by custom id has response ", () => __awaiter(void 0, void 0, void 0, function* () {
+        const resp = yield cryptoPay.getListInvoceByCustomId(custom_id);
+        expect(resp).toBeTruthy();
+    }));
+    // Temporarily not working
+    // it("Create recalculate invoices has response", async () => {
+    //   const resp = await cryptoPay.createRecalculateInvoices(invoiceID, true);
+    //   expect(resp).toBeTruthy()  
+    // });
+    // it("Create refund invoices has response", async () => {
+    //   const resp = await cryptoPay.createInvoiceRefund(invoiceID ,address);
+    //   expect(resp).toBeTruthy()  
+    // });
+    // it("Commit recalculate invoices has response", async () => {
+    //   const resp = await cryptoPay.commitRecalculateInvoicesByIds(invoiceID ,recalculation_id);
+    //   expect(resp).toBeTruthy()  
+    // });
+    it("Get list refund list has response", () => __awaiter(void 0, void 0, void 0, function* () {
+        const resp = yield cryptoPay.getListInvoiceRefund(invoiceID);
+        expect(resp).toBeTruthy();
     }));
 });
 //# sourceMappingURL=api.spec.js.map

@@ -13,6 +13,8 @@ const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
 // // var assert = require('assert');
 let invoiceID = ''
 const custom_id = 'PAYMENT-123'  // need to create dynamic
+let address =''
+let recalculation_id = ''
 describe("Rates", () => {
 
   it("Get Retes has response", async () => {
@@ -25,7 +27,7 @@ describe("Rates", () => {
   });
   it("Get Retes By Pair with wrong params", async () => {
     try {
-      const resp = await cryptoPay.getRetesByPair("wrongParams");
+      await cryptoPay.getRetesByPair("wrongParams");
     } catch (error) {
       expect(error).toBeTruthy()
     }
@@ -38,6 +40,7 @@ describe("Invoice", () => {
     const resp = await cryptoPay.createInvoice(invoiceParamsToTest);
     console.log({resp})
     invoiceID = resp.id
+    address= resp.address
     expect(resp).toBeTruthy()  
   });
   it("Get list invoice has response ", async () => {
@@ -52,10 +55,23 @@ describe("Invoice", () => {
     const resp = await cryptoPay.getListInvoceByCustomId(custom_id);
     expect(resp).toBeTruthy()  
   });
-  // tmp
-  // it("Create  recalculate invoices has response", async () => {
+
+  // Temporarily not working
+  // it("Create recalculate invoices has response", async () => {
   //   const resp = await cryptoPay.createRecalculateInvoices(invoiceID, true);
   //   expect(resp).toBeTruthy()  
   // });
-  
+  // it("Create refund invoices has response", async () => {
+  //   const resp = await cryptoPay.createInvoiceRefund(invoiceID ,address);
+  //   expect(resp).toBeTruthy()  
+  // });
+  // it("Commit recalculate invoices has response", async () => {
+  //   const resp = await cryptoPay.commitRecalculateInvoicesByIds(invoiceID ,recalculation_id);
+  //   expect(resp).toBeTruthy()  
+  // });
+
+  it("Get list refund list has response", async () => {
+    const resp = await cryptoPay.getListInvoiceRefund(invoiceID );
+    expect(resp).toBeTruthy()  
+  });
 })

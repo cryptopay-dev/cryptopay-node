@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -11,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getListInvoiceRefund = exports.createInvoiceRefund = exports.commitRecalculateInvoicesByIds = exports.createRecalculateInvoices = exports.getInvoceByPathWithParams = exports.getListInvoces = exports.createInvoice = void 0;
 const axios_1 = __importDefault(require("axios"));
-exports.createInvoice = (path, headers, invoice) => __awaiter(this, void 0, void 0, function* () {
+exports.createInvoice = (path, headers, invoice) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, invoice, headers);
         return response.data.data;
@@ -22,7 +24,7 @@ exports.createInvoice = (path, headers, invoice) => __awaiter(this, void 0, void
         throw "createInvoice: " + err;
     }
 });
-exports.getListInvoces = (path, headers, customer_id, starting_after) => __awaiter(this, void 0, void 0, function* () {
+exports.getListInvoces = (path, headers, customer_id, starting_after) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(path, Object.assign({ params: { customer_id, starting_after } }, headers));
         return response.data.data;
@@ -32,7 +34,7 @@ exports.getListInvoces = (path, headers, customer_id, starting_after) => __await
         throw "getListInvoces: " + err;
     }
 });
-exports.getInvoceByPathWithParams = (path, headers) => __awaiter(this, void 0, void 0, function* () {
+exports.getInvoceByPathWithParams = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(path, headers);
         return response.data.data;
@@ -42,7 +44,7 @@ exports.getInvoceByPathWithParams = (path, headers) => __awaiter(this, void 0, v
         throw "getInvoceByPathWithParams: " + err;
     }
 });
-exports.createRecalculateInvoices = (path, headers, force_commit) => __awaiter(this, void 0, void 0, function* () {
+exports.createRecalculateInvoices = (path, headers, force_commit) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, { force_commit }, headers);
         return response.data.data;
@@ -52,7 +54,7 @@ exports.createRecalculateInvoices = (path, headers, force_commit) => __awaiter(t
         throw "getInvoceByPathWithParamsAndBody: " + err;
     }
 });
-exports.commitRecalculateInvoicesByIds = (path, headers) => __awaiter(this, void 0, void 0, function* () {
+exports.commitRecalculateInvoicesByIds = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, {
             headers,
@@ -64,7 +66,7 @@ exports.commitRecalculateInvoicesByIds = (path, headers) => __awaiter(this, void
         throw "getRecalculateInvoicesByIds: " + err;
     }
 });
-exports.createInvoiceRefund = (path, headers, address) => __awaiter(this, void 0, void 0, function* () {
+exports.createInvoiceRefund = (path, headers, address) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.post(path, { address }, headers);
         return response.data.data;
@@ -74,7 +76,7 @@ exports.createInvoiceRefund = (path, headers, address) => __awaiter(this, void 0
         throw "createInvoiceRefund: " + err;
     }
 });
-exports.getListInvoiceRefund = (path, headers) => __awaiter(this, void 0, void 0, function* () {
+exports.getListInvoiceRefund = (path, headers) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield axios_1.default.get(path, Object.assign({}, headers));
         return response.data;

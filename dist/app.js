@@ -1,21 +1,34 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_js_1 = __importDefault(require("crypto-js"));
@@ -151,8 +164,8 @@ class CryptoPay {
         };
     }
 }
-exports.CryptoPay = CryptoPay;
-const myTest = () => __awaiter(this, void 0, void 0, function* () {
+exports.default = CryptoPay;
+const myTest = () => __awaiter(void 0, void 0, void 0, function* () {
     const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
     // const api_key = "7AA2P-w0RxZXG-_K4cRngQ";
     // const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
@@ -166,7 +179,10 @@ const myTest = () => __awaiter(this, void 0, void 0, function* () {
         // const resp = await testObj.getListInvoces(); //+
         // const resp = await testObj.getListInvoceByInvoiceId('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085');  //+
         // const resp = await testObj.getListInvoceByCustomId('PAYMENT-123'); //+
-        const resp = yield testObj.createRecalculateInvoices("4149435c-2ee7-4f2f-b906-32a1415240c9", true); //invoice_not_recalculatable
+        // const resp = await testObj.createRecalculateInvoices(
+        //   "28e658b5-138d-4f35-9360-8d6549d0b142",
+        //   true
+        // ); //invoice_not_recalculatable
         // const resp = await testObj.getRecalculateInvoicesByIds(
         //   "", //?
         //   "", //?

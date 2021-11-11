@@ -48,7 +48,7 @@ const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
 ## Examples
 
 ### Get rates 
-
+This endpoint allows you to retrieve all public rates.
 ##### Method call
 
 ```js
@@ -66,7 +66,7 @@ const resp = await cryptoPay.getRetes();
 }
 ```
 ### Get rates by pair
-
+This endpoint allows you to retrieve a public rate by currency pair.
 ##### Method call
 
 ```js

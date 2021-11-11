@@ -2,14 +2,12 @@
 
 ## Table of Contents
 
-- [Installing](#installing)
+- [Installation](#installation)
 - [Create instanse of crypto pay class](#create-instanse-of-crypto-pay-class)
-- [Examples](#examples)
+- [Usage Examples](#usage-examples)
   - [Get rates](#get-rates)
   - [Get rates by pair](#get-rates-by-pair)
-## Installing
-
-First of all you need to install all the dependency by typing this command
+## Installation
 
 Use this command install node modules:
 
@@ -45,7 +43,7 @@ const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpp";
 const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
 ```
 
-## Examples
+## Usage Examples
 
 ### Get rates 
 This endpoint allows you to retrieve all public rates.

@@ -7,7 +7,7 @@
 - [Usage Examples](#usage-examples)
   - [Get rates](#get-rates)
   - [Get rates by pair](#get-rates-by-pair)
-
+  - [Create invoice](#create-invoice)
 ## Installation
 
 Use this command install node modules:

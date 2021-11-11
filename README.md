@@ -5,7 +5,7 @@
 - [Installing](#installing)
 - [Create instanse of crypto pay class](#create-instanse-of-crypto-pay-class)
 - [Examples](#examples)
-  - [Get rates example](#get-rates-example)
+  - [Get rates](#get-rates)
   - [Get rates by pair](#get-rates-by-pair)
 ## Installing
 

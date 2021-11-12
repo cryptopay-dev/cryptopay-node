@@ -31,7 +31,7 @@ export const getListInvoces = async (
       params: { customer_id, starting_after },
       ...headers,
     });
-    return response.data.data;
+    return response.data;
   } catch (err) {
     throw CustomErrorCreater(err)
   }

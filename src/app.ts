@@ -13,9 +13,9 @@ import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 
 export default class CryptoPay {
   constructor(
-    private api_secret: any,
-    private api_key: any,
-    private callback_secret: any,
+    private api_secret: string,
+    private api_key: string,
+    private callback_secret: string,
     private url: string = "https://business-sandbox.cryptopay.me"
   ) {}
 
@@ -163,6 +163,10 @@ export default class CryptoPay {
     }
   };
 
+  private callbackVerification = (callback:string) =>{
+
+  }
+
   private headerCreator(method: string, path: string, body?: any) {
     const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
     const contentType = "application/json";
@@ -176,7 +180,8 @@ export default class CryptoPay {
         Date: date,
         Authorization: `HMAC ${this.api_key}:${signature}`,
         "Content-Type": contentType,
-        'User-Agent': `Cryptopay NodeJS v{version}`
+        'User-Agent': `Cryptopay NodeJS v{version}`,
+        "X-Cryptopay-Signature": "7c021857107203da4af1d24007bb0f752e2f04478e5e5bff83719101f2349b54"
       },
     };
   }
@@ -191,7 +196,7 @@ const myTest = async () => {
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
 
   try {
-    const resp = await testObj.getRetes(); //+
+    // const resp = await testObj.getRetes(); //+
     // const resp = await testObj.getRetesByPair("XRP/ZAR"); //+
     // const resp = await testObj.createInvoice(invoiceParamsToTest); // +
     // const resp = await testObj.getListInvoces(); //+
@@ -214,7 +219,7 @@ const myTest = async () => {
     // const resp = await testObj.getListInvoiceRefund(
     //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085' 
     //   );  //+- data: []
-    console.log('===============================================')
+    // console.log('===============================================')
     // console.log("resp== =====", resp);
 
   } catch (err) {

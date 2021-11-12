@@ -12,7 +12,7 @@ export interface IInvoiceParams {
   customer_id?: string;
   name?: string;
   description?: string;
-  metadata?: any;
+  metadata?: object;
   success_redirect_url?: string;
   unsuccess_redirect_url?: string;
 }

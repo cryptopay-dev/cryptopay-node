@@ -64,5 +64,6 @@
     "forceConsistentCasingInFileNames": true,/* Disallow inconsistently-cased references to the same file. */
     "resolveJsonModule": true,
   },
-  "lib": ["es2015"]
+  "lib": ["es2015"],
+  "compileOnSave": true
 }

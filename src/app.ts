@@ -19,9 +19,9 @@ export default class CryptoPay {
     private url: string = "https://business-sandbox.cryptopay.me"
   ) {}
 
-  public setUrl = (newUrl:string) =>{
-    this.url = newUrl
-  }
+  public setUrl = (newUrl: string) => {
+    this.url = newUrl;
+  };
   //Rates
   public getRetes = async () => {
     const path = "/api/rates";
@@ -143,7 +143,7 @@ export default class CryptoPay {
       return await invocesService.createInvoiceRefund(
         `${this.url}${path}`,
         headers,
-         address ,
+        address
       );
     } catch (err) {
       throw err;
@@ -163,9 +163,12 @@ export default class CryptoPay {
     }
   };
 
-  private callbackVerification = (callback:string) =>{
-
-  }
+  public callbackVerification = (body: string, headers: any): boolean => {
+    if (!headers["x-cryptopay-signature"]) {
+      return false;
+    }
+    return CryptoJS.HmacSHA256(body, this.callback_secret) === headers["x-cryptopay-signature"];
+  };
 
   private headerCreator(method: string, path: string, body?: any) {
     const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
@@ -180,8 +183,7 @@ export default class CryptoPay {
         Date: date,
         Authorization: `HMAC ${this.api_key}:${signature}`,
         "Content-Type": contentType,
-        'User-Agent': `Cryptopay NodeJS v{version}`,
-        "X-Cryptopay-Signature": "7c021857107203da4af1d24007bb0f752e2f04478e5e5bff83719101f2349b54"
+        "User-Agent": `Cryptopay NodeJS v{version}`,
       },
     };
   }
@@ -206,7 +208,6 @@ const myTest = async () => {
     //   "28e658b5-138d-4f35-9360-8d6549d0b142",
     //   true
     // ); //invoice_not_recalculatable
-
     // const resp = await testObj.getRecalculateInvoicesByIds(
     //   "", //?
     //   "", //?
@@ -215,13 +216,11 @@ const myTest = async () => {
     //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085',
     //   '2NA7eYDPh8VMGm7ZhaUkpPmWhyaq5bsjYi2'
     // ); //'invoice status not refundable'
-
     // const resp = await testObj.getListInvoiceRefund(
-    //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085' 
+    //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085'
     //   );  //+- data: []
     // console.log('===============================================')
     // console.log("resp== =====", resp);
-
   } catch (err) {
     // console.log("[err]", err);
   }

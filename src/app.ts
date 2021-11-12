@@ -4,7 +4,7 @@ import * as ratesSevices from "./services/ratesSevices";
 import * as invocesService from "./services/invocesService";
 import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
-import { version } from '../package.json';
+// import { version } from '../package.json';
 /**
  *
  * @export
@@ -16,15 +16,18 @@ export default class CryptoPay {
     private api_secret: any,
     private api_key: any,
     private callback_secret: any,
-    private uri: string = "https://business-sandbox.cryptopay.me"
+    private url: string = "https://business-sandbox.cryptopay.me"
   ) {}
 
+  public setUrl = (newUrl:string) =>{
+    this.url = newUrl
+  }
   //Rates
   public getRetes = async () => {
     const path = "/api/rates";
     const headers = this.headerCreator("GET", path);
     try {
-      return await ratesSevices.getRates(`${this.uri}${path}`, headers);
+      return await ratesSevices.getRates(`${this.url}${path}`, headers);
     } catch (err) {
       throw err;
     }
@@ -34,7 +37,7 @@ export default class CryptoPay {
     const path = `/api/rates/${pair}`;
     const headers = this.headerCreator("GET", path);
     try {
-      return await ratesSevices.getRetesByPair(`${this.uri}${path}`, headers);
+      return await ratesSevices.getRetesByPair(`${this.url}${path}`, headers);
     } catch (err) {
       throw err;
     }
@@ -47,7 +50,7 @@ export default class CryptoPay {
       const path = `/api/invoices`;
       const headers = this.headerCreator("POST", path, invoice);
       return await invocesService.createInvoice(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers,
         invoice
       );
@@ -64,7 +67,7 @@ export default class CryptoPay {
       const path = `/api/invoices`;
       const headers = this.headerCreator("GET", path);
       return await invocesService.getListInvoces(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers,
         customer_id,
         starting_after
@@ -79,7 +82,7 @@ export default class CryptoPay {
       const path = `/api/invoices/${invoice_id}`;
       const headers = this.headerCreator("GET", path);
       return await invocesService.getInvoceByCustomId(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers
       );
     } catch (err) {
@@ -92,7 +95,7 @@ export default class CryptoPay {
       const path = `/api/invoices/custom_id/${custom_id}`;
       const headers = this.headerCreator("GET", path);
       return await invocesService.getInvoceByCustomId(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers
       );
     } catch (err) {
@@ -108,7 +111,7 @@ export default class CryptoPay {
       const path = `/api/invoices/${invoice_id}/recalculations`;
       const headers = this.headerCreator("POST", path, { force_commit });
       return await invocesService.createRecalculateInvoices(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers,
         force_commit
       );
@@ -125,7 +128,7 @@ export default class CryptoPay {
       const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
       const headers = this.headerCreator("POST", path);
       return await invocesService.commitRecalculateInvoicesByIds(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers
       );
     } catch (err) {
@@ -138,7 +141,7 @@ export default class CryptoPay {
       const path = `/api/invoices/${invoice_id}/refunds`;
       const headers = this.headerCreator("POST", path, { address });
       return await invocesService.createInvoiceRefund(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers,
          address ,
       );
@@ -152,7 +155,7 @@ export default class CryptoPay {
       const path = `/api/invoices/${invoice_id}/refunds`;
       const headers = this.headerCreator("GET", path);
       return await invocesService.getListInvoiceRefund(
-        `${this.uri}${path}`,
+        `${this.url}${path}`,
         headers
       );
     } catch (err) {
@@ -173,7 +176,7 @@ export default class CryptoPay {
         Date: date,
         Authorization: `HMAC ${this.api_key}:${signature}`,
         "Content-Type": contentType,
-        'User-Agent': `Cryptopay NodeJS v${version}`
+        'User-Agent': `Cryptopay NodeJS v{version}`
       },
     };
   }

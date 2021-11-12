@@ -1,14 +1,10 @@
-import base64 from "crypto-js/enc-base64";
-import sha1 from "crypto-js/sha1";
-import md5 from "crypto-js/md5";
 import CryptoJS from "crypto-js";
 import moment from "moment";
-import { IHeaders } from "./interfaces/IHeaders";
 import * as ratesSevices from "./services/ratesSevices";
 import * as invocesService from "./services/invocesService";
 import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
-
+import { version } from '../package.json';
 /**
  *
  * @export
@@ -177,6 +173,7 @@ export default class CryptoPay {
         Date: date,
         Authorization: `HMAC ${this.api_key}:${signature}`,
         "Content-Type": contentType,
+        'User-Agent': `Cryptopay NodeJS v${version}`
       },
     };
   }
@@ -191,7 +188,7 @@ const myTest = async () => {
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
 
   try {
-    // const resp = await testObj.getRetes(); //+
+    const resp = await testObj.getRetes(); //+
     // const resp = await testObj.getRetesByPair("XRP/ZAR"); //+
     // const resp = await testObj.createInvoice(invoiceParamsToTest); // +
     // const resp = await testObj.getListInvoces(); //+
@@ -214,7 +211,9 @@ const myTest = async () => {
     // const resp = await testObj.getListInvoiceRefund(
     //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085' 
     //   );  //+- data: []
-    // console.log("resp=======", resp);
+    console.log('===============================================')
+    // console.log("resp== =====", resp);
+
   } catch (err) {
     // console.log("[err]", err);
   }

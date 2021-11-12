@@ -6,8 +6,9 @@
 
 export interface IHeaders {
     headers:{
-        Date: string | any,
+        Date: string,
         Authorization: string,
         "Content-Type": string,
+        'User-Agent': string
     }
 }

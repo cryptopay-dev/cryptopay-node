@@ -164,17 +164,8 @@ export default class CryptoPay {
   };
 
   public callbackVerification = (body: string, headers: any): boolean => {
-    if (!headers["x-cryptopay-signature"]) {
-      return false;
-    }
     return CryptoJS.HmacSHA256(body, this.callback_secret).toString()=== headers["x-cryptopay-signature"];
   };
-  // public callbackVerification = (body: string, signature: any): boolean => {
-  //   const sign =CryptoJS.HmacSHA256(body, this.callback_secret).toString()
-  //   console.log({sign})
-  //   return  sign=== signature;
-  // };
-
   private headerCreator(method: string, path: string, body?: any) {
     const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
     const contentType = "application/json";
@@ -195,7 +186,9 @@ export default class CryptoPay {
 }
 
 const myTest = async () => {
-  const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
+  // const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
+  const callback_secret = "hzeRDX54BYleXGwGm2YEWR4Ony1_ZU2lSTpAuxhW1gQ";
+
   // const api_key = "7AA2P-w0RxZXG-_K4cRngQ";
   // const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
   const api_key = "D-d6gn9axIWNPn5cPIukoA";
@@ -203,11 +196,12 @@ const myTest = async () => {
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
 
   try {
-  //  const body = '{"type":"Invoice","event":"status_changed","data":{"id":"ff48eeba-ab18-4088-96bc-4be10a82b994","status":"completed","status_context":null,"address":"rs9pE6CnNLE8YiTgTwbAk1AkFyS3opsm7K?dt=701","price_amount":"1.0","price_currency":"EUR","pay_amount":"3.113326","pay_currency":"XRP","paid_amount":"3.113326","exchange":{"pair":"XRPEUR","rate":"0.3212"},"transactions":[{"txid":"3EA591FED2F1F61263CB66AAC6BCF520B0714A08F2481D56DE267F31E0C782B9","risk":null}],"name":null,"description":null,"metadata":null,"custom_id":null,"success_redirect_url":null,"created_at":"2019-04-09T15:22:09+00:00","expires_at":"2019-04-09T15:32:09+00:00"}}'
-  //  const signature = '7c021857107203da4af1d24007bb0f752e2f04478e5e5bff83719101f2349b54'
-  //  const tmp = testObj.callbackVerification(body,signature)
-  //  console.log({tmp})
-    // const resp = await testObj.getRetes(); //+
+   const body = '{"type":"Invoice","event":"status_changed","data":{"id":"ff48eeba-ab18-4088-96bc-4be10a82b994","status":"completed","status_context":null,"address":"rs9pE6CnNLE8YiTgTwbAk1AkFyS3opsm7K?dt=701","price_amount":"1.0","price_currency":"EUR","pay_amount":"3.113326","pay_currency":"XRP","paid_amount":"3.113326","exchange":{"pair":"XRPEUR","rate":"0.3212"},"transactions":[{"txid":"3EA591FED2F1F61263CB66AAC6BCF520B0714A08F2481D56DE267F31E0C782B9","risk":null}],"name":null,"description":null,"metadata":null,"custom_id":null,"success_redirect_url":null,"created_at":"2019-04-09T15:22:09+00:00","expires_at":"2019-04-09T15:32:09+00:00"}}'
+   const signature = '7c021857107203da4af1d24007bb0f752e2f04478e5e5bff83719101f2349b54'
+   const headers ={"x-cryptopay-signature":signature}              
+   const tmp = testObj.callbackVerification(body, headers)
+   console.log({tmp})
+    const resp = await testObj.getRetes(); //+
     // const resp = await testObj.getRetesByPair("XRP/ZAR"); //+
     // const resp = await testObj.createInvoice(invoiceParamsToTest); // +
     // const resp = await testObj.getListInvoces(); //+
@@ -229,6 +223,8 @@ const myTest = async () => {
     //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085'
     //   );  //+- data: []
     // console.log('===============================================')
+    console.log('///////////////////////////////////////////////')
+
     // console.log("resp== =====", resp);
   } catch (err) {
     // console.log("[err]", err);

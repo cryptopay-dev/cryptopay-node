@@ -13,7 +13,7 @@ The official NODE library for Cryptopay API.
   - [Callback Verification](#callback-verification)
   - [Other methods](#other-methods)
 - [Error interface](#error-interface)
-- [Testing] (#testing)
+- [Testing](#testing)
 ### VERSIONS 
 - node v14 or higher
 - npm v8 or higher

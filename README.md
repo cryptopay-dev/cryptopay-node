@@ -1,13 +1,35 @@
 # Crypto Pay
+The official NODE library for Cryptopay API.
 
 ## Table of Contents
-
+- [Versions](#versions)
+- [Documentation](#documentation)
 - [Installation](#installation)
 - [Create instanse of crypto pay class](#create-instanse-of-crypto-pay-class)
 - [Usage Examples](#usage-examples)
   - [Get rates](#get-rates)
   - [Get rates by pair](#get-rates-by-pair)
   - [Create invoice](#create-invoice)
+  - [Callback Verification](#callback-verification)
+  - [Other methods](#other-methods)
+- [Error interface](#error-interface)
+- [Testing] (#testing)
+### VERSIONS 
+- node v14 or higher
+- npm v8 or higher
+### Documentation 
+For more details visit [CryptopayAPI](https://developers.cryptopay.me)
+
+To start using this library, register an account on
+    [Cryptopay Sandbox](https://business-sandbox.cryptopay.me/)
+    [Guide](https://developers.cryptopay.me/guides/creating-a-test-account)
+or
+    [Cryptopay Live](https://business.cryptopay.me/)
+
+You should have the following 3 parameters:
+~~~~
+ApiKey, ApiSecret, CallbackApiSecret
+~~~~
 ## Installation
 
 Use this command install node modules:
@@ -30,11 +52,6 @@ $ npm start
 
 ## Create instanse of crypto pay class
 
-To create an instance, you need:
-
-- api key
-- api secret
-- callback secret
 
 ```js
 const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTp";
@@ -42,6 +59,8 @@ const api_key = "7AA2P-w0RxZXG-_K4cRngp";
 const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpp";
 
 const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
+// set of custom url if you need. default https://business-sandbox.cryptopay.me
+cryptoPay.setUrl('https://customUrl.com/') 
 ```
 
 ## Usage Examples
@@ -222,4 +241,48 @@ const invoice = {
     "created_at": "2021-11-11T14:53:47.378Z",
     "expires_at": "2021-11-11T14:53:47.378Z"
   }
+```
+### Callback Verification
+```ts
+    // body must be json, headers its all your headers in response
+    //if the callback is valid method retrun true 
+    cryptoPay.callbackVerification(body, headers) 
+```
+### Other methods
+```ts
+    //This endpoint allows you to retrieve a list of all invoices.
+    await cryptoPay.getListInvoces();
+
+    //This endpoint allows you to retrieve the invoice details by invoice id
+    await cryptoPay.getListInvoceByInvoiceId('invoice_id'); 
+
+    // This endpoint allows you to retrieve invoice details by its custom_id.
+    await cryptoPay.getListInvoceByCustomId('custom_id');
+
+    //This endpoint allows you to recalculate invoices.
+    await cryptoPay.createRecalculateInvoices('invoice_id', true)
+
+    // This endpoint allows you to commit invoice recalculation.
+    await cryptoPay.getRecalculateInvoicesByIds('invoice_id','recalculation_id')
+
+    //This endpoint allows you to create invoice refunds.
+    await cryptoPay.createInvoiceRefund('invoice_id')
+
+    //This endpoint allows you to retrieve a list of a particular invoice refunds.
+    await cryptoPay.getListInvoiceRefund('invoice_id')
+
+```
+
+## Error interface
+```ts
+export interface ICustomError {
+    method:string,
+    httpStatus:number,
+    responseBody:object,
+}
+```
+
+## Testing
+```bash
+$ npm test
 ```

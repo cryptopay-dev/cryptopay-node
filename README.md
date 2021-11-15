@@ -47,7 +47,7 @@ $ npm start
 Use this command for testing this project:
 
 ```bash
-$ npm start
+$ npm test
 ```
 
 ## Create instanse of crypto pay class
@@ -59,7 +59,7 @@ const api_key = "7AA2P-w0RxZXG-_K4cRngp";
 const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpp";
 
 const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
-// set of custom url if you need. default https://business-sandbox.cryptopay.me
+// set custom url if you need. default https://business-sandbox.cryptopay.me
 cryptoPay.setUrl('https://customUrl.com/') 
 ```
 
@@ -244,8 +244,8 @@ const invoice = {
 ```
 ### Callback Verification
 ```ts
-    // body must be json, headers its all your headers in response
-    //if the callback is valid method retrun true 
+    // body must be json, headers are all your headers in response
+    //if the callback is valid method returns true 
     cryptoPay.callbackVerification(body, headers) 
 ```
 ### Other methods

@@ -5,6 +5,9 @@ import * as invocesService from "./services/invocesService";
 import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 import {version} from '../package.json';
+import * as openApiGeneretedCode from "../openApiGeneretedCode";
+import axios from "axios";
+import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
 /**
  *
  * @export
@@ -166,7 +169,8 @@ export default class CryptoPay {
   public callbackVerification = (body: string, headers: any): boolean => {
     return CryptoJS.HmacSHA256(body, this.callback_secret).toString()=== headers["x-cryptopay-signature"];
   };
-  private headerCreator(method: string, path: string, body?: any) {
+  public headerCreator(method: string, path: string, body?: any) {
+    console.log({method: method, path: path, body: body})
     const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
     const contentType = "application/json";
     const bodyHash = body ? CryptoJS.MD5(JSON.stringify(body)).toString() : "";
@@ -178,11 +182,13 @@ export default class CryptoPay {
       headers: {
         Date: date,
         Authorization: `HMAC ${this.api_key}:${signature}`,
+        // Authorization: 'HMAC D-d6gn9axIWNPn5cPIukoA:WPTrPd7B6lOK8kj32JnvFVpnA5M=',
         "Content-Type": contentType,
         "User-Agent": `Cryptopay NodeJS v${version}`,
       },
     };
   }
+  
 }
 
 const myTest = async () => {
@@ -203,7 +209,11 @@ const myTest = async () => {
   //  console.log({tmp})
     // const resp = await testObj.getRetes(); //+
     // const resp = await testObj.getRetesByPair("XRP/ZAR"); //+
-    // const resp = await testObj.createInvoice(invoiceParamsToTest); // +
+    // testObj.setUrl('https://business.cryptopay.me')
+
+    // const resp = await testObj.createInvoice(invoiceParamsToTest); 
+    // console.log("resp== =====", resp);
+    // +
     // const resp = await testObj.getListInvoces(); //+
     // const resp = await testObj.getListInvoceByInvoiceId('e4ae8549-5b7d-43c6-a6b9-3fe3be04e085');  //+
     // const resp = await testObj.getListInvoceByCustomId('PAYMENT-123'); //+
@@ -223,11 +233,34 @@ const myTest = async () => {
     //   'e4ae8549-5b7d-43c6-a6b9-3fe3be04e085'
     //   );  //+- data: []
     // console.log('===============================================', {version: packageJson.version})
-    console.log('///////////////////////////////////////////////', {version})
+    // console.log('///////////////////////////////////////////////', {version})
 
-    // console.log("resp== =====", resp);
+    
+    // console.log("openApiGeneretedCode== =====", openApiGeneretedCode);
+
+
+
+
+    axios.interceptors.request.use(req=>{
+      const { method ="get", data, url='/api/rates'} =req 
+      const customHeaders = testObj.headerCreator(method.toUpperCase(), '/api/invoices',JSON.parse(data))
+      // console.log({customHeaders})
+      req.headers={...req.headers,...customHeaders.headers}
+      req.url ='https://business-sandbox.cryptopay.me/api/invoices'
+      // console.log({req}) 
+      return req 
+    })
+    const InvoicesApi = new openApiGeneretedCode.InvoicesApi()
+    
+    const goodResp =  await InvoicesApi.invoicesCreate(invoiceParamsToTest)
+    console.log({goodResp})
+
+// const resp = await testObj.createInvoice(invoiceParamsToTest); 
+//     console.log("resp== =====", resp);
+
   } catch (err) {
-    // console.log("[err]", err);
+    console.log( "err====" ,CustomErrorCreater(err));
+    // console.log(err)
   }
 };
 

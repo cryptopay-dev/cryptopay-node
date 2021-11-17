@@ -5,7 +5,7 @@
  */
 
 export interface IInvoiceParams {
-  price_amount: string;
+  price_amount: number;
   price_currency: string;
   pay_currency: string;
   custom_id?: string;

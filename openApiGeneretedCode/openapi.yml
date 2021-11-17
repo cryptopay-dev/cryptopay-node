@@ -1,0 +1,969 @@
+---
+openapi: 3.0.0
+info:
+  title: Cryptopay API
+  description: >-
+    Cryptopay is a payment gateway and business wallet that allows merchants to automate the processes of accepting
+    cryptocurrency payments and payouts from their customers, as well as making currency exchange transactions and
+    receiving data on the transaction history and account balance statuses for reporting.
+  version: '0.1.0'
+servers:
+  - url: 'https://business.cryptopay.me'
+    description: production
+  - url: 'https://business-sandbox.cryptopay.me'
+    description: sandbox
+paths:
+  '/api/invoices':
+    post:
+      tags:
+        - Invoices
+      summary: Create an invoice
+      description: This endpoint allows you to create invoices.
+      operationId: invoices.create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceParams'
+      responses:
+        '201':
+          $ref: '#/components/responses/InvoiceResponse'
+      callbacks:
+        '':
+          $ref: '#/components/callbacks/Callback'
+    get:
+      tags:
+        - Invoices
+      summary: List invoices
+      description: This endpoint allows you to retrieve a list of all invoices.
+      operationId: invoices.list
+      parameters:
+        - $ref: '#/components/parameters/query_customer_id'
+        - $ref: '#/components/parameters/query_starting_after'
+      responses:
+        '200':
+          $ref: '#/components/responses/InvoiceListResponse'
+  '/api/invoices/{invoice_id}':
+    get:
+      tags:
+        - Invoices
+      summary: Retrieve an invoice
+      description: This endpoint allows you to retrieve the invoice details.
+      operationId: invoices.retrieve
+      parameters:
+        - $ref: '#/components/parameters/path_invoice_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/InvoiceResponse'
+  '/api/invoices/custom_id/{custom_id}':
+    get:
+      tags:
+        - Invoices
+      summary: Retrieve an invoice by custom_id
+      description: This endpoint allows you to retrieve invoice details by its custom_id.
+      operationId: invoices.retrieve-by-custom-id
+      parameters:
+        - $ref: '#/components/parameters/path_custom_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/InvoiceResponse'
+  '/api/invoices/{invoice_id}/recalculations':
+    post:
+      tags:
+        - Invoices
+      summary: Create invoice recalculation
+      description: This endpoint allows you to recalculate invoices.
+      operationId: invoices.create-recalculation
+      parameters:
+        - $ref: '#/components/parameters/path_invoice_id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRecalculationParams'
+      responses:
+        '201':
+          $ref: '#/components/responses/InvoiceRecalculationResponse'
+  '/api/invoices/{invoice_id}/recalculations/{recalculation_id}/commit':
+    post:
+      tags:
+        - Invoices
+      summary: Commit invoice recalculation
+      description: This endpoint allows you to commit invoice recalculation.
+      operationId: invoices.commit-recalculation
+      parameters:
+        - $ref: '#/components/parameters/path_invoice_id'
+        - $ref: '#/components/parameters/path_recalculation_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/InvoiceRecalculationResponse'
+  '/api/invoices/{invoice_id}/refunds':
+    post:
+      tags:
+        - Invoices
+      summary: Create invoice refund
+      description: This endpoint allows you to create invoice refunds.
+      operationId: invoices.create-refund
+      parameters:
+        - $ref: '#/components/parameters/path_invoice_id'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceRefundParams'
+      responses:
+        '201':
+          $ref: '#/components/responses/InvoiceRefundResponse'
+    get:
+      tags:
+        - Invoices
+      summary: List invoice refunds
+      description: This endpoint allows you to retrieve a list of a particular invoice refunds.
+      operationId: invoices.list-refunds
+      parameters:
+        - $ref: '#/components/parameters/path_invoice_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/InvoiceRefundListResponse'
+  '/api/rates':
+    get:
+      tags:
+        - Rates
+      summary: Retrieve all rates
+      description: This endpoint allows you to retrieve all public rates.
+      operationId: rates.all
+      security:
+        - {}
+        - HMAC: []
+      responses:
+        '200':
+          $ref: '#/components/responses/RatesResponse'
+  '/api/rates/{pair}':
+    get:
+      tags:
+        - Rates
+      summary: Retrieve a pair rate
+      description: This endpoint allows you to retrieve a public rate by currency pair.
+      operationId: rates.retrieve
+      parameters:
+        - $ref: '#/components/parameters/path_pair'
+      security:
+        - {}
+        - HMAC: []
+      responses:
+        '200':
+          $ref: '#/components/responses/RateResponse'
+
+components:
+  schemas:
+    InvoiceParams:
+      type: object
+      required:
+        - price_amount
+        - price_currency
+        - pay_currency
+      additionalProperties: false
+      properties:
+        price_amount:
+          type: string
+          format: number
+          description: The invoice amount
+          example: '100.0'
+        price_currency:
+          type: string
+          description: The invoice amount currency
+          example: EUR
+        pay_currency:
+          type: string
+          description: The cryptocurrency that the invoice must be paid in
+          example: BTC
+        custom_id:
+          type: string
+          description: The payment reference ID in your system
+          example: PAYMENT-123
+        customer_id:
+          type: string
+          description: The internal ID of your customer that the invoice relates to. See Customers for more information
+          example: CUSTOMER-123
+        name:
+          type: string
+          description: The invoice name
+        description:
+          type: string
+          description: The invoice description
+        metadata:
+          type: object
+          description: Custom key-valued data
+        success_redirect_url:
+          type: string
+          format: uri
+          description: The URL that the customer will be redirected to upon transaction confirmation
+        unsuccess_redirect_url:
+          type: string
+          format: uri
+    InvoiceRecalculationParams:
+      type: object
+      additionalProperties: false
+      properties:
+        force_commit:
+          type: boolean
+          example: true
+          description: Set `true` by default. Set `false` for two-step recalculation and commit it within 30 seconds
+    InvoiceRefundParams:
+      type: object
+      additionalProperties: false
+      properties:
+        address:
+          type: string
+          description:
+            External wallet address. If not specified, the refund will be performed to your cryptocurrency account
+          example: 2NA7eYDPh8VMGm7ZhaUkpPmWhyaq5bsjYi2
+    InvoiceResult:
+      type: object
+      additionalProperties: false
+      required:
+        - data
+      properties:
+        data:
+          $ref: '#/components/schemas/Invoice'
+    InvoiceListResult:
+      type: object
+      required:
+        - data
+        - meta
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Invoice'
+        meta:
+          $ref: '#/components/schemas/Pagination'
+    InvoiceRecalculationResult:
+      type: object
+      required:
+        - data
+      additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/InvoiceRecalculation'
+    InvoiceRefundResult:
+      type: object
+      required:
+        - data
+      additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/InvoiceRefund'
+    InvoiceRefundListResult:
+      type: object
+      required:
+        - data
+      additionalProperties: false
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceRefund'
+    RatesResult:
+      type: object
+      required:
+        - data
+      additionalProperties: false
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Rate'
+          example:
+            'BTC/EUR':
+              buy_rate: '39000.1'
+              sell_rate: '38000.1'
+    RateResult:
+      type: object
+      required:
+        - data
+      additionalProperties: false
+      properties:
+        data:
+          $ref: '#/components/schemas/Rate'
+    Invoice:
+      type: object
+      required:
+        - id
+        - custom_id
+        - customer_id
+        - status
+        - status_context
+        - address
+        - uri
+        - price_amount
+        - price_currency
+        - fee
+        - fee_currency
+        - pay_amount
+        - pay_currency
+        - paid_amount
+        - transactions
+        - name
+        - description
+        - metadata
+        - success_redirect_url
+        - unsuccess_redirect_url
+        - hosted_page_url
+        - created_at
+        - expires_at
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Invoice ID
+          example: 124f005d-af2f-4259-bcc3-75ddba502d84
+        custom_id:
+          type: string
+          nullable: true
+          description: Invoice reference ID in your system
+          example: PAYMENT-123
+        customer_id:
+          type: string
+          nullable: true
+          description: The internal ID of your customer that the invoice relates to
+          example: CUSTOMER-123
+        status:
+          $ref: '#/components/schemas/InvoiceStatus'
+        status_context:
+          $ref: '#/components/schemas/InvoiceStatusContext'
+        address:
+          type: string
+          description: Invoice cryptocurrency address
+          example: 2Mw43DEwwxK2PHPFb3dh5jd22kE78ryppLP
+        uri:
+          type: string
+          description: Invoice URI. May be used for generating a QR code
+          example: bitcoin:2Mw43DEwwxK2PHPFb3dh5jd22kE78ryppLP?amount=0.002519
+        price_amount:
+          type: string
+          format: number
+          description: Invoice amount
+          example: '100.0'
+        price_currency:
+          type: string
+          description: Invoice amount currency
+          example: 'EUR'
+        fee:
+          type: string
+          format: number
+          description: Processing fee
+          example: '1.0'
+        fee_currency:
+          type: string
+          description: Processing fee currency
+          example: 'EUR'
+        pay_amount:
+          type: string
+          format: number
+          description: Cryptocurrency amount to pay
+          example: '0.002519'
+        pay_currency:
+          type: string
+          description: Cryptocurrency type
+          example: 'BTC'
+        paid_amount:
+          type: string
+          format: number
+          description: which amount already paid
+          example: '0.0'
+        exchange:
+          $ref: '#/components/schemas/Exchange'
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceTransaction'
+        name:
+          type: string
+          nullable: true
+          description: Invoice name
+        description:
+          type: string
+          nullable: true
+          description: Invoice description
+        metadata:
+          type: object
+          nullable: true
+          description: Key-value data
+        success_redirect_url:
+          type: string
+          format: uri
+          nullable: true
+          description: URL that a customer will be redirected to upon transaction confirmation
+        unsuccess_redirect_url:
+          type: string
+          nullable: true
+          format: uri
+        hosted_page_url:
+          type: string
+          format: uri
+          description: Invoice hosted page that renders invoice details
+        created_at:
+          type: string
+          format: date-time
+          description: Invoice creation date and time
+        expires_at:
+          type: string
+          format: date-time
+          description: Invoice expiration date and time
+    InvoiceRecalculation:
+      type: object
+      required:
+        - id
+        - invoice_id
+        - pay_amount
+        - pay_currency
+        - price_amount
+        - price_currency
+        - fee
+        - fee_currency
+        - previous_pay_amount
+        - previous_price_amount
+        - previous_exchange_rate
+        - created_at
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Recalculation ID
+          example: 01825c74-e2cf-4449-9f54-b0ec091c9efc
+        invoice_id:
+          type: string
+          format: uuid
+          description: Invoice ID
+          example: 124f005d-af2f-4259-bcc3-75ddba502d84
+        pay_amount:
+          type: string
+          format: number
+          description: Cryptocurrency amount received
+          example: '0.0012595'
+        pay_currency:
+          type: string
+          description: Cryptocurrency type
+          example: 'BTC'
+        price_amount:
+          type: string
+          format: number
+          description: New invoice amount
+          example: '50'
+        price_currency:
+          type: string
+          description: Invoice amount currency
+          example: 'EUR'
+        fee:
+          type: string
+          description: Processing fee
+          example: '0.5'
+        fee_currency:
+          type: string
+          description: Processing fee currency
+          example: 'EUR'
+        previous_pay_amount:
+          type: string
+          format: number
+          description: Previous amount to pay
+          example: '0.002519'
+        previous_price_amount:
+          type: string
+          format: number
+          description: Previous invoice amount
+          example: '100.0'
+        previous_exchange_rate:
+          type: string
+          format: number
+          nullable: true
+          description: Previous exchange rate
+          example: '39711.9618'
+        exchange:
+          $ref: '#/components/schemas/Exchange'
+        created_at:
+          type: string
+          format: date-time
+          description: Recalculation creation date and time
+    InvoiceRefund:
+      type: object
+      required:
+        - id
+        - invoice_id
+        - custom_id
+        - amount
+        - amount_currency
+        - fee
+        - fee_currency
+        - address
+        - txid
+        - created_at
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Refund ID
+          example: ac3747ae-492a-43cf-a7c3-757873512a8b
+        invoice_id:
+          type: string
+          format: uuid
+          description: Invoice ID
+          example: 124f005d-af2f-4259-bcc3-75ddba502d84
+        custom_id:
+          type: string
+          description: Refund `custom_id`. The value is being inherited from the parent invoice
+          example: PAYMENT-123
+        amount:
+          type: string
+          format: number
+          description: Refund amount
+          example: '0.0012595'
+        amount_currency:
+          type: string
+          description: Refund currency
+          example: 'BTC'
+        fee:
+          type: string
+          format: number
+          description: Processing fee
+          example: '0.0001'
+        fee_currency:
+          type: string
+          description: Processing fee currency
+          example: 'BTC'
+        address:
+          type: string
+          nullable: true
+          description: Cryptocurrency address the refund transaction sent to
+          example: 2NA7eYDPh8VMGm7ZhaUkpPmWhyaq5bsjYi2
+        txid:
+          type: string
+          nullable: true
+          description: Cryptocurrency transaction ID on the blockchain
+          example: 2430d3e686a182bed93023a4eca21ede39b40f9b6f3193ed6019c962dd88ce30
+        risk:
+          $ref: '#/components/schemas/Risk'
+        created_at:
+          type: string
+          format: date-time
+          description: Refund transaction creation date and time
+    Exchange:
+      type: object
+      description: Exchange details
+      required:
+        - pair
+        - rate
+        - fee
+        - fee_currency
+      additionalProperties: false
+      properties:
+        pair:
+          type: string
+          description: Currency pair
+          example: 'BTCEUR'
+        rate:
+          type: string
+          format: number
+          description: Exchange rate
+          example: '39711.9618'
+        fee:
+          type: string
+          format: number
+          description: Exchange fee
+          example: '0.0'
+        fee_currency:
+          type: string
+          description: Exchange fee currency
+          example: 'EUR'
+    Risk:
+      type: object
+      description: Transaction risk level details
+      required:
+        - score
+        - level
+        - resource_name
+        - resource_category
+      additionalProperties: false
+      properties:
+        score:
+          type: number
+          description: Transaction risk score
+          example: 0.0
+        level:
+          type: string
+          enum:
+            - low
+            - medium
+            - high
+          description: Transaction risk level depending on the `score` value
+          example: low
+        resource_name:
+          type: string
+          description: A resource name the transaction has been received from
+          example: Bitstamp
+        resource_category:
+          type: string
+          description: A resource category the transaction has been received from
+          example: Exchange
+    InvoiceTransaction:
+      type: object
+      description: Cryptocurrency transaction hash and its risk level details
+      required:
+        - txid
+      additionalProperties: false
+      properties:
+        txid:
+          type: string
+          description: Transaction hash
+          example: 2430d3e686a182bed93023a4eca21ede39b40f9b6f3193ed6019c962dd88ce30
+        risk:
+          $ref: '#/components/schemas/Risk'
+    CoinWithdrawal:
+      type: object
+      required:
+        - id
+        - address
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        address:
+          type: string
+    ChannelPayment:
+      type: object
+      required:
+        - id
+        - channel_id
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        channel_id:
+          type: string
+          format: uuid
+    Rate:
+      type: object
+      required:
+        - buy_rate
+        - sell_rate
+      additionalProperties: false
+      properties:
+        buy_rate:
+          type: string
+          format: number
+          description: Buy rate
+          example: '39000.1'
+        sell_rate:
+          type: string
+          format: number
+          description: Buy rate
+          example: '38000.1'
+    Pagination:
+      type: object
+      required:
+        - total
+        - has_more
+      additionalProperties: false
+      properties:
+        total:
+          type: number
+        has_more:
+          type: boolean
+    Callback:
+      oneOf:
+        - $ref: '#/components/schemas/InvoiceCallback'
+        - $ref: '#/components/schemas/CoinWithdrawalCallback'
+        - $ref: '#/components/schemas/ChannelPaymentCallback'
+      discriminator:
+        propertyName: type
+        mapping:
+          Invoice: '#/components/schemas/InvoiceCallback'
+          CoinWithdrawal: '#/components/schemas/CoinWithdrawalCallback'
+          ChannelPayment: '#/components/schemas/ChannelPaymentCallback'
+    InvoiceCallback:
+      type: object
+      required:
+        - type
+        - event
+        - data
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - Invoice
+        event:
+          $ref: '#/components/schemas/InvoiceCallbackEvent'
+        data:
+          $ref: '#/components/schemas/Invoice'
+    CoinWithdrawalCallback:
+      type: object
+      required:
+        - type
+        - event
+        - data
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - CoinWithdrawal
+        event:
+          $ref: '#/components/schemas/CoinWithdrawalCallbackEvent'
+        data:
+          $ref: '#/components/schemas/CoinWithdrawal'
+    ChannelPaymentCallback:
+      type: object
+      required:
+        - type
+        - event
+        - data
+      additionalProperties: false
+      properties:
+        type:
+          type: string
+          enum:
+            - ChannelPayment
+        event:
+          $ref: '#/components/schemas/ChannelPaymentCallbackEvent'
+        data:
+          $ref: '#/components/schemas/ChannelPayment'
+    InvoiceStatus:
+      type: string
+      enum:
+        - new
+        - completed
+        - unresolved
+        - refunded
+        - cancelled
+      description: Invoice status
+      example: new
+    InvoiceStatusContext:
+      type: string
+      nullable: true
+      enum:
+        - overpaid
+        - underpaid
+        - paid_late
+        - illicit_resource
+      description: Invoice status context
+      example: null
+    InvoiceCallbackEvent:
+      type: string
+      enum:
+        - created
+        - refunded
+        - recalculated
+        - status_changed
+        - transaction_created
+        - transaction_confirmed
+    CoinWithdrawalCallbackEvent:
+      type: string
+      enum:
+        - created
+        - status_changed
+    ChannelPaymentCallbackEvent:
+      type: string
+      enum:
+        - created
+        - on_hold
+        - completed
+        - refunded
+        - cancelled
+
+  parameters:
+    path_invoice_id:
+      name: invoice_id
+      description: Invoice ID
+      required: true
+      in: path
+      example: 124f005d-af2f-4259-bcc3-75ddba502d84
+      schema:
+        type: string
+        format: uuid
+    path_recalculation_id:
+      name: recalculation_id
+      description: Recalculation ID
+      required: true
+      in: path
+      example: 01825c74-e2cf-4449-9f54-b0ec091c9efc
+      schema:
+        type: string
+        format: uuid
+    path_custom_id:
+      name: custom_id
+      required: true
+      in: path
+      example: PAYMENT-123
+      schema:
+        type: string
+    path_pair:
+      name: pair
+      description: Currency pair
+      required: true
+      in: path
+      example: BTC/EUR
+      schema:
+        type: string
+    query_customer_id:
+      name: customer_id
+      description: The internal ID of your customer that the invoice relates to. See Customers for more information
+      required: false
+      in: query
+      schema:
+        type: string
+      example: CUSTOMER-123
+    query_starting_after:
+      name: starting_after
+      description: Pagination parameter. ID to start after
+      required: false
+      in: query
+      schema:
+        type: string
+      example: 124f005d-af2f-4259-bcc3-75ddba502d84
+
+  responses:
+    InvoiceResponse:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceResult'
+    InvoiceListResponse:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceListResult'
+    InvoiceRecalculationResponse:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceRecalculationResult'
+    InvoiceRefundResponse:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceRefundResult'
+    InvoiceRefundListResponse:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvoiceRefundListResult'
+    RatesResponse:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RatesResult'
+    RateResponse:
+      description: ''
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RateResult'
+
+  callbacks:
+    Callback:
+      'https://your-server.com/callback-handler':
+        post:
+          parameters:
+            - name: X-Cryptopay-Signature
+              in: header
+              required: true
+              schema:
+                type: string
+              description: >-
+                This header contains the hex encoded SHA256 HMAC signature of
+                the callback request body string, computed using your callback
+                Secret as the key.
+          requestBody:
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Callback'
+          responses:
+            '200':
+              description: Cryptopay IPN server expects to get a 200 status code
+
+  securitySchemes:
+    HMAC:
+      type: http
+      scheme: HMAC
+      description: |-
+        API authentication is performed using the HMAC request signature sent in the Authorization header.
+        ```
+        curl -X POST \
+          https://business-sandbox.cryptopay.me/api/invoices \
+          -H 'Authorization: HMAC DjlHuWlApznJ7vrhPBL0fA:N2eEvkJQ07EpFau90pL5xMpBO3g=' \
+          -H 'Content-Type: application/json' \
+          -H 'Date: Tue, 25 Sep 2018 17:41:40 GMT' \
+          -d '{"price_amount":"100","price_currency":"EUR","pay_currency":"BTC"}'
+        ```
+        The Signature is the RFC 2104 HMAC-SHA1, of selected elements from the request, and so the Signature part of the
+        Authorization header will vary from request to request.
+        <table>
+          <thead>
+            <tr>
+              <th>Component
+              <th>Description
+          </thead>
+          <tr>
+            <td>HTTP method
+            <td><code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>
+          <tr>
+            <td>MD5 hash sum of the string with JSON-serialized parameters
+            <td>If there are no parameters in the request body (e.g.  GET), you then need to place just an empty string
+              "" as there is nothing to hash. <b>Do not hash an empty string</b>.
+          <tr>
+            <td>Content-Type
+            <td><code>application/json</code>
+          <tr>
+            <td>Date
+            <td>HTTP-date format e.g. <code>Tue, 15 Nov 1994 08:12:31 GMT</code>. The time offset is 10 minutes. <b>Make
+            sure that the date used for signature is the same you put in the Date header</b>.
+          <tr>
+            <td>Request URI
+            <td>Everything that is after the base URL e.g. <code>/api/invoices</code>
+        </table>
+
+        Here is a piece of pseudo-code that demonstrates the Authorization header construction. `\n` means the Unicode
+        code point `U+000A`, commonly called a newline:
+        ```
+        StringToSign = HTTP-Verb + “\n” +
+           Content-MD5 + “\n” +
+           Content-Type + “\n” +
+           Date + “\n” +
+           Path
+
+        Signature = Base64( HMAC-SHA1( Api.secret, UTF-8-Encoding-Of( StringToSign ) ) );
+
+        Authorization = "HMAC " + Api.key + “:” + Signature;
+        ```
+
+security:
+  - HMAC: []
+
+tags:
+  - name: Rates
+  - name: Invoices
+    description: >-
+      An invoice is a request for a cryptocurrency payment which contains a
+      unique BTC, LTC, ETH or XRP address and the amount that has to be paid
+      while the invoice is valid.
+
+externalDocs:
+  url: https://developers.cryptopay.me/
+  description: Find more info here

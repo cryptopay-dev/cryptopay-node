@@ -4,7 +4,7 @@ import * as ratesSevices from "./services/ratesSevices";
 import * as invocesService from "./services/invocesService";
 import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
-import {version} from '../package.json';
+import { version } from "../package.json";
 import * as openApiGeneretedCode from "../openApiGeneretedCode";
 import axios from "axios";
 import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
@@ -14,16 +14,39 @@ import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
  * @class CryptoPay
  */
 
-export default class CryptoPay {
+
+export default class CryptoPay {    
+  private InvoicesApi:any
   constructor(
     private api_secret: string,
     private api_key: string,
     private callback_secret: string,
-    private url: string = "https://business-sandbox.cryptopay.me"
-  ) {}
+    private url: string = "https://business-sandbox.cryptopay.me",
+  ) {
+    axios.interceptors.request.use((req) => {
+      const { method = "get", data } = req;
+      const url = req.url?.replace(this.url, "") + "";
+      const customHeaders = this.headerCreator(
+        method.toUpperCase(),
+        url,
+        JSON.parse(data)
+      );
+      req.headers = { ...req.headers, ...customHeaders.headers };
+      // console.log({ req });
+      return req;
+    });
+    this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
+      undefined,
+      this.url,
+      axios
+    );
+  }
 
   public setUrl = (newUrl: string) => {
     this.url = newUrl;
+  };
+  public getUrl = () => {
+    return this.url;
   };
   //Rates
   public getRetes = async () => {
@@ -48,6 +71,16 @@ export default class CryptoPay {
 
   // Invoices
 
+  public createInvoiceTwo = async (invoice: IInvoiceParams) => {
+    try {
+      
+      const goodResp = await this.InvoicesApi.invoicesCreate(invoice);
+      return goodResp
+    } catch (err) {
+      throw err;
+    }
+
+  }
   public createInvoice = async (invoice: IInvoiceParams) => {
     try {
       const path = `/api/invoices`;
@@ -167,10 +200,12 @@ export default class CryptoPay {
   };
 
   public callbackVerification = (body: string, headers: any): boolean => {
-    return CryptoJS.HmacSHA256(body, this.callback_secret).toString()=== headers["x-cryptopay-signature"];
+    return (
+      CryptoJS.HmacSHA256(body, this.callback_secret).toString() ===
+      headers["x-cryptopay-signature"]
+    );
   };
   public headerCreator(method: string, path: string, body?: any) {
-    console.log({method: method, path: path, body: body})
     const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
     const contentType = "application/json";
     const bodyHash = body ? CryptoJS.MD5(JSON.stringify(body)).toString() : "";
@@ -188,7 +223,6 @@ export default class CryptoPay {
       },
     };
   }
-  
 }
 
 const myTest = async () => {
@@ -202,16 +236,18 @@ const myTest = async () => {
   const testObj = new CryptoPay(api_secret, api_key, callback_secret);
 
   try {
-   const body = '{"type":"Invoice","event":"status_changed","data":{"id":"ff48eeba-ab18-4088-96bc-4be10a82b994","status":"completed","status_context":null,"address":"rs9pE6CnNLE8YiTgTwbAk1AkFyS3opsm7K?dt=701","price_amount":"1.0","price_currency":"EUR","pay_amount":"3.113326","pay_currency":"XRP","paid_amount":"3.113326","exchange":{"pair":"XRPEUR","rate":"0.3212"},"transactions":[{"txid":"3EA591FED2F1F61263CB66AAC6BCF520B0714A08F2481D56DE267F31E0C782B9","risk":null}],"name":null,"description":null,"metadata":null,"custom_id":null,"success_redirect_url":null,"created_at":"2019-04-09T15:22:09+00:00","expires_at":"2019-04-09T15:32:09+00:00"}}'
-   const signature = '7c021857107203da4af1d24007bb0f752e2f04478e5e5bff83719101f2349b54'
-   const headers ={"x-cryptopay-signature":signature}              
-  //  const tmp = testObj.callbackVerification(body, headers)
-  //  console.log({tmp})
+    const body =
+      '{"type":"Invoice","event":"status_changed","data":{"id":"ff48eeba-ab18-4088-96bc-4be10a82b994","status":"completed","status_context":null,"address":"rs9pE6CnNLE8YiTgTwbAk1AkFyS3opsm7K?dt=701","price_amount":"1.0","price_currency":"EUR","pay_amount":"3.113326","pay_currency":"XRP","paid_amount":"3.113326","exchange":{"pair":"XRPEUR","rate":"0.3212"},"transactions":[{"txid":"3EA591FED2F1F61263CB66AAC6BCF520B0714A08F2481D56DE267F31E0C782B9","risk":null}],"name":null,"description":null,"metadata":null,"custom_id":null,"success_redirect_url":null,"created_at":"2019-04-09T15:22:09+00:00","expires_at":"2019-04-09T15:32:09+00:00"}}';
+    const signature =
+      "7c021857107203da4af1d24007bb0f752e2f04478e5e5bff83719101f2349b54";
+    const headers = { "x-cryptopay-signature": signature };
+    //  const tmp = testObj.callbackVerification(body, headers)
+    //  console.log({tmp})
     // const resp = await testObj.getRetes(); //+
     // const resp = await testObj.getRetesByPair("XRP/ZAR"); //+
     // testObj.setUrl('https://business.cryptopay.me')
 
-    // const resp = await testObj.createInvoice(invoiceParamsToTest); 
+    // const resp = await testObj.createInvoice(invoiceParamsToTest);
     // console.log("resp== =====", resp);
     // +
     // const resp = await testObj.getListInvoces(); //+
@@ -235,32 +271,34 @@ const myTest = async () => {
     // console.log('===============================================', {version: packageJson.version})
     // console.log('///////////////////////////////////////////////', {version})
 
-    
     // console.log("openApiGeneretedCode== =====", openApiGeneretedCode);
 
-
-
-
-    axios.interceptors.request.use(req=>{
-      const { method ="get", data, url='/api/rates'} =req 
-      const customHeaders = testObj.headerCreator(method.toUpperCase(), '/api/invoices',JSON.parse(data))
-      // console.log({customHeaders})
-      req.headers={...req.headers,...customHeaders.headers}
-      req.url ='https://business-sandbox.cryptopay.me/api/invoices'
-      // console.log({req}) 
-      return req 
-    })
-    const InvoicesApi = new openApiGeneretedCode.InvoicesApi()
-    
-    const goodResp =  await InvoicesApi.invoicesCreate(invoiceParamsToTest)
+    // axios.interceptors.request.use((req) => {
+    //   const { method = "get", data } = req;
+    //   const url = req.url?.replace(testObj.getUrl(), "") + "";
+    //   const customHeaders = testObj.headerCreator(
+    //     method.toUpperCase(),
+    //     url,
+    //     JSON.parse(data)
+    //   );
+    //   req.headers = { ...req.headers, ...customHeaders.headers };
+    //   // console.log({ req });
+    //   return req;
+    // });
+    // const InvoicesApi = new openApiGeneretedCode.InvoicesApi()
+    // const InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
+    //   undefined,
+    //   testObj.getUrl(),
+    //   axios
+    // );
+    // InvoicesApi.
+    // const configuraror = InvoicesApi.BaseApi
+    // configuraror.basePath = 'testtest'
+    const goodResp = await testObj.createInvoiceTwo(invoiceParamsToTest);
     console.log({goodResp})
-
-// const resp = await testObj.createInvoice(invoiceParamsToTest); 
-//     console.log("resp== =====", resp);
-
   } catch (err) {
-    console.log( "err====" ,CustomErrorCreater(err));
-    // console.log(err)
+    // console.log( "err====" ,CustomErrorCreater(err));
+    console.log(err)
   }
 };
 

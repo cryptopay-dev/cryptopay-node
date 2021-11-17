@@ -32,7 +32,6 @@ export default class CryptoPay {
         JSON.parse(data)
       );
       req.headers = { ...req.headers, ...customHeaders.headers };
-      // console.log({ req });
       return req;
     });
     this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
@@ -81,6 +80,11 @@ export default class CryptoPay {
     }
 
   }
+
+  public invoicesApi =()=>{
+    return this.InvoicesApi
+  }
+
   public createInvoice = async (invoice: IInvoiceParams) => {
     try {
       const path = `/api/invoices`;
@@ -217,7 +221,6 @@ export default class CryptoPay {
       headers: {
         Date: date,
         Authorization: `HMAC ${this.api_key}:${signature}`,
-        // Authorization: 'HMAC D-d6gn9axIWNPn5cPIukoA:WPTrPd7B6lOK8kj32JnvFVpnA5M=',
         "Content-Type": contentType,
         "User-Agent": `Cryptopay NodeJS v${version}`,
       },
@@ -294,11 +297,11 @@ const myTest = async () => {
     // InvoicesApi.
     // const configuraror = InvoicesApi.BaseApi
     // configuraror.basePath = 'testtest'
-    const goodResp = await testObj.createInvoiceTwo(invoiceParamsToTest);
+    // const goodResp = await testObj.createInvoiceTwo(invoiceParamsToTest);
+    const goodResp = await testObj.invoicesApi().invoicesCreate(invoiceParamsToTest)
     console.log({goodResp})
   } catch (err) {
-    // console.log( "err====" ,CustomErrorCreater(err));
-    console.log(err)
+    console.log(CustomErrorCreater(err))
   }
 };
 

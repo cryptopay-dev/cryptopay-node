@@ -14,27 +14,38 @@ import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
  * @class CryptoPay
  */
 
-
-export default class CryptoPay {    
-  private InvoicesApi:any
+export default class CryptoPay {
+  private InvoicesApi: any;
+  private RatesApi: any;
   constructor(
     private api_secret: string,
     private api_key: string,
     private callback_secret: string,
-    private url: string = "https://business-sandbox.cryptopay.me",
+    private url: string = "https://business-sandbox.cryptopay.me"
   ) {
+    // request interceptor
     axios.interceptors.request.use((req) => {
-      const { method = "get", data } = req;
+      const { method = "get", data='' } = req;
+
       const url = req.url?.replace(this.url, "") + "";
       const customHeaders = this.headerCreator(
         method.toUpperCase(),
         url,
-        JSON.parse(data)
+        data
       );
       req.headers = { ...req.headers, ...customHeaders.headers };
       return req;
     });
+     // response interceptor
+     axios.interceptors.response.use((res) => {
+      return res?.data?.data
+    });
     this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
+      undefined,
+      this.url,
+      axios
+    );
+    this.RatesApi = openApiGeneretedCode.RatesApiFactory(
       undefined,
       this.url,
       axios
@@ -72,18 +83,19 @@ export default class CryptoPay {
 
   public createInvoiceTwo = async (invoice: IInvoiceParams) => {
     try {
-      
       const goodResp = await this.InvoicesApi.invoicesCreate(invoice);
-      return goodResp
+      return goodResp;
     } catch (err) {
       throw err;
     }
+  };
 
-  }
-
-  public invoicesApi =()=>{
-    return this.InvoicesApi
-  }
+  public invoicesApi = () => {
+    return this.InvoicesApi;
+  };
+  public ratesApi = () => {
+    return this.RatesApi;
+  };
 
   public createInvoice = async (invoice: IInvoiceParams) => {
     try {
@@ -209,10 +221,10 @@ export default class CryptoPay {
       headers["x-cryptopay-signature"]
     );
   };
-  public headerCreator(method: string, path: string, body?: any) {
+  private headerCreator(method: string, path: string, body?: any) {
     const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
     const contentType = "application/json";
-    const bodyHash = body ? CryptoJS.MD5(JSON.stringify(body)).toString() : "";
+    const bodyHash = body ? CryptoJS.MD5(body).toString() : "";
     const stringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
     const signature = CryptoJS.enc.Base64.stringify(
       CryptoJS.HmacSHA1(stringToSign, this.api_secret)
@@ -298,10 +310,15 @@ const myTest = async () => {
     // const configuraror = InvoicesApi.BaseApi
     // configuraror.basePath = 'testtest'
     // const goodResp = await testObj.createInvoiceTwo(invoiceParamsToTest);
-    const goodResp = await testObj.invoicesApi().invoicesCreate(invoiceParamsToTest)
+    const goodResp = await testObj
+      .invoicesApi()
+      .invoicesCreate(invoiceParamsToTest);
+    
+    // const goodResp = await testObj.ratesApi().ratesAll()
     console.log({goodResp})
   } catch (err) {
-    console.log(CustomErrorCreater(err))
+    // console.log(CustomErrorCreater(err));
+    console.log(err)
   }
 };
 

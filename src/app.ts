@@ -8,6 +8,8 @@ import { version } from "../package.json";
 import * as openApiGeneretedCode from "../openApiGeneretedCode";
 import axios from "axios";
 import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
+const fs = require("fs"); //tmp
+
 /**
  *
  * @export
@@ -25,21 +27,18 @@ export default class CryptoPay {
   ) {
     // request interceptor
     axios.interceptors.request.use((req) => {
-      const { method = "get", data='' } = req;
-
-      const url = req.url?.replace(this.url, "") + "";
-      const customHeaders = this.headerCreator(
-        method.toUpperCase(),
-        url,
-        data
-      );
+      const { method = "get", data = undefined } = req;
+      let url = req.url?.replace(this.url, "").replace('%2F','/') + "";
+      const customHeaders = this.headerCreator(method.toUpperCase(), url, data);
       req.headers = { ...req.headers, ...customHeaders.headers };
+      req.url= req.url?.replace('%2F','/')
       return req;
     });
-     // response interceptor
-     axios.interceptors.response.use((res) => {
-      return res?.data?.data
+    // response interceptor
+    axios.interceptors.response.use((res) => {
+      return res?.data
     });
+
     this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
       undefined,
       this.url,
@@ -59,15 +58,15 @@ export default class CryptoPay {
     return this.url;
   };
   //Rates
-  public getRetes = async () => {
-    const path = "/api/rates";
-    const headers = this.headerCreator("GET", path);
-    try {
-      return await ratesSevices.getRates(`${this.url}${path}`, headers);
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public getRetes = async () => {
+  //   const path = "/api/rates";
+  //   const headers = this.headerCreator("GET", path);
+  //   try {
+  //     return await ratesSevices.getRates(`${this.url}${path}`, headers);
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
   public getRetesByPair = async (pair: string) => {
     const path = `/api/rates/${pair}`;
@@ -97,123 +96,123 @@ export default class CryptoPay {
     return this.RatesApi;
   };
 
-  public createInvoice = async (invoice: IInvoiceParams) => {
-    try {
-      const path = `/api/invoices`;
-      const headers = this.headerCreator("POST", path, invoice);
-      return await invocesService.createInvoice(
-        `${this.url}${path}`,
-        headers,
-        invoice
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public createInvoice = async (invoice: IInvoiceParams) => {
+  //   try {
+  //     const path = `/api/invoices`;
+  //     const headers = this.headerCreator("POST", path, invoice);
+  //     return await invocesService.createInvoice(
+  //       `${this.url}${path}`,
+  //       headers,
+  //       invoice
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  public getListInvoces = async (
-    customer_id?: string,
-    starting_after?: string
-  ) => {
-    try {
-      const path = `/api/invoices`;
-      const headers = this.headerCreator("GET", path);
-      return await invocesService.getListInvoces(
-        `${this.url}${path}`,
-        headers,
-        customer_id,
-        starting_after
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public getListInvoces = async (
+  //   customer_id?: string,
+  //   starting_after?: string
+  // ) => {
+  //   try {
+  //     const path = `/api/invoices`;
+  //     const headers = this.headerCreator("GET", path);
+  //     return await invocesService.getListInvoces(
+  //       `${this.url}${path}`,
+  //       headers,
+  //       customer_id,
+  //       starting_after
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  public getInvoceByInvoiceId = async (invoice_id: string) => {
-    try {
-      const path = `/api/invoices/${invoice_id}`;
-      const headers = this.headerCreator("GET", path);
-      return await invocesService.getInvoceByCustomId(
-        `${this.url}${path}`,
-        headers
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public getInvoceByInvoiceId = async (invoice_id: string) => {
+  //   try {
+  //     const path = `/api/invoices/${invoice_id}`;
+  //     const headers = this.headerCreator("GET", path);
+  //     return await invocesService.getInvoceByCustomId(
+  //       `${this.url}${path}`,
+  //       headers
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  public getInvoceByCustomId = async (custom_id: string) => {
-    try {
-      const path = `/api/invoices/custom_id/${custom_id}`;
-      const headers = this.headerCreator("GET", path);
-      return await invocesService.getInvoceByCustomId(
-        `${this.url}${path}`,
-        headers
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public getInvoceByCustomId = async (custom_id: string) => {
+  //   try {
+  //     const path = `/api/invoices/custom_id/${custom_id}`;
+  //     const headers = this.headerCreator("GET", path);
+  //     return await invocesService.getInvoceByCustomId(
+  //       `${this.url}${path}`,
+  //       headers
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  public createRecalculateInvoices = async (
-    invoice_id: string,
-    force_commit: boolean = true
-  ) => {
-    try {
-      const path = `/api/invoices/${invoice_id}/recalculations`;
-      const headers = this.headerCreator("POST", path, { force_commit });
-      return await invocesService.createRecalculateInvoices(
-        `${this.url}${path}`,
-        headers,
-        force_commit
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public createRecalculateInvoices = async (
+  //   invoice_id: string,
+  //   force_commit: boolean = true
+  // ) => {
+  //   try {
+  //     const path = `/api/invoices/${invoice_id}/recalculations`;
+  //     const headers = this.headerCreator("POST", path, { force_commit });
+  //     return await invocesService.createRecalculateInvoices(
+  //       `${this.url}${path}`,
+  //       headers,
+  //       force_commit
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  public commitRecalculateInvoicesByIds = async (
-    invoice_id: string,
-    recalculation_id: string
-  ) => {
-    try {
-      const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
-      const headers = this.headerCreator("POST", path);
-      return await invocesService.commitRecalculateInvoicesByIds(
-        `${this.url}${path}`,
-        headers
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public commitRecalculateInvoicesByIds = async (
+  //   invoice_id: string,
+  //   recalculation_id: string
+  // ) => {
+  //   try {
+  //     const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
+  //     const headers = this.headerCreator("POST", path);
+  //     return await invocesService.commitRecalculateInvoicesByIds(
+  //       `${this.url}${path}`,
+  //       headers
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  public createInvoiceRefund = async (invoice_id: string, address: string) => {
-    try {
-      const path = `/api/invoices/${invoice_id}/refunds`;
-      const headers = this.headerCreator("POST", path, { address });
-      return await invocesService.createInvoiceRefund(
-        `${this.url}${path}`,
-        headers,
-        address
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public createInvoiceRefund = async (invoice_id: string, address: string) => {
+  //   try {
+  //     const path = `/api/invoices/${invoice_id}/refunds`;
+  //     const headers = this.headerCreator("POST", path, { address });
+  //     return await invocesService.createInvoiceRefund(
+  //       `${this.url}${path}`,
+  //       headers,
+  //       address
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  public getListInvoiceRefund = async (invoice_id: string) => {
-    try {
-      const path = `/api/invoices/${invoice_id}/refunds`;
-      const headers = this.headerCreator("GET", path);
-      return await invocesService.getListInvoiceRefund(
-        `${this.url}${path}`,
-        headers
-      );
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public getListInvoiceRefund = async (invoice_id: string) => {
+  //   try {
+  //     const path = `/api/invoices/${invoice_id}/refunds`;
+  //     const headers = this.headerCreator("GET", path);
+  //     return await invocesService.getListInvoiceRefund(
+  //       `${this.url}${path}`,
+  //       headers
+  //     );
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
   public callbackVerification = (body: string, headers: any): boolean => {
     return (
@@ -310,15 +309,28 @@ const myTest = async () => {
     // const configuraror = InvoicesApi.BaseApi
     // configuraror.basePath = 'testtest'
     // const goodResp = await testObj.createInvoiceTwo(invoiceParamsToTest);
-    const goodResp = await testObj
-      .invoicesApi()
-      .invoicesCreate(invoiceParamsToTest);
-    
+    // const goodResp = await testObj.getRetesByPair("BTC/EUR")
+    // const goodResp = await testObj
+    //   .invoicesApi()
+    //   .invoicesCreate(invoiceParamsToTest);
+
     // const goodResp = await testObj.ratesApi().ratesAll()
-    console.log({goodResp})
+    // // const goodResp = await testObj.ratesApi().ratesRetrieve("BTC/EUR");
+    const goodResp= await testObj
+        .invoicesApi()
+        .invoicesList();
+        console.log('goodResp.data', goodResp.data);
+        console.log('goodResp.meta', goodResp.meta);
+        console.log('typeof resp',typeof goodResp)
+        console.log('keys', Object.keys(goodResp))
+    //  fs.writeFileSync("./hello2.txt",JSON.stringify(goodResp))
+    //  const goodResp= await testObj
+    //     .invoicesApi()
+    //     .invoicesRetrieve('10f3f488-dceb-4471-8154-031aa5aa958d');
+    //  console.log('goodResp', goodResp);
   } catch (err) {
-    // console.log(CustomErrorCreater(err));
-    console.log(err)
+    console.log(CustomErrorCreater(err));
+    // console.log(err)
   }
 };
 

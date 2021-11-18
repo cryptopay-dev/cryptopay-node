@@ -15,14 +15,14 @@ let recalculation_id = "";
 describe("Rates", () => {
   it("Get Retes validation response", async () => {
     axiosVCR.mountCassette('./test/fixtures/getRetes.json')
-    const resp = await cryptoPay.getRetes();
+    const resp = await cryptoPay.ratesApi().ratesAll();
     axiosVCR.ejectCassette('./test/fixtures/getRetes.json')
     expect(resp).toBeTruthy();
     expect(typeof resp).toBe("object");
   });
   it("Get Retes By Pair validation response", async () => {
     axiosVCR.mountCassette('./test/fixtures/getRetesByPair.json')
-    const resp = await cryptoPay.getRetesByPair("BTC/EUR");
+    const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
     axiosVCR.ejectCassette('./test/fixtures/getRetesByPair.json')
     expect(resp).toBeTruthy();
     expect(typeof resp.buy_rate).toBe("string");
@@ -31,7 +31,7 @@ describe("Rates", () => {
   it("Get Retes By Pair with wrong params", async () => {
     try {
       axiosVCR.mountCassette('./test/fixtures/getRetesByPairWithWrongParams.json')
-      await cryptoPay.getRetesByPair("wrongParams");
+      await cryptoPay.ratesApi().ratesRetrieve("wrongParams");
       axiosVCR.ejectCassette('./test/fixtures/getRetesByPairWithWrongParams.json')
     } catch (error) {
       expect(error).toBeTruthy();
@@ -42,7 +42,7 @@ describe("Rates", () => {
 describe("Invoice", () => {
   it("Create invoice validation response", async () => {
     axiosVCR.mountCassette('./test/fixtures/createInvoice.json')
-    const resp: IInvoiceResult = await cryptoPay.createInvoice(
+    const resp: IInvoiceResult = await cryptoPay.invoicesApi().invoicesCreate(
       invoiceParamsToTest
     );
     invoiceID = resp.id;
@@ -81,7 +81,7 @@ describe("Invoice", () => {
 
   it("Get list invoice has response ", async () => {
     axiosVCR.mountCassette('./test/fixtures/getListInvoces.json')
-    const resp: IInvoiceListResult = await cryptoPay.getListInvoces();
+    const resp: IInvoiceListResult = await cryptoPay.invoicesApi().invoicesList();
     axiosVCR.ejectCassette('./test/fixtures/getListInvoces.json')
     expect(resp).toBeTruthy();
     expect(typeof resp.data).toBe("object");
@@ -90,7 +90,7 @@ describe("Invoice", () => {
 
   it("Get invoice by invoice id validate response ", async () => {
     axiosVCR.mountCassette('./test/fixtures/getInvoceByInvoiceId.json')
-    const resp: IInvoiceResult = await cryptoPay.getInvoceByInvoiceId(
+    const resp: IInvoiceResult = await cryptoPay.invoicesApi().invoicesList(
       invoiceID
     );
     axiosVCR.ejectCassette('./test/fixtures/getInvoceByInvoiceId.json')
@@ -128,7 +128,7 @@ describe("Invoice", () => {
   it("Get invoice by invoice id with wrong param ", async () => {
     try {
       axiosVCR.mountCassette('./test/fixtures/getInvoceByInvoiceIdWithWrongParams.json')
-      await cryptoPay.getInvoceByInvoiceId("wrong params");
+      await cryptoPay.invoicesApi().invoicesList("wrong params");
       axiosVCR.ejectCassette('./test/fixtures/getInvoceByInvoiceIdWithWrongParams.json')
     } catch (error) {
       expect(error).toBeTruthy();
@@ -137,7 +137,7 @@ describe("Invoice", () => {
 
   it("Get list invoce by custom id validate response ", async () => {
     axiosVCR.mountCassette('./test/fixtures/getInvoceByCustomId.json')
-    const resp: IInvoiceResult = await cryptoPay.getInvoceByCustomId(custom_id);
+    const resp: IInvoiceResult = await cryptoPay.invoicesApi().invoicesRetrieveByCustomId(custom_id);
     axiosVCR.ejectCassette('./test/fixtures/getInvoceByCustomId.json')  
     expect(resp).toBeTruthy();
     expect(typeof resp.id).toBe("string");
@@ -173,7 +173,7 @@ describe("Invoice", () => {
   it("Get list invoce by custom id  with wrong param ", async () => {
     try {
       axiosVCR.mountCassette('./test/fixtures/getInvoceByCustomIdWithWrongParams.json')
-      await cryptoPay.getInvoceByCustomId("wrong params");
+      await cryptoPay.invoicesApi().invoicesRetrieveByCustomId("wrong params");
       axiosVCR.ejectCassette('./test/fixturesgetInvoceByCustomIdWithWrongParams.json')
     } catch (error) {
       expect(error).toBeTruthy();
@@ -196,7 +196,7 @@ describe("Invoice", () => {
 
   it("Get list refund list has response", async () => {
     axiosVCR.mountCassette('./test/fixtures/getListInvoiceRefund.json')
-    const resp = await cryptoPay.getListInvoiceRefund(invoiceID);
+    const resp = await cryptoPay.invoicesApi().invoicesListRefunds(invoiceID);
     axiosVCR.mountCassette('./test/fixtures/getListInvoiceRefund.json')
     expect(resp).toBeTruthy();
     expect(typeof resp).toBe("object");
@@ -204,7 +204,7 @@ describe("Invoice", () => {
   it("Get list refund list with wrong param ", async () => {
     try {
       axiosVCR.mountCassette('./test/fixtures/getListInvoiceRefundWithWrongParams.json')
-      await cryptoPay.getListInvoiceRefund("wrong params");
+      await cryptoPay.invoicesApi().invoicesListRefunds("wrong params");
       axiosVCR.ejectCassette('./test/fixtures/getListInvoiceRefundWithWrongParams.json')
     } catch (error) {
       expect(error).toBeTruthy();

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "tsc && node dist/src/app.js",
     "start:dev": "tsc -w && nodemon dist/src/app.js",
-    "test": "jest --clearCache && jest"
+    "test": "jest --clearCache && jest",
+    "test:dev:path": "jest -- $npm_config_testpath"
   },
   "keywords": [],
   "author":"Muchnik Illia",

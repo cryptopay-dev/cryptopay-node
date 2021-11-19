@@ -6,42 +6,7 @@ import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 import { version } from "../package.json";
 import * as openApiGeneretedCode from "../openApiGeneretedCode";
-import {
-  ChannelPayment,
-  ChannelPaymentCallback,
-  CoinWithdrawal,
-  CoinWithdrawalCallback,
-  Exchange,
-  Invoice,
-  InvoiceCallback,
-  InvoiceListResult,
-  InvoiceParams,
-  InvoiceRecalculation,
-  InvoiceRecalculationParams,
-  InvoiceRecalculationResult,
-  InvoiceRefund,
-  InvoiceRefundListResult,
-  InvoiceRefundParams,
-  InvoiceRefundResult,
-  InvoiceResult,
-  InvoiceTransaction,
-  Pagination,
-  Rate,
-  RateResult,
-  RatesResult,
-  Risk,
-} from "../openApiGeneretedCode"; // interfaces need refactoring
-import {
-  ChannelPaymentCallbackTypeEnum,
-  ChannelPaymentCallbackEvent,
-  CoinWithdrawalCallbackTypeEnum,
-  CoinWithdrawalCallbackEvent,
-  InvoiceCallbackTypeEnum,
-  InvoiceCallbackEvent,
-  InvoiceStatus,
-  InvoiceStatusContext,
-  RiskLevelEnum,
-} from "../openApiGeneretedCode"; //enums need refactoring
+
 import axios from "axios";
 import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
 const fs = require("fs"); //tmp
@@ -51,7 +16,6 @@ const fs = require("fs"); //tmp
  * @export
  * @class CryptoPay
  */
-
 export default class CryptoPay {
   private InvoicesApi: any;
   private RatesApi: any;
@@ -73,7 +37,7 @@ export default class CryptoPay {
     // response interceptor
     axios.interceptors.response.use((res) => {
       return res?.data;
-    });
+    },(error)=>Promise.reject(CustomErrorCreater(error))); //error interceptor
 
     this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
       undefined,
@@ -352,7 +316,7 @@ const myTest = async () => {
     //   .invoicesCreate(invoiceParamsToTest);
 
     // const goodResp = await testObj.ratesApi().ratesAll()
-    // const goodResp = await testObj.ratesApi().ratesRetrieve("BTC/EUR");
+    const goodResp = await testObj.ratesApi().ratesRetrieve("BTC/sdadasasEUR");
     // const goodResp= await testObj
     //     .invoicesApi()
     //     .invoicesList();
@@ -364,10 +328,10 @@ const myTest = async () => {
     //  const goodResp= await testObj
     //     .invoicesApi()
     //     .invoicesRetrieve('10f3f488-dceb-4471-8154-031aa5aa958d');
-    //  console.log('goodResp', goodResp);
+     console.log('goodResp', goodResp);
   } catch (err) {
-    console.log(CustomErrorCreater(err));
-    // console.log(err)
+    // console.log(CustomErrorCreater(err));
+    console.log('==============',err)
   }
 };
 

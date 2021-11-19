@@ -6,6 +6,42 @@ import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 import { version } from "../package.json";
 import * as openApiGeneretedCode from "../openApiGeneretedCode";
+import {
+  ChannelPayment,
+  ChannelPaymentCallback,
+  CoinWithdrawal,
+  CoinWithdrawalCallback,
+  Exchange,
+  Invoice,
+  InvoiceCallback,
+  InvoiceListResult,
+  InvoiceParams,
+  InvoiceRecalculation,
+  InvoiceRecalculationParams,
+  InvoiceRecalculationResult,
+  InvoiceRefund,
+  InvoiceRefundListResult,
+  InvoiceRefundParams,
+  InvoiceRefundResult,
+  InvoiceResult,
+  InvoiceTransaction,
+  Pagination,
+  Rate,
+  RateResult,
+  RatesResult,
+  Risk,
+} from "../openApiGeneretedCode"; // interfaces need refactoring
+import {
+  ChannelPaymentCallbackTypeEnum,
+  ChannelPaymentCallbackEvent,
+  CoinWithdrawalCallbackTypeEnum,
+  CoinWithdrawalCallbackEvent,
+  InvoiceCallbackTypeEnum,
+  InvoiceCallbackEvent,
+  InvoiceStatus,
+  InvoiceStatusContext,
+  RiskLevelEnum,
+} from "../openApiGeneretedCode"; //enums need refactoring
 import axios from "axios";
 import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
 const fs = require("fs"); //tmp
@@ -27,16 +63,16 @@ export default class CryptoPay {
   ) {
     // request interceptor
     axios.interceptors.request.use((req) => {
-      const { method = "get", data = undefined } = req;
-      let url = req.url?.replace(this.url, "").replace('%2F','/') + "";
+      const { method = "get", data = "" } = req;
+      let url = req.url?.replace(this.url, "").replace("%2F", "/") + "";
       const customHeaders = this.headerCreator(method.toUpperCase(), url, data);
       req.headers = { ...req.headers, ...customHeaders.headers };
-      req.url= req.url?.replace('%2F','/')
+      req.url = req.url?.replace("%2F", "/");
       return req;
     });
     // response interceptor
     axios.interceptors.response.use((res) => {
-      return res?.data
+      return res?.data;
     });
 
     this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
@@ -68,26 +104,26 @@ export default class CryptoPay {
   //   }
   // };
 
-  public getRetesByPair = async (pair: string) => {
-    const path = `/api/rates/${pair}`;
-    const headers = this.headerCreator("GET", path);
-    try {
-      return await ratesSevices.getRetesByPair(`${this.url}${path}`, headers);
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public getRetesByPair = async (pair: string) => {
+  //   const path = `/api/rates/${pair}`;
+  //   const headers = this.headerCreator("GET", path);
+  //   try {
+  //     return await ratesSevices.getRetesByPair(`${this.url}${path}`, headers);
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
-  // Invoices
+  // // Invoices
 
-  public createInvoiceTwo = async (invoice: IInvoiceParams) => {
-    try {
-      const goodResp = await this.InvoicesApi.invoicesCreate(invoice);
-      return goodResp;
-    } catch (err) {
-      throw err;
-    }
-  };
+  // public createInvoiceTwo = async (invoice: IInvoiceParams) => {
+  //   try {
+  //     const goodResp = await this.InvoicesApi.invoicesCreate(invoice);
+  //     return goodResp;
+  //   } catch (err) {
+  //     throw err;
+  //   }
+  // };
 
   public invoicesApi = () => {
     return this.InvoicesApi;
@@ -299,6 +335,7 @@ const myTest = async () => {
     //   // console.log({ req });
     //   return req;
     // });
+
     // const InvoicesApi = new openApiGeneretedCode.InvoicesApi()
     // const InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(
     //   undefined,
@@ -315,14 +352,14 @@ const myTest = async () => {
     //   .invoicesCreate(invoiceParamsToTest);
 
     // const goodResp = await testObj.ratesApi().ratesAll()
-    // // const goodResp = await testObj.ratesApi().ratesRetrieve("BTC/EUR");
-    const goodResp= await testObj
-        .invoicesApi()
-        .invoicesList();
-        console.log('goodResp.data', goodResp.data);
-        console.log('goodResp.meta', goodResp.meta);
-        console.log('typeof resp',typeof goodResp)
-        console.log('keys', Object.keys(goodResp))
+    // const goodResp = await testObj.ratesApi().ratesRetrieve("BTC/EUR");
+    // const goodResp= await testObj
+    //     .invoicesApi()
+    //     .invoicesList();
+    //     console.log('goodResp.data', goodResp.data);
+    //     console.log('goodResp.meta', goodResp.meta);
+    //     console.log('typeof resp',typeof goodResp)
+    //     console.log('keys', Object.keys(goodResp))
     //  fs.writeFileSync("./hello2.txt",JSON.stringify(goodResp))
     //  const goodResp= await testObj
     //     .invoicesApi()

@@ -72,7 +72,7 @@ This endpoint allows you to retrieve all public rates.
 ##### Method call
 
 ```ts
-const resp = await cryptoPay.getRetes();
+const resp = await cryptoPay.ratesApi().ratesAll();
 ```
 
 ##### Response
@@ -93,7 +93,7 @@ This endpoint allows you to retrieve a public rate by currency pair.
 ##### Method call
 
 ```ts
-const resp = await cryptoPay.getRetesByPair("XRP/ZAR");
+const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
 ```
 
 ##### Response
@@ -112,7 +112,7 @@ This endpoint allows you to create invoices.
 ##### Method call
 
 ```ts
-const resp = await cryptoPay.createInvoice(invoice);
+const resp = await cryptoPay.invoicesApi().invoicesCreate(invoice);
 ```
 
 #### Invoice interface
@@ -251,25 +251,25 @@ const invoice = {
 ### Other methods
 ```ts
     //This endpoint allows you to retrieve a list of all invoices.
-    await cryptoPay.getListInvoces();
+    await cryptoPay.invoicesApi().invoicesList();
 
     //This endpoint allows you to retrieve the invoice details by invoice id
-    await cryptoPay.getListInvoceByInvoiceId('invoice_id'); 
+    await cryptoPay.invoicesApi().invoicesRetrieve('invoice_id'); 
 
     // This endpoint allows you to retrieve invoice details by its custom_id.
-    await cryptoPay.getListInvoceByCustomId('custom_id');
+    await cryptoPay.invoicesApi().invoicesRetrieveByCustomId('custom_id');
 
     //This endpoint allows you to recalculate invoices.
-    await cryptoPay.createRecalculateInvoices('invoice_id', true)
+    await cryptoPay.invoicesApi().invoicesCreateRecalculation('invoice_id', true) 
 
     // This endpoint allows you to commit invoice recalculation.
-    await cryptoPay.getRecalculateInvoicesByIds('invoice_id','recalculation_id')
+    await cryptoPay.invoicesApi().invoicesCommitRecalculation('invoice_id','recalculation_id') 
 
     //This endpoint allows you to create invoice refunds.
-    await cryptoPay.createInvoiceRefund('invoice_id')
+    await cryptoPay.invoicesApi().invoicesCreateRefund('invoice_id') 
 
     //This endpoint allows you to retrieve a list of a particular invoice refunds.
-    await cryptoPay.getListInvoiceRefund('invoice_id')
+    await cryptoPay.invoicesApi().invoicesListRefunds('invoice_id')
 
 ```
 

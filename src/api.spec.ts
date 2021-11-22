@@ -1,7 +1,5 @@
 import CryptoPay from "../src/app";
 import { invoiceParamsToTest } from "../src/dataToTesting/invoiceParamsToTest";
-import { IInvoiceResult } from "../src/interfaces/IInvoceResult";
-import { IInvoiceListResult } from "../src/interfaces/IInvoiceListResult";
 const axiosVCR = require("axios-vcr"); // there are no types in the library, you need to import via requir
 const fs = require("fs"); //tmp
 
@@ -12,7 +10,7 @@ const fs = require("fs"); //tmp
   const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
   const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
   let invoiceID = "";
-  const custom_id = "PAYMENT-123";
+  const custom_id = Date.now().toString();
   let address = "";
   let recalculation_id = "";
 
@@ -57,7 +55,7 @@ describe("Invoice", () => {
       // axiosVCR.mountCassette('./test/fixtures/invoicesCreate.json')
       const resp= await cryptoPay
         .invoicesApi()
-        .invoicesCreate(invoiceParamsToTest);
+        .invoicesCreate({...invoiceParamsToTest,custom_id });
       invoiceID = resp.data.id;
       address = resp.data.address;
       // axiosVCR.ejectCassette('./test/fixtures/invoicesCreate.json')

@@ -1,14 +1,11 @@
 import CryptoJS from "crypto-js";
-import moment from "moment";
-import * as ratesSevices from "./services/ratesSevices";
-import * as invocesService from "./services/invocesService";
-import { IInvoiceParams } from "./interfaces/IInvoiceParams";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 import { version } from "../package.json";
 import * as openApiGeneretedCode from "../openApiGeneretedCode";
 
 import axios from "axios";
 import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
+import { IHeaders } from "./interfaces";
 const fs = require("fs"); //tmp
 
 /**
@@ -28,10 +25,10 @@ export default class CryptoPay {
     // request interceptor
     axios.interceptors.request.use((req) => {
       const { method = "get", data = "" } = req;
-      let url = req.url?.replace(this.url, "").replace("%2F", "/") + "";
+      req.url = req.url?.replace("%2F", "/");
+      let url = req.url?.replace(this.url, "")+ "";
       const customHeaders = this.headerCreator(method.toUpperCase(), url, data);
       req.headers = { ...req.headers, ...customHeaders.headers };
-      req.url = req.url?.replace("%2F", "/");
       return req;
     });
     // response interceptor
@@ -57,38 +54,6 @@ export default class CryptoPay {
   public getUrl = () => {
     return this.url;
   };
-  //Rates
-  // public getRetes = async () => {
-  //   const path = "/api/rates";
-  //   const headers = this.headerCreator("GET", path);
-  //   try {
-  //     return await ratesSevices.getRates(`${this.url}${path}`, headers);
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public getRetesByPair = async (pair: string) => {
-  //   const path = `/api/rates/${pair}`;
-  //   const headers = this.headerCreator("GET", path);
-  //   try {
-  //     return await ratesSevices.getRetesByPair(`${this.url}${path}`, headers);
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // // Invoices
-
-  // public createInvoiceTwo = async (invoice: IInvoiceParams) => {
-  //   try {
-  //     const goodResp = await this.InvoicesApi.invoicesCreate(invoice);
-  //     return goodResp;
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
   public invoicesApi = () => {
     return this.InvoicesApi;
   };
@@ -96,123 +61,6 @@ export default class CryptoPay {
     return this.RatesApi;
   };
 
-  // public createInvoice = async (invoice: IInvoiceParams) => {
-  //   try {
-  //     const path = `/api/invoices`;
-  //     const headers = this.headerCreator("POST", path, invoice);
-  //     return await invocesService.createInvoice(
-  //       `${this.url}${path}`,
-  //       headers,
-  //       invoice
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public getListInvoces = async (
-  //   customer_id?: string,
-  //   starting_after?: string
-  // ) => {
-  //   try {
-  //     const path = `/api/invoices`;
-  //     const headers = this.headerCreator("GET", path);
-  //     return await invocesService.getListInvoces(
-  //       `${this.url}${path}`,
-  //       headers,
-  //       customer_id,
-  //       starting_after
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public getInvoceByInvoiceId = async (invoice_id: string) => {
-  //   try {
-  //     const path = `/api/invoices/${invoice_id}`;
-  //     const headers = this.headerCreator("GET", path);
-  //     return await invocesService.getInvoceByCustomId(
-  //       `${this.url}${path}`,
-  //       headers
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public getInvoceByCustomId = async (custom_id: string) => {
-  //   try {
-  //     const path = `/api/invoices/custom_id/${custom_id}`;
-  //     const headers = this.headerCreator("GET", path);
-  //     return await invocesService.getInvoceByCustomId(
-  //       `${this.url}${path}`,
-  //       headers
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public createRecalculateInvoices = async (
-  //   invoice_id: string,
-  //   force_commit: boolean = true
-  // ) => {
-  //   try {
-  //     const path = `/api/invoices/${invoice_id}/recalculations`;
-  //     const headers = this.headerCreator("POST", path, { force_commit });
-  //     return await invocesService.createRecalculateInvoices(
-  //       `${this.url}${path}`,
-  //       headers,
-  //       force_commit
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public commitRecalculateInvoicesByIds = async (
-  //   invoice_id: string,
-  //   recalculation_id: string
-  // ) => {
-  //   try {
-  //     const path = `/api/invoices/${invoice_id}/recalculations/${recalculation_id}/commit`;
-  //     const headers = this.headerCreator("POST", path);
-  //     return await invocesService.commitRecalculateInvoicesByIds(
-  //       `${this.url}${path}`,
-  //       headers
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public createInvoiceRefund = async (invoice_id: string, address: string) => {
-  //   try {
-  //     const path = `/api/invoices/${invoice_id}/refunds`;
-  //     const headers = this.headerCreator("POST", path, { address });
-  //     return await invocesService.createInvoiceRefund(
-  //       `${this.url}${path}`,
-  //       headers,
-  //       address
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
-
-  // public getListInvoiceRefund = async (invoice_id: string) => {
-  //   try {
-  //     const path = `/api/invoices/${invoice_id}/refunds`;
-  //     const headers = this.headerCreator("GET", path);
-  //     return await invocesService.getListInvoiceRefund(
-  //       `${this.url}${path}`,
-  //       headers
-  //     );
-  //   } catch (err) {
-  //     throw err;
-  //   }
-  // };
 
   public callbackVerification = (body: string, headers: any): boolean => {
     return (
@@ -220,8 +68,8 @@ export default class CryptoPay {
       headers["x-cryptopay-signature"]
     );
   };
-  private headerCreator(method: string, path: string, body?: any) {
-    const date = moment().format("YYYY-MM-DDTHH:mm:ssZ");
+  private headerCreator(method: string, path: string, body?: any):IHeaders {
+    const date = new Date(Date.now()).toUTCString(); 
     const contentType = "application/json";
     const bodyHash = body ? CryptoJS.MD5(body).toString() : "";
     const stringToSign = `${method}\n${bodyHash}\n${contentType}\n${date}\n${path}`;
@@ -247,7 +95,7 @@ const myTest = async () => {
   // const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
   const api_key = "D-d6gn9axIWNPn5cPIukoA";
   const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
-  const testObj = new CryptoPay(api_secret, api_key, callback_secret);
+  const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
 
   try {
     const body =
@@ -316,23 +164,23 @@ const myTest = async () => {
     //   .invoicesCreate(invoiceParamsToTest);
 
     // const goodResp = await testObj.ratesApi().ratesAll()
-    const goodResp = await testObj.ratesApi().ratesRetrieve("BTC/sdadasasEUR");
-    // const goodResp= await testObj
-    //     .invoicesApi()
-    //     .invoicesList();
-    //     console.log('goodResp.data', goodResp.data);
-    //     console.log('goodResp.meta', goodResp.meta);
-    //     console.log('typeof resp',typeof goodResp)
-    //     console.log('keys', Object.keys(goodResp))
+    // const goodResp = await testObj.ratesApi().ratesRetrieve("BTC/EUR");
+    const goodResp= await cryptoPay
+        .invoicesApi()
+        .invoicesList();
+        console.log('goodResp.data', goodResp.data);
+        console.log('goodResp.meta', goodResp.meta);
+        console.log('typeof resp',typeof goodResp)
+        console.log('keys', Object.keys(goodResp))
     //  fs.writeFileSync("./hello2.txt",JSON.stringify(goodResp))
     //  const goodResp= await testObj
     //     .invoicesApi()
     //     .invoicesRetrieve('10f3f488-dceb-4471-8154-031aa5aa958d');
-     console.log('goodResp', goodResp);
+    //  console.log('goodResp', goodResp);
   } catch (err) {
     // console.log(CustomErrorCreater(err));
     console.log('==============',err)
   }
 };
 
-myTest();
+// myTest();

@@ -1,19 +1,23 @@
 import CryptoPay from "../src/app";
 import { invoiceParamsToTest } from "../src/dataToTesting/invoiceParamsToTest";
 const axiosVCR = require("axios-vcr"); // there are no types in the library, you need to import via requir
-const fs = require("fs"); //tmp
+require('dotenv').config();
 
+const callback_secret = process.env.CALLBACK_SECRET || "";
+const api_key = process.env.API_KEY || "";
+const api_secret = process.env.API_SECRET || "";
+// const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
+//   const api_key = "D-d6gn9axIWNPn5cPIukoA";
+//   const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
+const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
+let invoiceID = "";
+const custom_id = Date.now().toString();
+let address = "";
+let recalculation_id = "";
 
-
-  const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
-  const api_key = "D-d6gn9axIWNPn5cPIukoA";
-  const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
-  const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
-  let invoiceID = "";
-  const custom_id = Date.now().toString();
-  let address = "";
-  let recalculation_id = "";
-
+// console.log("process.env.CALLBACK_SECRET ", process.env.CALLBACK_SECRET)
+// console.log("process.env.API_KEY", process.env.API_KEY)
+// console.log("process.env.API_SECRET",  process.env.API_SECRET)
 describe("Rates", () => {
   it("Get Retes validation response", async () => {
     try {
@@ -53,18 +57,22 @@ describe("Invoice", () => {
   it("Create invoice validation response", async () => {
     try {
       // axiosVCR.mountCassette('./test/fixtures/invoicesCreate.json')
-      const resp= await cryptoPay
+      const resp = await cryptoPay
         .invoicesApi()
-        .invoicesCreate({...invoiceParamsToTest,custom_id });
+        .invoicesCreate({ ...invoiceParamsToTest, custom_id });
       invoiceID = resp.data.id;
       address = resp.data.address;
       // axiosVCR.ejectCassette('./test/fixtures/invoicesCreate.json')
       expect(resp).toBeTruthy();
       expect(typeof resp.data.id).toBe("string");
       expect((typeof resp.data.custom_id).toString()).toMatch(/string|object/);
-      expect((typeof resp.data.customer_id).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.customer_id).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.status).toBe("string");
-      expect((typeof resp.data.status_context).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.status_context).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.address).toBe("string");
       expect(typeof resp.data.uri).toBe("string");
       expect(typeof resp.data.price_amount).toBe("string");
@@ -77,7 +85,9 @@ describe("Invoice", () => {
       expect(typeof resp.data.exchange).toBe("object");
       expect(typeof resp.data.transactions).toBe("object");
       expect((typeof resp.data.name).toString()).toMatch(/string|object/);
-      expect((typeof resp.data.description).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.description).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.metadata).toBe("object");
       expect((typeof resp.data.success_redirect_url).toString()).toMatch(
         /string|object/
@@ -96,9 +106,7 @@ describe("Invoice", () => {
   it("Get list invoice has response ", async () => {
     try {
       // axiosVCR.mountCassette('./test/fixtures/invoicesList.json')
-      const resp = await cryptoPay
-      .invoicesApi()
-      .invoicesList();
+      const resp = await cryptoPay.invoicesApi().invoicesList();
       // axiosVCR.ejectCassette('./test/fixtures/invoicesList.json')
       expect(typeof resp.data).toBe("object");
       expect(typeof resp.meta).toBe("object");
@@ -110,16 +118,18 @@ describe("Invoice", () => {
   it("Get invoice by invoice id validate response ", async () => {
     try {
       // axiosVCR.mountCassette('./test/fixtures/invoicesListByInvoiceId.json')
-      const resp = await cryptoPay
-        .invoicesApi()
-        .invoicesRetrieve(invoiceID);
+      const resp = await cryptoPay.invoicesApi().invoicesRetrieve(invoiceID);
       // axiosVCR.ejectCassette('./test/fixtures/invoicesListByInvoiceId.json')
 
       expect(typeof resp.data.id).toBe("string");
       expect((typeof resp.data.custom_id).toString()).toMatch(/string|object/);
-      expect((typeof resp.data.customer_id).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.customer_id).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.status).toBe("string");
-      expect((typeof resp.data.status_context).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.status_context).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.address).toBe("string");
       expect(typeof resp.data.uri).toBe("string");
       expect(typeof resp.data.price_amount).toBe("string");
@@ -132,7 +142,9 @@ describe("Invoice", () => {
       expect(typeof resp.data.exchange).toBe("object");
       expect(typeof resp.data.transactions).toBe("object");
       expect((typeof resp.data.name).toString()).toMatch(/string|object/);
-      expect((typeof resp.data.description).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.description).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.metadata).toBe("object");
       expect((typeof resp.data.success_redirect_url).toString()).toMatch(
         /string|object/
@@ -168,9 +180,13 @@ describe("Invoice", () => {
       expect(resp).toBeTruthy();
       expect(typeof resp.data.id).toBe("string");
       expect((typeof resp.data.custom_id).toString()).toMatch(/string|object/);
-      expect((typeof resp.data.customer_id).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.customer_id).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.status).toBe("string");
-      expect((typeof resp.data.status_context).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.status_context).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.address).toBe("string");
       expect(typeof resp.data.uri).toBe("string");
       expect(typeof resp.data.price_amount).toBe("string");
@@ -183,7 +199,9 @@ describe("Invoice", () => {
       expect(typeof resp.data.exchange).toBe("object");
       expect(typeof resp.data.transactions).toBe("object");
       expect((typeof resp.data.name).toString()).toMatch(/string|object/);
-      expect((typeof resp.data.description).toString()).toMatch(/string|object/);
+      expect((typeof resp.data.description).toString()).toMatch(
+        /string|object/
+      );
       expect(typeof resp.data.metadata).toBe("object");
       expect((typeof resp.data.success_redirect_url).toString()).toMatch(
         /string|object/
@@ -222,7 +240,7 @@ describe("Invoice", () => {
   });
   it("Get list refund list with wrong param ", async () => {
     try {
-     // axiosVCR.mountCassette('./test/fixtures/invoicesListRefundsWithWrongParams.json')
+      // axiosVCR.mountCassette('./test/fixtures/invoicesListRefundsWithWrongParams.json')
       await cryptoPay.invoicesApi().invoicesListRefunds("wrong params");
       //axiosVCR.ejectCassette('./test/fixtures/invoicesListRefundsWithWrongParams.json')
     } catch (error) {
@@ -244,4 +262,3 @@ describe("Invoice", () => {
   // //   expect(resp).toBeTruthy()
   // // });
 });
-

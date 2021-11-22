@@ -2,7 +2,7 @@ import CryptoJS from "crypto-js";
 import { invoiceParamsToTest } from "./dataToTesting/invoiceParamsToTest";
 import { version } from "../package.json";
 import * as openApiGeneretedCode from "../openApiGeneretedCode";
-
+require('dotenv').config();
 import axios from "axios";
 import { CustomErrorCreater } from "./helpers/errorCreaterHelper";
 import { IHeaders } from "./interfaces";
@@ -88,15 +88,14 @@ export default class CryptoPay {
 }
 
 const myTest = async () => {
-  // const callback_secret = "sn8MGpjYipbVMv0oiU8FAYNRMkbAL9BZcYYSY28cnTE";
-  const callback_secret = "hzeRDX54BYleXGwGm2YEWR4Ony1_ZU2lSTpAuxhW1gQ";
-
-  // const api_key = "7AA2P-w0RxZXG-_K4cRngQ";
-  // const api_secret = "NGR0vvNXKO_p3v2zz5ZuShP36Vp19ekZ9nLORtVZYpc";
-  const api_key = "D-d6gn9axIWNPn5cPIukoA";
-  const api_secret = "waNXkbUH7d-yRcImNM8vx9gLDX9ZgjTCpvtwX_anRyg";
+  const callback_secret = process.env.CALLBACK_SECRET || '';
+  const api_key = process.env.API_KEY || '';
+  const api_secret = process.env.API_SECRET || '';
   const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
-
+  console.log("process.env.CALLBACK_SECRET ", process.env.CALLBACK_SECRET)
+  console.log("process.env.API_KEY", process.env.API_KEY)
+  console.log("process.env.API_SECRET",  process.env.API_SECRET)
+  // console.log("===========", process.env)
   try {
     const body =
       '{"type":"Invoice","event":"status_changed","data":{"id":"ff48eeba-ab18-4088-96bc-4be10a82b994","status":"completed","status_context":null,"address":"rs9pE6CnNLE8YiTgTwbAk1AkFyS3opsm7K?dt=701","price_amount":"1.0","price_currency":"EUR","pay_amount":"3.113326","pay_currency":"XRP","paid_amount":"3.113326","exchange":{"pair":"XRPEUR","rate":"0.3212"},"transactions":[{"txid":"3EA591FED2F1F61263CB66AAC6BCF520B0714A08F2481D56DE267F31E0C782B9","risk":null}],"name":null,"description":null,"metadata":null,"custom_id":null,"success_redirect_url":null,"created_at":"2019-04-09T15:22:09+00:00","expires_at":"2019-04-09T15:32:09+00:00"}}';

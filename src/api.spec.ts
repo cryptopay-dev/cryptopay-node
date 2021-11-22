@@ -250,15 +250,15 @@ describe("Invoice", () => {
 
   // // Temporarily not working
   // // it("Create recalculate invoices has response", async () => {
-  // //   const resp = await cryptoPay.createRecalculateInvoices(invoiceID, true);
+  // //   const resp = await cryptoPay.invoicesApi().invoicesCreateRecalculation(invoiceID, true);
   // //   expect(resp).toBeTruthy()
   // // });
   // // it("Create refund invoices has response", async () => {
-  // //   const resp = await cryptoPay.createInvoiceRefund(invoiceID ,address);
+  // //   const resp = await cryptoPay.invoicesApi().invoicesCreateRefund(invoiceID ,address);
   // //   expect(resp).toBeTruthy()
   // // });
   // // it("Commit recalculate invoices has response", async () => {
-  // //   const resp = await cryptoPay.commitRecalculateInvoicesByIds(invoiceID ,recalculation_id);
+  // //   const resp = await cryptoPay.invoicesApi().invoicesCommitRecalculation(invoiceID ,recalculation_id);
   // //   expect(resp).toBeTruthy()
   // // });
 });

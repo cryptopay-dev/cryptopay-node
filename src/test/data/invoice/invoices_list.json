@@ -1,0 +1,71 @@
+{
+  "data": [
+    {
+      "id": "9ad67ade-9d36-4e6e-a4c7-a008c70b661b",
+      "custom_id": "1",
+      "customer_id": null,
+      "status": "cancelled",
+      "status_context": null,
+      "address": "2N441Uj8SQxm7RHaSQucQrKqNGaFHXsDmqj",
+      "uri": "bitcoin:2N441Uj8SQxm7RHaSQucQrKqNGaFHXsDmqj?amount=0.00025949",
+      "price_amount": "0.00025949",
+      "price_currency": "BTC",
+      "pay_amount": "0.00025949",
+      "pay_currency": "BTC",
+      "fee": "0.0000026",
+      "fee_currency": "BTC",
+      "paid_amount": "0.0",
+      "transactions": [],
+      "name": "Test",
+      "description": "#1",
+      "metadata": null,
+      "success_redirect_url": null,
+      "hosted_page_url": "https://hosted-business-sandbox.cryptopay.me/invoices/1ed67ade-9d36-4e6e-a4c7-a008c70b661b",
+      "created_at": "2020-10-22T10:19:46+00:00",
+      "expires_at": "2020-10-22T12:19:46+00:00"
+    },
+    {
+      "id": "bb67c981-3b8a-4bf4-bc3f-8c2ef37a4e67",
+      "custom_id": "2",
+      "customer_id": null,
+      "status": "completed",
+      "status_context": null,
+      "address": "2N412Uj8SQxm7RHaSQucQrKqNGaFHXsDmqj",
+      "uri": "bitcoin:2N412Uj8SQxm7RHaSQucQrKqNGaFHXsDmqj?amount=0.0002602",
+      "price_amount": "0.0002602",
+      "price_currency": "BTC",
+      "pay_amount": "0.0002602",
+      "pay_currency": "BTC",
+      "fee": "0.00000261",
+      "fee_currency": "BTC",
+      "paid_amount": "0.0005204",
+      "transactions": [
+        {
+          "txid": "01b994327394dd9a874c8b3f217b0c28633f569edd2c12d6ee741b2b5a2435f",
+          "risk": {
+            "score": 5.49,
+            "level": "low",
+            "resource_name": "default",
+            "resource_category": "unknown"
+          }
+        },
+        {
+          "txid": "03c180759de7a6ccb9f5c4af49e23ed818e97f0310a7ccb36a257a53611f0b3e",
+          "risk": {
+            "score": 4.78,
+            "level": "medium",
+            "resource_name": "default",
+            "resource_category": "unknown"
+          }
+        }
+      ],
+      "name": "Test",
+      "description": "#2",
+      "metadata": null,
+      "success_redirect_url": null,
+      "hosted_page_url": "https://hosted-business-sandbox.cryptopay.me/invoices/2767c981-3b8a-4bf4-bc3f-8c2ef37a4e67",
+      "created_at": "2020-10-22T09:03:15+00:00",
+      "expires_at": "2020-10-22T11:03:15+00:00"
+    }
+  ]
+}

@@ -8,52 +8,52 @@ import list from "./rates/list.json";
 import errorToTest from "./error.json";
 import invoiceCreated from "./invoice/invoice_created.json";
 import invoiceList from "./invoice/invoices_list.json";
+import recalculation from "./invoice/recalculation.json";
 
 const callback_secret = process.env.CALLBACK_SECRET || "";
 const api_key = process.env.API_KEY || "";
 const api_secret = process.env.API_SECRET || "";
 const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
-let invoiceID = "";
-const custom_id = Date.now().toString();
-let address = "";
-let recalculation_id = "";
-
+let invoiceID = "invoiceID";
+let address = "2NA7eYDPh8VMGm7ZhaUkpPmWhyaq5bsjYi2";
+let recalculationID = "recalculationId";
+const customID = "customID";
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-//+
-// describe("Rates", () => {
-//   it("Get Retes validation response", async () => {
-//     try {
-//       mockedAxios.request.mockResolvedValue(list);
-//       const resp = await cryptoPay.ratesApi().ratesAll();
-//       expect(resp).toBeTruthy();
-//       expect(resp).toEqual(list);
-//       expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates`})
-//     } catch (error) {
-//       expect(error).toBeFalsy();
-//     }
-//   });
-//   it("Get Rete  By Pair validation response", async () => {
-//     try {
-//       mockedAxios.request.mockResolvedValue(ratesPair);
-//       const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
-//       expect(resp).toEqual(ratesPair);
-//       expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates/BTC%2FEUR`});
-//     } catch (error) {
-//       expect(error).toBeFalsy();
-//     }
-//   });
-//   it("Get Retes By Pair with wrong params", async () => {
-//     try {
-//       mockedAxios.request.mockRejectedValue(errorToTest);
-//       await cryptoPay.ratesApi().ratesRetrieve("wrongParams");
-//       expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates`})
-//     } catch (error) {
-//       expect(error).toBeTruthy();
-//       expect(error).toEqual(errorToTest);
-//     }
-//   });
-// });
+
+describe("Rates", () => {
+  it("Get Retes validation response", async () => {
+    try {
+      mockedAxios.request.mockResolvedValue(list);
+      const resp = await cryptoPay.ratesApi().ratesAll();
+      expect(resp).toBeTruthy();
+      expect(resp).toEqual(list);
+      expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates`})
+    } catch (error) {
+      expect(error).toBeFalsy();
+    }
+  });
+  it("Get Rete  By Pair validation response", async () => {
+    try {
+      mockedAxios.request.mockResolvedValue(ratesPair);
+      const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
+      expect(resp).toEqual(ratesPair);
+      expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates/BTC%2FEUR`});
+    } catch (error) {
+      expect(error).toBeFalsy();
+    }
+  });
+  it("Get Retes By Pair with wrong params", async () => {
+    try {
+      mockedAxios.request.mockRejectedValue(errorToTest);
+      await cryptoPay.ratesApi().ratesRetrieve("wrongParams");
+      expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates`})
+    } catch (error) {
+      expect(error).toBeTruthy();
+      expect(error).toEqual(errorToTest);
+    }
+  });
+});
 
 describe("Invoice", () => {
   it("Create invoice validation response", async () => {
@@ -61,12 +61,10 @@ describe("Invoice", () => {
       mockedAxios.request.mockResolvedValue(invoiceCreated);
       const resp = await cryptoPay
         .invoicesApi()
-        .invoicesCreate({ ...invoiceParamsToTest });
-      invoiceID = resp.data.id;
-      address = resp.data.address;
+        .invoicesCreate(invoiceParamsToTest);
       expect(resp).toEqual(invoiceCreated);
       expect(mockedAxios.request).toHaveBeenCalledWith({
-        data: '{"price_amount":100,"price_currency":"EUR","pay_currency":"BTC"}',
+        data: JSON.stringify(invoiceParamsToTest),
         headers: { "Content-Type": "application/json" },
         method: "POST",
         url: `${cryptoPay.getUrl()}/api/invoices`,
@@ -75,7 +73,6 @@ describe("Invoice", () => {
       expect(error).toBeFalsy();
     }
   });
-  //invoiceList
   it("Get list invoice has response ", async () => {
     try {
       mockedAxios.request.mockResolvedValue(invoiceList);
@@ -126,13 +123,13 @@ describe("Invoice", () => {
       mockedAxios.request.mockResolvedValue(invoiceCreated);
       const resp = await cryptoPay
         .invoicesApi()
-        .invoicesRetrieveByCustomId(custom_id);
+        .invoicesRetrieveByCustomId(customID);
       expect(resp).toBeTruthy();
       expect(resp).toEqual(invoiceCreated);
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: "GET",
-        url: `${cryptoPay.getUrl()}/api/invoices/custom_id/${custom_id}`,
+        url: `${cryptoPay.getUrl()}/api/invoices/custom_id/${customID}`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -142,12 +139,12 @@ describe("Invoice", () => {
   it("Get list invoce by custom id  with wrong param ", async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
-        await cryptoPay.invoicesApi().invoicesRetrieveByCustomId("wrongParams");
-        expect(mockedAxios.request).toHaveBeenCalledWith({
-          headers: {},
-          method: "GET",
-          url: `${cryptoPay.getUrl()}/api/invoices/custom_id/wrongParams`,
-        });
+      await cryptoPay.invoicesApi().invoicesRetrieveByCustomId("wrongParams");
+      expect(mockedAxios.request).toHaveBeenCalledWith({
+        headers: {},
+        method: "GET",
+        url: `${cryptoPay.getUrl()}/api/invoices/custom_id/wrongParams`,
+      });
     } catch (error) {
       expect(error).toBeTruthy();
       expect(error).toEqual(errorToTest);
@@ -179,22 +176,67 @@ describe("Invoice", () => {
         url: `${cryptoPay.getUrl()}/api/invoices/wrongParams/refunds`,
       });
     } catch (error) {
-      expect(error).toBeTruthy(); 
+      expect(error).toBeTruthy();
       expect(error).toEqual(errorToTest);
     }
   });
 
-  // // Temporarily not working
-  // // it("Create recalculate invoices has response", async () => {
-  // //   const resp = await cryptoPay.invoicesApi().invoicesCreateRecalculation(invoiceID, true);
-  // //   expect(resp).toBeTruthy()
-  // // });
-  // // it("Create refund invoices has response", async () => {
-  // //   const resp = await cryptoPay.invoicesApi().invoicesCreateRefund(invoiceID ,address);
-  // //   expect(resp).toBeTruthy()
-  // // });
-  // // it("Commit recalculate invoices has response", async () => {
-  // //   const resp = await cryptoPay.invoicesApi().invoicesCommitRecalculation(invoiceID ,recalculation_id);
-  // //   expect(resp).toBeTruthy()
-  // // });
+  it("Create recalculate invoices has response", async () => {
+    try {
+      mockedAxios.request.mockResolvedValue(recalculation);
+      const resp = await cryptoPay
+        .invoicesApi()
+        .invoicesCreateRecalculation(invoiceID, true);
+      expect(resp).toBeTruthy();
+      expect(resp).toEqual(recalculation);
+      expect(mockedAxios.request).toHaveBeenCalledWith({
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: "true",
+        method: "POST",
+        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}/recalculations`,
+      });
+    } catch (error) {
+      expect(error).toBeFalsy();
+    }
+  });
+
+  it("Create refund invoices has response", async () => {
+    try {
+      mockedAxios.request.mockResolvedValue(recalculation);
+      const resp = await cryptoPay
+        .invoicesApi()
+        .invoicesCreateRefund(invoiceID, address);
+      expect(resp).toBeTruthy();
+      expect(resp).toEqual(recalculation);
+      expect(mockedAxios.request).toHaveBeenCalledWith({
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: address,
+        method: "POST",
+        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}/refunds`,
+      });
+    } catch (error) {
+      expect(error).toBeFalsy();
+    }
+  });
+  it("Commit recalculate invoices has response", async () => {
+    try {
+      mockedAxios.request.mockResolvedValue(recalculation);
+      const resp = await cryptoPay
+        .invoicesApi()
+        .invoicesCommitRecalculation(invoiceID, recalculationID);
+      expect(resp).toBeTruthy();
+      expect(resp).toEqual(recalculation);
+      expect(mockedAxios.request).toHaveBeenCalledWith({
+        headers: {},
+        method: "POST",
+        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}/recalculations/${recalculationID}/commit`,
+      });
+    } catch (error) {
+      expect(error).toBeFalsy();
+    }
+  });
 });

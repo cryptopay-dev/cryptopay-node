@@ -1,14 +1,14 @@
-import CryptoPay from "../../app";
+import CryptoPay from "../app";
 require("dotenv").config();
 import axios from "axios";
-import { invoiceParamsToTest } from "./invoiceParamsToTest";
+import { invoiceParamsToTest } from "./data/invoiceParamsToTest";
 // responce to test
-import ratesPair from "./rates/pair.json";
-import list from "./rates/list.json";
-import errorToTest from "./error.json";
-import invoiceCreated from "./invoice/invoice_created.json";
-import invoiceList from "./invoice/invoices_list.json";
-import recalculation from "./invoice/recalculation.json";
+import ratesPair from "./data/rates/pair.json";
+import list from "./data/rates/list.json";
+import errorToTest from "./data/error.json";
+import invoiceCreated from "./data/invoice/invoice_created.json";
+import invoiceList from "./data/invoice/invoices_list.json";
+import recalculation from "./data/invoice/recalculation.json";
 // fake data to test that
 const invoiceID = "invoiceID";
 const address = "address";

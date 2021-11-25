@@ -1,7 +1,7 @@
 import CryptoPay from "../../app";
 require("dotenv").config();
 import axios from "axios";
-import { invoiceParamsToTest } from "../../dataToTesting/invoiceParamsToTest";
+import { invoiceParamsToTest } from "./invoiceParamsToTest";
 // responce to test
 import ratesPair from "./rates/pair.json";
 import list from "./rates/list.json";
@@ -9,15 +9,18 @@ import errorToTest from "./error.json";
 import invoiceCreated from "./invoice/invoice_created.json";
 import invoiceList from "./invoice/invoices_list.json";
 import recalculation from "./invoice/recalculation.json";
+// fake data to test that
+const invoiceID = "invoiceID";
+const address = "address";
+const recalculationID = "recalculationId";
+const customID = "customID";
+
 
 const callback_secret = process.env.CALLBACK_SECRET || "";
 const api_key = process.env.API_KEY || "";
 const api_secret = process.env.API_SECRET || "";
 const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
-let invoiceID = "invoiceID";
-let address = "2NA7eYDPh8VMGm7ZhaUkpPmWhyaq5bsjYi2";
-let recalculationID = "recalculationId";
-const customID = "customID";
+
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 

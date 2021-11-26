@@ -8,7 +8,7 @@
     "start:dev": "tsc -w && nodemon dist/src/index.js",
     "test": "jest --clearCache && jest",
     "test:dev:path": "jest -- $npm_config_testpath",
-    "openApiGenerate": "openapi-generator-cli generate -i openapi.yml -g typescript-axios -o openApiGeneretedCode --additional-properties=supportsES6=true  --type-mappings Decimal=number"
+    "openApiGenerate": "openapi-generator-cli generate -i openapi.yml -g typescript-axios -o openApiGeneretedCode --additional-properties=supportsES6=true  --type-mappings Decimal=string"
   },
   "keywords": [],
   "author": "Muchnik Illia",

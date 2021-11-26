@@ -44,10 +44,10 @@ Use this command for starting a project in development phase:
 $ npm start
 ```
 
-Use this command for testing this project:
+Use this command to generate code from openapi.yml which should be stored in the project root:
 
 ```bash
-$ npm test
+$ npm run openApiGenerate
 ```
 
 ## Create instanse of crypto pay class
@@ -283,6 +283,9 @@ export interface ICustomError {
 ```
 
 ## Testing
+
+Use this command for testing this project:
+
 ```bash
 $ npm test
 ```

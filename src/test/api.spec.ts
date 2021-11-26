@@ -1,4 +1,4 @@
-import CryptoPay from "../app";
+import CryptoPay from "..";
 require("dotenv").config();
 import axios from "axios";
 import { invoiceParamsToTest } from "./data/invoiceParamsToTest";

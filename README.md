@@ -45,11 +45,10 @@ $ npm start
 ```
 
 Use this command to generate code from openapi.yml which should be stored in the project root:
-
-```bash
-$ npm run openApiGenerate
+bash
 ```
-
+bash scriptToGenerateCode.sh
+```
 ## Create instanse of crypto pay class
 
 

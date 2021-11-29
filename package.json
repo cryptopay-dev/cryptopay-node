@@ -7,7 +7,7 @@
     "start": "tsc && node dist/src/index.js",
     "start:dev": "tsc -w && nodemon dist/src/index.js",
     "test": "jest --clearCache && jest",
-    "test:dev:path": "jest -- $npm_config_testpath",
+    "test:dev:path": "jest -- $npm_config_testpath"
   },
   "keywords": [],
   "author": "Muchnik Illia",

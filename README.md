@@ -49,6 +49,11 @@ bash
 ```
 bash scriptToGenerateCode.sh
 ```
+If you don't have openapi-generator-cli
+ bash
+```
+npm install @openapitools/openapi-generator-cli -g
+```
 ## Create instanse of crypto pay class
 
 

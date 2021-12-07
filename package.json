@@ -10,7 +10,7 @@
     "test": "jest --clearCache && jest",
     "test:dev:path": "jest -- $npm_config_testpath",
     "lint": "eslint . --ext .ts ",
-    "lint:fix": "eslint . --fix .ts"
+    "lint:fix": "eslint src/*.ts --fix "
   },
   "keywords": [],
   "author": "Muchnik Illia",
@@ -21,6 +21,7 @@
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
     "eslint": "^8.4.1",
+    "eslint-config-prettier": "^8.3.0",
     "install": "^0.13.0",
     "jest": "^27.3.1",
     "nodemon": "^2.0.15",

@@ -22,9 +22,9 @@ import {
   RateResult,
   RatesResult,
   Risk,
-} from "../../openApiGeneretedCode";
-import { ICustomError } from "./ICustomError";
-import { IHeaders } from "./IHeaders";
+} from '../../openApiGeneretedCode';
+import { ICustomError } from './ICustomError';
+import { IHeaders } from './IHeaders';
 export {
   ChannelPayment,
   ChannelPaymentCallback,

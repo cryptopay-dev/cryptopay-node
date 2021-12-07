@@ -1,8 +1,8 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { ICustomError } from "../interfaces/ICustomError";
 
-export const CustomErrorCreater = (err: any): ICustomError => {
-  const { data, status, config } = (err as AxiosError)
+export const CustomErrorCreater = (err: AxiosError): ICustomError => {
+  const { data, status, config } = (err)
     .response as AxiosResponse;
   const { method = "get" } = config;
   return {

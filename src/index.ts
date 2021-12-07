@@ -9,7 +9,9 @@ import { IHeaders } from "./interfaces";
 dotenv.config();
 
 export default class CryptoPay {
+  /* eslint-disable @typescript-eslint/no-explicit-any*/
   private InvoicesApi: any;
+  /* eslint-disable @typescript-eslint/no-explicit-any*/
   private RatesApi: any;
   constructor(
     private apiSecret: string,
@@ -55,7 +57,7 @@ export default class CryptoPay {
   public ratesApi = () => {
     return this.RatesApi;
   }
-
+/* eslint-disable @typescript-eslint/no-explicit-any*/
   public callbackVerification = (body: string, headers: any): boolean => {
     return (
       CryptoJS.HmacSHA256(body, this.callbackSecret).toString() ===

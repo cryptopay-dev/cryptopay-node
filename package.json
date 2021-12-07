@@ -7,7 +7,8 @@
     "start": "tsc && node dist/src/index.js",
     "start:dev": "tsc -w && nodemon dist/src/index.js",
     "test": "jest --clearCache && jest",
-    "test:dev:path": "jest -- $npm_config_testpath"
+    "test:dev:path": "jest -- $npm_config_testpath",
+    "lint": "tslint src/**/*.ts --fix"
   },
   "keywords": [],
   "author": "Muchnik Illia",
@@ -15,6 +16,7 @@
   "devDependencies": {
     "@types/crypto-js": "^4.0.2",
     "@types/jest": "^27.0.2",
+    "eslint": "^8.4.1",
     "install": "^0.13.0",
     "jest": "^27.3.1",
     "nodemon": "^2.0.15",
@@ -27,5 +29,11 @@
     "axios": "^0.21.4",
     "crypto-js": "^4.1.1",
     "dotenv": "^10.0.0"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "node_modules/.bin/eslint --max-warnings=0",
+      "eslint src/**/*.ts"
+    ]
   }
 }

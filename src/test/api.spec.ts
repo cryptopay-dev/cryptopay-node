@@ -1,4 +1,3 @@
-// require("dotenv").config();
 import axios from "axios";
 import dotenv from "dotenv";
 import CryptoPay from "..";

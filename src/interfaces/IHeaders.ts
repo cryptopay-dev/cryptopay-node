@@ -5,10 +5,10 @@
  */
 
 export interface IHeaders {
-    headers:{
+    headers: {
         Date: string,
         Authorization: string,
         "Content-Type": string,
-        'User-Agent': string
-    }
+        "User-Agent": string,
+    };
 }

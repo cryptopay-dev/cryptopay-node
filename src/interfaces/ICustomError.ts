@@ -5,7 +5,7 @@
  */
 
  export interface ICustomError {
-    method:string,
-    httpStatus:number,
-    responseBody:object,
+    method: string;
+    httpStatus: number;
+    responseBody: object;
 }

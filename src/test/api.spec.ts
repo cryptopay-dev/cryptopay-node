@@ -1,25 +1,26 @@
-import CryptoPay from "..";
-require("dotenv").config();
+// require("dotenv").config();
 import axios from "axios";
-import { invoiceParamsToTest } from "./data/invoiceParamsToTest";
-// responce to test
-import ratesPair from "./data/rates/pair.json";
-import list from "./data/rates/list.json";
+import dotenv from "dotenv";
+import CryptoPay from "..";
 import errorToTest from "./data/error.json";
 import invoiceCreated from "./data/invoice/invoice_created.json";
 import invoiceList from "./data/invoice/invoices_list.json";
 import recalculation from "./data/invoice/recalculation.json";
+import { invoiceParamsToTest } from "./data/invoiceParamsToTest";
+import list from "./data/rates/list.json";
+// responce to test
+import ratesPair from "./data/rates/pair.json";
+dotenv.config();
 // fake data to test that
 const invoiceID = "invoiceID";
 const address = "address";
 const recalculationID = "recalculationId";
 const customID = "customID";
 
-
-const callback_secret = process.env.CALLBACK_SECRET || "";
-const api_key = process.env.API_KEY || "";
-const api_secret = process.env.API_SECRET || "";
-const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
+const callbackSecret = process.env.CALLBACK_SECRET || "";
+const apiKey = process.env.API_KEY || "";
+const apiSecret = process.env.API_SECRET || "";
+const cryptoPay = new CryptoPay(apiSecret, apiKey, callbackSecret);
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -31,7 +32,11 @@ describe("Rates", () => {
       const resp = await cryptoPay.ratesApi().ratesAll();
       expect(resp).toBeTruthy();
       expect(resp).toEqual(list);
-      expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates`})
+      expect(mockedAxios.request).toHaveBeenCalledWith({
+        headers: {},
+        method: "GET",
+        url: `${cryptoPay.getUrl()}/api/rates`,
+      });
     } catch (error) {
       expect(error).toBeFalsy();
     }
@@ -41,7 +46,11 @@ describe("Rates", () => {
       mockedAxios.request.mockResolvedValue(ratesPair);
       const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
       expect(resp).toEqual(ratesPair);
-      expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates/BTC%2FEUR`});
+      expect(mockedAxios.request).toHaveBeenCalledWith({
+        headers: {},
+        method: "GET",
+        url: `${cryptoPay.getUrl()}/api/rates/BTC%2FEUR`,
+      });
     } catch (error) {
       expect(error).toBeFalsy();
     }
@@ -50,7 +59,11 @@ describe("Rates", () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
       await cryptoPay.ratesApi().ratesRetrieve("wrongParams");
-      expect(mockedAxios.request).toHaveBeenCalledWith( {"headers": {}, "method": "GET", "url": `${cryptoPay.getUrl()}/api/rates`})
+      expect(mockedAxios.request).toHaveBeenCalledWith({
+        headers: {},
+        method: "GET",
+        url: `${cryptoPay.getUrl()}/api/rates`,
+      });
     } catch (error) {
       expect(error).toBeTruthy();
       expect(error).toEqual(errorToTest);

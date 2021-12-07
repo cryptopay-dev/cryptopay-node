@@ -1,4 +1,4 @@
-import { AxiosResponse, AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { ICustomError } from "../interfaces/ICustomError";
 
 export const CustomErrorCreater = (err: any): ICustomError => {

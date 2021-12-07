@@ -1,10 +1,10 @@
 import {
-  ChannelPaymentCallbackTypeEnum,
   ChannelPaymentCallbackEvent,
-  CoinWithdrawalCallbackTypeEnum,
+  ChannelPaymentCallbackTypeEnum,
   CoinWithdrawalCallbackEvent,
-  InvoiceCallbackTypeEnum,
+  CoinWithdrawalCallbackTypeEnum,
   InvoiceCallbackEvent,
+  InvoiceCallbackTypeEnum,
   InvoiceStatus,
   InvoiceStatusContext,
   RiskLevelEnum,
@@ -20,4 +20,4 @@ export {
     InvoiceStatus,
     InvoiceStatusContext,
     RiskLevelEnum,
-  }
+  };

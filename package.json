@@ -9,7 +9,7 @@
     "build":"tsc",
     "test": "jest --clearCache && jest",
     "test:dev:path": "jest -- $npm_config_testpath",
-    "lint": "tslint src/**/*.ts --fix"
+    "lint": "tslint src/**/*.ts"
   },
   "keywords": [],
   "author": "Muchnik Illia",

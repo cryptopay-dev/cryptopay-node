@@ -5,6 +5,7 @@ require('dotenv').config()
 import axios from 'axios'
 import { CustomErrorCreater } from './helpers/errorCreaterHelper'
 import { IHeaders } from './interfaces'
+import { SERVER } from './constants'
 
 export default class CryptoPay {
   private InvoicesApi: any
@@ -13,7 +14,7 @@ export default class CryptoPay {
     private api_secret: string,
     private api_key: string,
     private callback_secret: string,
-    private url: string = 'https://business-sandbox.cryptopay.me'
+    private url: string = SERVER.sandbox
   ) {
     // request interceptor
     axios.interceptors.request.use(req => {
@@ -44,9 +45,6 @@ export default class CryptoPay {
     )
   }
 
-  public setUrl = (newUrl: string) => {
-    this.url = newUrl
-  }
   public getUrl = () => {
     return this.url
   }

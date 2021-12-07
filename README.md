@@ -58,9 +58,8 @@ npm install @openapitools/openapi-generator-cli -g
 
 
 ```js
-const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret);
-// set custom url if you need. default https://business-sandbox.cryptopay.me
-cryptoPay.setUrl('https://customUrl.com/') 
+// Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
+const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
 ```
 
 ## Usage Examples

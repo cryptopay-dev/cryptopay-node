@@ -34,7 +34,7 @@ describe('Rates', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/rates`,
+        url: `${cryptoPay.url}/api/rates`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -48,7 +48,7 @@ describe('Rates', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/rates/BTC%2FEUR`,
+        url: `${cryptoPay.url}/api/rates/BTC%2FEUR`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -61,7 +61,7 @@ describe('Rates', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/rates`,
+        url: `${cryptoPay.url}/api/rates`,
       });
     } catch (error) {
       expect(error).toBeTruthy();
@@ -80,7 +80,7 @@ describe('Invoice', () => {
         data: JSON.stringify(invoiceParamsToTest),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
-        url: `${cryptoPay.getUrl()}/api/invoices`,
+        url: `${cryptoPay.url}/api/invoices`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -94,7 +94,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/invoices`,
+        url: `${cryptoPay.url}/api/invoices`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -109,7 +109,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}`,
+        url: `${cryptoPay.url}/api/invoices/${invoiceID}`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -123,7 +123,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/invoices/wrongParams`,
+        url: `${cryptoPay.url}/api/invoices/wrongParams`,
       });
     } catch (error) {
       expect(error).toBeTruthy();
@@ -140,7 +140,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/invoices/custom_id/${customID}`,
+        url: `${cryptoPay.url}/api/invoices/custom_id/${customID}`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -154,7 +154,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/invoices/custom_id/wrongParams`,
+        url: `${cryptoPay.url}/api/invoices/custom_id/wrongParams`,
       });
     } catch (error) {
       expect(error).toBeTruthy();
@@ -171,7 +171,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}/refunds`,
+        url: `${cryptoPay.url}/api/invoices/${invoiceID}/refunds`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -184,7 +184,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.getUrl()}/api/invoices/wrongParams/refunds`,
+        url: `${cryptoPay.url}/api/invoices/wrongParams/refunds`,
       });
     } catch (error) {
       expect(error).toBeTruthy();
@@ -204,7 +204,7 @@ describe('Invoice', () => {
         },
         data: 'true',
         method: 'POST',
-        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}/recalculations`,
+        url: `${cryptoPay.url}/api/invoices/${invoiceID}/recalculations`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -223,7 +223,7 @@ describe('Invoice', () => {
         },
         data: address,
         method: 'POST',
-        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}/refunds`,
+        url: `${cryptoPay.url}/api/invoices/${invoiceID}/refunds`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -238,7 +238,7 @@ describe('Invoice', () => {
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'POST',
-        url: `${cryptoPay.getUrl()}/api/invoices/${invoiceID}/recalculations/${recalculationID}/commit`,
+        url: `${cryptoPay.url}/api/invoices/${invoiceID}/recalculations/${recalculationID}/commit`,
       });
     } catch (error) {
       expect(error).toBeFalsy();

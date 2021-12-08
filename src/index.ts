@@ -13,13 +13,14 @@ export default class CryptoPay {
   private InvoicesApi: any;
   /* eslint-disable @typescript-eslint/no-explicit-any*/
   private RatesApi: any;
-  constructor(
-    private apiSecret: string,
-    private apiKey: string,
-    private callbackSecret: string,
-    private url: string = SERVER.sandbox
-  ) {
-    const customizedAxios = this.customizationAxios()
+  private url: string = SERVER.sandbox;
+  constructor(private apiSecret: string, private apiKey: string, private callbackSecret: string, url?: string) {
+    if (url && Object.values(SERVER).includes(url)) {
+      this.url = url;
+    } else {
+      this.url = SERVER.sandbox;
+    }
+    const customizedAxios = this.customizationAxios();
     this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(undefined, this.url, customizedAxios);
     this.RatesApi = openApiGeneretedCode.RatesApiFactory(undefined, this.url, customizedAxios);
   }
@@ -39,8 +40,8 @@ export default class CryptoPay {
         return res?.data;
       },
       (error) => Promise.reject(CustomErrorCreater(error))
-    ); 
-    
+    );
+
     return axios;
   };
 
@@ -73,3 +74,11 @@ export default class CryptoPay {
     };
   }
 }
+
+const test = () => {
+  const callbackSecret = process.env.CALLBACK_SECRET || '';
+  const apiKey = process.env.API_KEY || '';
+  const apiSecret = process.env.API_SECRET || '';
+  const cryptoPay = new CryptoPay(apiSecret, apiKey, callbackSecret);
+};
+test();

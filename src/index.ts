@@ -76,5 +76,4 @@ export default class CryptoPay {
       },
     };
   }
-  /* eslint-enable @typescript-eslint/no-explicit-any*/
 }

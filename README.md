@@ -1,7 +1,13 @@
-# Crypto Pay
-The official NODE library for Cryptopay API.
+# Cryptopay Node Library
+
+Cryptopay - the official Ruby gem for the Cryptopay API
+
+Cryptopay is a payment gateway and business wallet that allows merchants to automate the processes of accepting cryptocurrency payments and payouts from their customers, as well as making currency exchange transactions and receiving data on the transaction history and account balance statuses for reporting.
+
+For more information, please visit [Cryptopay API docs](https://developers.cryptopay.me).
 
 ## Table of Contents
+
 - [Versions](#versions)
 - [Documentation](#documentation)
 - [Installation](#installation)
@@ -14,22 +20,24 @@ The official NODE library for Cryptopay API.
   - [Other methods](#other-methods)
 - [Error interface](#error-interface)
 - [Testing](#testing)
-### VERSIONS 
+
+### VERSIONS
+
 - node v14 or higher
 - npm v8 or higher
-### Documentation 
+
+### Documentation
+
 For more details visit [CryptopayAPI](https://developers.cryptopay.me)
 
-To start using this library, register an account on
-    [Cryptopay Sandbox](https://business-sandbox.cryptopay.me/)
-    [Guide](https://developers.cryptopay.me/guides/creating-a-test-account)
-or
-    [Cryptopay Live](https://business.cryptopay.me/)
+To start using this library, register an account on [Cryptopay Sandbox](https://business-sandbox.cryptopay.me/) [Guide](https://developers.cryptopay.me/guides/creating-a-test-account) or [Cryptopay Live](https://business.cryptopay.me/)
 
 You should have the following 3 parameters:
-~~~~
+
+```
 ApiKey, ApiSecret, CallbackApiSecret
-~~~~
+```
+
 ## Installation
 
 Use this command install node modules:
@@ -44,18 +52,19 @@ Use this command for starting a project in development phase:
 $ npm start
 ```
 
-Use this command to generate code from openapi.yml which should be stored in the project root:
-bash
+Use this command to generate code from openapi.yml which should be stored in the project root: bash
+
 ```
 bash scriptToGenerateCode.sh
 ```
-If you don't have openapi-generator-cli
- bash
+
+If you don't have openapi-generator-cli bash
+
 ```
 npm install @openapitools/openapi-generator-cli -g
 ```
-## Create instanse of crypto pay class
 
+## Create instanse of crypto pay class
 
 ```js
 // Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
@@ -92,7 +101,7 @@ This endpoint allows you to retrieve a public rate by currency pair.
 ##### Method call
 
 ```ts
-const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
+const resp = await cryptoPay.ratesApi().ratesRetrieve('BTC/EUR');
 ```
 
 ##### Response
@@ -135,16 +144,16 @@ export interface IInvoiceParams {
 
 ```ts
 const invoice = {
-  price_amount: "100.0",
-  price_currency: "EUR",
-  pay_currency: "BTC",
-  custom_id: "PAYMENT-123",
-  customer_id: "CUSTOMER-123",
-  name: "name",
-  description: "description",
-  metadata: { description: "description" }, // Custom key-valued data
-  success_redirect_url: "https://www.google.com",
-  unsuccess_redirect_url: "https://www.google.com",
+  price_amount: '100.0',
+  price_currency: 'EUR',
+  pay_currency: 'BTC',
+  custom_id: 'PAYMENT-123',
+  customer_id: 'CUSTOMER-123',
+  name: 'name',
+  description: 'description',
+  metadata: { description: 'description' }, // Custom key-valued data
+  success_redirect_url: 'https://www.google.com',
+  unsuccess_redirect_url: 'https://www.google.com',
 };
 ```
 
@@ -180,18 +189,18 @@ const invoice = {
   }
 
   enum invoiceStatusEnum {
-    "new",
-    "completed",
-    "unresolved",
-    "refunded",
-    "cancelled",
+    'new',
+    'completed',
+    'unresolved',
+    'refunded',
+    'cancelled',
   }
 
   enum invoiceStatusContextEnum {
-    "overpaid",
-    "underpaid",
-    "paid_late",
-    "illicit_resource",
+    'overpaid',
+    'underpaid',
+    'paid_late',
+    'illicit_resource',
   }
 }
 ```
@@ -241,43 +250,47 @@ const invoice = {
     "expires_at": "2021-11-11T14:53:47.378Z"
   }
 ```
+
 ### Callback Verification
+
 ```ts
-    // body must be json, headers are all your headers in response
-    //if the callback is valid method returns true 
-    cryptoPay.callbackVerification(body, headers) 
+// body must be json, headers are all your headers in response
+//if the callback is valid method returns true
+cryptoPay.callbackVerification(body, headers);
 ```
+
 ### Other methods
+
 ```ts
-    //This endpoint allows you to retrieve a list of all invoices.
-    await cryptoPay.invoicesApi().invoicesList();
+//This endpoint allows you to retrieve a list of all invoices.
+await cryptoPay.invoicesApi().invoicesList();
 
-    //This endpoint allows you to retrieve the invoice details by invoice id
-    await cryptoPay.invoicesApi().invoicesRetrieve('invoice_id'); 
+//This endpoint allows you to retrieve the invoice details by invoice id
+await cryptoPay.invoicesApi().invoicesRetrieve('invoice_id');
 
-    // This endpoint allows you to retrieve invoice details by its custom_id.
-    await cryptoPay.invoicesApi().invoicesRetrieveByCustomId('custom_id');
+// This endpoint allows you to retrieve invoice details by its custom_id.
+await cryptoPay.invoicesApi().invoicesRetrieveByCustomId('custom_id');
 
-    //This endpoint allows you to recalculate invoices.
-    await cryptoPay.invoicesApi().invoicesCreateRecalculation('invoice_id', true) 
+//This endpoint allows you to recalculate invoices.
+await cryptoPay.invoicesApi().invoicesCreateRecalculation('invoice_id', true);
 
-    // This endpoint allows you to commit invoice recalculation.
-    await cryptoPay.invoicesApi().invoicesCommitRecalculation('invoice_id','recalculation_id') 
+// This endpoint allows you to commit invoice recalculation.
+await cryptoPay.invoicesApi().invoicesCommitRecalculation('invoice_id', 'recalculation_id');
 
-    //This endpoint allows you to create invoice refunds.
-    await cryptoPay.invoicesApi().invoicesCreateRefund('invoice_id') 
+//This endpoint allows you to create invoice refunds.
+await cryptoPay.invoicesApi().invoicesCreateRefund('invoice_id');
 
-    //This endpoint allows you to retrieve a list of a particular invoice refunds.
-    await cryptoPay.invoicesApi().invoicesListRefunds('invoice_id')
-
+//This endpoint allows you to retrieve a list of a particular invoice refunds.
+await cryptoPay.invoicesApi().invoicesListRefunds('invoice_id');
 ```
 
 ## Error interface
+
 ```ts
 export interface ICustomError {
-    method:string,
-    httpStatus:number,
-    responseBody:object,
+  method: string;
+  httpStatus: number;
+  responseBody: object;
 }
 ```
 

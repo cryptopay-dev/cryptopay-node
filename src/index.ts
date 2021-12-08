@@ -19,7 +19,12 @@ export default class CryptoPay {
     private callbackSecret: string,
     private url: string = SERVER.sandbox
   ) {
-    // request interceptor
+    const customizedAxios = this.customizationAxios()
+    this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(undefined, this.url, customizedAxios);
+    this.RatesApi = openApiGeneretedCode.RatesApiFactory(undefined, this.url, customizedAxios);
+  }
+
+  private customizationAxios = () => {
     axios.interceptors.request.use((req) => {
       const { method = 'get', data = '' } = req;
       req.url = req.url?.replace('%2F', '/');
@@ -28,17 +33,16 @@ export default class CryptoPay {
       req.headers = { ...req.headers, ...customHeaders.headers };
       return req;
     });
-    // response interceptor
+
     axios.interceptors.response.use(
       (res) => {
         return res?.data;
       },
       (error) => Promise.reject(CustomErrorCreater(error))
-    ); // error interceptor
-
-    this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(undefined, this.url, axios);
-    this.RatesApi = openApiGeneretedCode.RatesApiFactory(undefined, this.url, axios);
-  }
+    ); 
+    
+    return axios;
+  };
 
   public getUrl = () => {
     return this.url;

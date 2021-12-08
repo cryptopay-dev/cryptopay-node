@@ -20,7 +20,6 @@ export default class CryptoPay {
     } else {
       this.url = SERVER.sandbox;
     }
-    console.log(this.url)
     const customizedAxios = this.customizationAxios();
     this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(undefined, this.url, customizedAxios);
     this.RatesApi = openApiGeneretedCode.RatesApiFactory(undefined, this.url, customizedAxios);

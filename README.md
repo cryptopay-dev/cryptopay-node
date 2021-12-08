@@ -1,6 +1,6 @@
 # Cryptopay Node Library
 
-Cryptopay - the official Ruby gem for the Cryptopay API
+Cryptopay - the official NodeJS library for the Cryptopay API
 
 Cryptopay is a payment gateway and business wallet that allows merchants to automate the processes of accepting cryptocurrency payments and payouts from their customers, as well as making currency exchange transactions and receiving data on the transaction history and account balance statuses for reporting.
 

@@ -12,6 +12,8 @@ export default class CryptoPay {
   /* eslint-disable @typescript-eslint/no-explicit-any*/
   private InvoicesApi: any;
   private RatesApi: any;
+  /* eslint-enable @typescript-eslint/no-explicit-any*/
+
   public readonly url: string = SERVER.sandbox;
 
   constructor(private apiSecret: string, private apiKey: string, private callbackSecret: string, url?: string) {
@@ -36,6 +38,7 @@ export default class CryptoPay {
   public callbackVerification = (body: string, headers: any): boolean => {
     return CryptoJS.HmacSHA256(body, this.callbackSecret).toString() === headers['x-cryptopay-signature'];
   };
+  /* eslint-enable @typescript-eslint/no-explicit-any*/
 
   private customizationAxios = () => {
     axios.interceptors.request.use((req) => {
@@ -73,4 +76,5 @@ export default class CryptoPay {
       },
     };
   }
+  /* eslint-enable @typescript-eslint/no-explicit-any*/
 }

@@ -1,35 +1,21 @@
-# Crypto Pay
-The official NODE library for Cryptopay API.
+# Cryptopay Node Library
 
-## Table of Contents
-- [Versions](#versions)
-- [Documentation](#documentation)
-- [Installation](#installation)
-- [Create instanse of crypto pay class](#create-instanse-of-crypto-pay-class)
-- [Usage Examples](#usage-examples)
-  - [Get rates](#get-rates)
-  - [Get rates by pair](#get-rates-by-pair)
-  - [Create invoice](#create-invoice)
-  - [Callback Verification](#callback-verification)
-  - [Other methods](#other-methods)
-- [Error interface](#error-interface)
-- [Testing](#testing)
-### VERSIONS 
-- node v14 or higher
-- npm v8 or higher
-### Documentation 
-For more details visit [CryptopayAPI](https://developers.cryptopay.me)
+Cryptopay - the official Node for the Cryptopay API
 
-To start using this library, register an account on
-    [Cryptopay Sandbox](https://business-sandbox.cryptopay.me/)
-    [Guide](https://developers.cryptopay.me/guides/creating-a-test-account)
-or
-    [Cryptopay Live](https://business.cryptopay.me/)
+Cryptopay is a payment gateway and business wallet that allows merchants to automate the processes of accepting cryptocurrency payments and payouts from their customers, as well as making currency exchange transactions and receiving data on the transaction history and account balance statuses for reporting.
 
-You should have the following 3 parameters:
-~~~~
-ApiKey, ApiSecret, CallbackApiSecret
-~~~~
+For more information, please visit [Cryptopay API docs](https://developers.cryptopay.me).
+
+# Table of contents
+
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Usage](#usage)
+   * [Invoices](#invoices)
+   * [Rates](#rates)
+* [Callbacks](#callbacks)
+* [Contributing](#contributing)
+
 ## Installation
 
 Use this command install node modules:
@@ -54,55 +40,32 @@ If you don't have openapi-generator-cli
 ```
 npm install @openapitools/openapi-generator-cli -g
 ```
-## Create instanse of crypto pay class
 
+### Requirements
+
+* node v14+
+* npm v8+ 
+
+## Configuration
+
+### Create API credentials
+
+Learn mode about API credentials at [Developers guide](https://developers.cryptopay.me/guides/api-credentials)
+
+### Configure library
 
 ```js
 // Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
 const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
 ```
 
-## Usage Examples
+## Usage
 
-### Get rates
+### Invoices
 
-This endpoint allows you to retrieve all public rates.
+An invoice is a request for a cryptocurrency payment which contains a unique BTC, LTC, ETH or XRP address and the amount that has to be paid while the invoice is valid.
 
-##### Method call
-
-```ts
-const resp = await cryptoPay.ratesApi().ratesAll();
-```
-
-##### Response
-
-```ts
-{
-"BTC/EUR": {
-      "buy_rate": "39000.1",
-      "sell_rate": "38000.1"
-  }
-}
-```
-
-### Get rates by pair
-
-This endpoint allows you to retrieve a public rate by currency pair.
-
-##### Method call
-
-```ts
-const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
-```
-
-##### Response
-
-```ts
-{
-      "buy_rate": "39000.1",
-      "sell_rate": "38000.1"
-}
-```
+[Invoices API docs](https://developers.cryptopay.me/reference/invoices)
 
 ### Create invoice
 
@@ -241,12 +204,6 @@ const invoice = {
     "expires_at": "2021-11-11T14:53:47.378Z"
   }
 ```
-### Callback Verification
-```ts
-    // body must be json, headers are all your headers in response
-    //if the callback is valid method returns true 
-    cryptoPay.callbackVerification(body, headers) 
-```
 ### Other methods
 ```ts
     //This endpoint allows you to retrieve a list of all invoices.
@@ -272,19 +229,42 @@ const invoice = {
 
 ```
 
-## Error interface
+
+### Rates
+
+[Public rates API docs](https://developers.cryptopay.me/reference/public-rates)
+
+#### Retrieve all rates
+
+
 ```ts
-export interface ICustomError {
-    method:string,
-    httpStatus:number,
-    responseBody:object,
-}
+const resp = await cryptoPay.ratesApi().ratesAll();
 ```
 
-## Testing
+#### Retrieve a pair rate
 
-Use this command for testing this project:
 
-```bash
-$ npm test
+```ts
+const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
 ```
+
+
+## Callbacks
+
+[Documentation](https://developers.cryptopay.me/guides/api-basics/callbacks)
+
+Every callback request contains a `X-Cryptopay-Signature` header which is needed to verify webhook body
+
+```ts
+    // body must be json, headers are all your headers in response
+    //if the callback is valid method returns true 
+    cryptoPay.callbackVerification(body, headers) 
+```
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/cryptopay-dev/cryptopay-node.
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

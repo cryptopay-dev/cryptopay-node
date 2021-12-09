@@ -47,8 +47,8 @@ export default class CryptoPay {
     if (!body) throw new Error('Body is empty');
     try {
       JSON.parse(body);
-    } catch (err) {
-      throw new Error('Invalid JSON in body. Error message: Unexpected end of JSON input');
+    } catch ({message}) {
+      throw new Error(`Invalid JSON in body. Error message: ${message}`);
     }
     if (!headers['x-cryptopay-signature']) throw new Error('Header x-cryptopay-signature is missing or empty');
   };

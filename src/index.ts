@@ -36,10 +36,16 @@ export default class CryptoPay {
 
   /* eslint-disable @typescript-eslint/no-explicit-any*/
   public callbackVerification = (body: string, headers: any): boolean => {
-    return CryptoJS.HmacSHA256(body, this.callbackSecret).toString() === headers['x-cryptopay-signature'];
+    const expectedSignature = CryptoJS.HmacSHA256(body, this.callbackSecret).toString();
+    const signature = headers['x-cryptopay-signature'];
+    return expectedSignature === signature && this.secureCompare(signature, expectedSignature);
   };
   /* eslint-enable @typescript-eslint/no-explicit-any*/
-
+  private secureCompare(str1: string, str2: string): boolean {
+    const givenBuff = Buffer.from(str1);
+    const computedBuff = Buffer.from(str2);
+    return givenBuff.equals(computedBuff);
+  }
   private customizationAxios = () => {
     axios.interceptors.request.use((req) => {
       const { method = 'get', data = '' } = req;

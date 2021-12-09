@@ -258,16 +258,38 @@ describe('Validation callback', () => {
     expect(correct).toBeTruthy();
   });
   it('Without headers', () => {
-    const correct = cryptoPay.callbackVerification(body, {});
-    expect(correct).toBeFalsy();
+    try {
+      cryptoPay.callbackVerification(body, {});
+    } catch ({ message }) {
+      expect(message).toEqual('Header x-cryptopay-signature is missing or empty');
+    }
+  });
+
+  it('With wrong headers', () => {
+    try {
+      cryptoPay.callbackVerification(body, { wrong: 'wrong' });
+    } catch ({ message }) {
+      expect(message).toEqual('Header x-cryptopay-signature is missing or empty');
+    }
   });
   it('With wrong body', () => {
     const wrongBody = '{"wrong":"wrong"}';
-    const correct = cryptoPay.callbackVerification(wrongBody, {});
+    const correct = cryptoPay.callbackVerification(wrongBody, { 'x-cryptopay-signature': signature });
     expect(correct).toBeFalsy();
   });
-  it('With wrong bodyt headers', () => {
-    const correct = cryptoPay.callbackVerification(body, { wrong: 'wrong' });
-    expect(correct).toBeFalsy();
+  it('Without body', () => {
+    try {
+      cryptoPay.callbackVerification('', { 'x-cryptopay-signature': signature });
+    } catch ({ message }) {
+      expect(message).toEqual('Body is empty');
+    }
+  });
+
+  it('Not valid json', () => {
+    try {
+      cryptoPay.callbackVerification('{', { 'x-cryptopay-signature': signature });
+    } catch ({ message }) {
+      expect(message).toEqual('Invalid JSON in body. Error message: Unexpected end of JSON input');
+    }
   });
 });

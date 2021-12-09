@@ -36,16 +36,29 @@ export default class CryptoPay {
 
   /* eslint-disable @typescript-eslint/no-explicit-any*/
   public callbackVerification = (body: string, headers: any): boolean => {
+    this.validateBodyAndHeader(body, headers);
     const expectedSignature = CryptoJS.HmacSHA256(body, this.callbackSecret).toString();
     const signature = headers['x-cryptopay-signature'];
-    return expectedSignature === signature && this.secureCompare(signature, expectedSignature);
+    return this.secureCompare(signature, expectedSignature);
   };
   /* eslint-enable @typescript-eslint/no-explicit-any*/
+  /* eslint-disable @typescript-eslint/no-explicit-any*/
+  private validateBodyAndHeader = (body: string, headers: any) => {
+    if (!body) throw new Error('Body is empty');
+    try {
+      JSON.parse(body);
+    } catch (err) {
+      throw new Error('Invalid JSON in body. Error message: Unexpected end of JSON input');
+    }
+    if (!headers['x-cryptopay-signature']) throw new Error('Header x-cryptopay-signature is missing or empty');
+  };
+  /* eslint-disable @typescript-eslint/no-explicit-any*/
   private secureCompare(str1: string, str2: string): boolean {
     const givenBuff = Buffer.from(str1);
     const computedBuff = Buffer.from(str2);
     return givenBuff.equals(computedBuff);
   }
+
   private customizationAxios = () => {
     axios.interceptors.request.use((req) => {
       const { method = 'get', data = '' } = req;

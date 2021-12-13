@@ -41,8 +41,7 @@ export default class CryptoPay {
     const signature = headers['x-cryptopay-signature'];
     return this.secureCompare(signature, expectedSignature);
   };
-  /* eslint-enable @typescript-eslint/no-explicit-any*/
-  /* eslint-disable @typescript-eslint/no-explicit-any*/
+
   private validateBodyAndHeader = (body: string, headers: any) => {
     if (!body) throw new Error('Body is empty');
     try {
@@ -53,6 +52,7 @@ export default class CryptoPay {
     if (!headers['x-cryptopay-signature']) throw new Error('Header x-cryptopay-signature is missing or empty');
   };
   /* eslint-disable @typescript-eslint/no-explicit-any*/
+
   private secureCompare(str1: string, str2: string): boolean {
     const givenBuff = Buffer.from(str1);
     const computedBuff = Buffer.from(str2);

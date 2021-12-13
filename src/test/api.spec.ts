@@ -10,6 +10,7 @@ import list from './data/rates/list.json';
 // responce to test
 import ratesPair from './data/rates/pair.json';
 dotenv.config();
+
 // fake data to test that
 const invoiceID = 'invoiceID';
 const address = 'address';
@@ -19,6 +20,7 @@ const customID = 'customID';
 const callbackSecret = process.env.CALLBACK_SECRET || '';
 const apiKey = process.env.API_KEY || '';
 const apiSecret = process.env.API_SECRET || '';
+
 const cryptoPay = new CryptoPay(apiSecret, apiKey, callbackSecret);
 
 jest.mock('axios');
@@ -40,6 +42,7 @@ describe('Rates', () => {
       expect(error).toBeFalsy();
     }
   });
+
   it('Get Rete  By Pair validation response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(ratesPair);
@@ -54,6 +57,7 @@ describe('Rates', () => {
       expect(error).toBeFalsy();
     }
   });
+
   it('Get Retes By Pair with wrong params', async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
@@ -86,6 +90,7 @@ describe('Invoice', () => {
       expect(error).toBeFalsy();
     }
   });
+
   it('Get list invoice has response ', async () => {
     try {
       mockedAxios.request.mockResolvedValue(invoiceList);
@@ -177,6 +182,7 @@ describe('Invoice', () => {
       expect(error).toBeFalsy();
     }
   });
+
   it('Get list refund list with wrong param ', async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
@@ -229,6 +235,7 @@ describe('Invoice', () => {
       expect(error).toBeFalsy();
     }
   });
+
   it('Commit recalculate invoices has response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(recalculation);
@@ -257,6 +264,7 @@ describe('Validation callback', () => {
     const correct = cryptoPay.callbackVerification(body, { 'x-cryptopay-signature': signature });
     expect(correct).toBeTruthy();
   });
+
   it('Without headers', () => {
     try {
       cryptoPay.callbackVerification(body, {});
@@ -272,11 +280,13 @@ describe('Validation callback', () => {
       expect(message).toEqual('Header x-cryptopay-signature is missing or empty');
     }
   });
+
   it('With wrong body', () => {
     const wrongBody = '{"wrong":"wrong"}';
     const correct = cryptoPay.callbackVerification(wrongBody, { 'x-cryptopay-signature': signature });
     expect(correct).toBeFalsy();
   });
+
   it('Without body', () => {
     try {
       cryptoPay.callbackVerification('', { 'x-cryptopay-signature': signature });

@@ -46,12 +46,12 @@ describe('Rates', () => {
   it('Get Rete  By Pair validation response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(ratesPair);
-      const resp = await cryptoPay.ratesApi().ratesRetrieve('BTC/EUR');
+      const resp = await cryptoPay.ratesApi().ratesRetrieve('BTC','EUR');
       expect(resp).toEqual(ratesPair);
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
-        url: `${cryptoPay.url}/api/rates/BTC%2FEUR`,
+        url: `${cryptoPay.url}/api/rates`,
       });
     } catch (error) {
       expect(error).toBeFalsy();
@@ -61,7 +61,7 @@ describe('Rates', () => {
   it('Get Retes By Pair with wrong params', async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
-      await cryptoPay.ratesApi().ratesRetrieve('wrongParams');
+      await cryptoPay.ratesApi().ratesRetrieve('wrong','Params');
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',

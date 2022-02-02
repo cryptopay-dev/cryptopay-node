@@ -13,7 +13,6 @@
     "lint:fix": "eslint src/*.ts --fix "
   },
   "keywords": [],
-  "author": "Muchnik Illia",
   "license": "ISC",
   "devDependencies": {
     "@types/crypto-js": "^4.0.2",

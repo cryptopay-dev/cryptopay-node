@@ -1,7 +1,7 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import dotenv from 'dotenv';
-import * as openApiGeneretedCode from '../openApiGeneretedCode';
+import * as openApiGeneretedCode from '../src/openapi';
 import { version } from '../package.json';
 import { SERVER } from './constants';
 import { CustomErrorCreater } from './helpers/errorCreaterHelper';

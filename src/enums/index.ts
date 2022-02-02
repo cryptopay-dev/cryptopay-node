@@ -7,8 +7,8 @@ import {
   InvoiceCallbackTypeEnum,
   InvoiceStatus,
   InvoiceStatusContext,
-  RiskLevelEnum,
-} from '../../openApiGeneretedCode';
+  Risk,
+} from '../openapi';
 
 export {
   ChannelPaymentCallbackTypeEnum,
@@ -19,5 +19,5 @@ export {
   InvoiceCallbackEvent,
   InvoiceStatus,
   InvoiceStatusContext,
-  RiskLevelEnum,
+  Risk,
 };

@@ -22,7 +22,7 @@ import {
   RateResult,
   RatesResult,
   Risk,
-} from '../../openApiGeneretedCode';
+} from '../openapi';
 import { ICustomError } from './ICustomError';
 import { IHeaders } from './IHeaders';
 export {

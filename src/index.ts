@@ -1,7 +1,7 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import dotenv from 'dotenv';
-import * as openapi from '../src/openapi';
+import * as openApiGeneretedCode from '../src/openapi';
 import { version } from '../package.json';
 import { SERVER } from './constants';
 import { CustomErrorCreater } from './helpers/errorCreaterHelper';
@@ -22,20 +22,20 @@ export default class CryptoPay {
     }
 
     const customizedAxios = this.customizationAxios();
-    this.InvoicesApi = openapi.InvoicesApiFactory(this.url, customizedAxios);
-    this.RatesApi = openapi.RatesApiFactory(this.url, customizedAxios);
+    this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(undefined, this.url, customizedAxios);
+    this.RatesApi = openApiGeneretedCode.RatesApiFactory(undefined, this.url, customizedAxios);
   }
 
-  public invoices = () => {
+  public invoicesApi = () => {
     return this.InvoicesApi;
   };
 
-  public rates = () => {
+  public ratesApi = () => {
     return this.RatesApi;
   };
 
   /* eslint-disable @typescript-eslint/no-explicit-any*/
-  public verify = (body: string, headers: any): boolean => {
+  public callbackVerification = (body: string, headers: any): boolean => {
     this.validateBodyAndHeader(body, headers);
     const expectedSignature = CryptoJS.HmacSHA256(body, this.callbackSecret).toString();
     const signature = headers['x-cryptopay-signature'];
@@ -46,7 +46,7 @@ export default class CryptoPay {
     if (!body) throw new Error('Body is empty');
     try {
       JSON.parse(body);
-    } catch ({ message }) {
+    } catch ({message}) {
       throw new Error(`Invalid JSON in body. Error message: ${message}`);
     }
     if (!headers['x-cryptopay-signature']) throw new Error('Header x-cryptopay-signature is missing or empty');

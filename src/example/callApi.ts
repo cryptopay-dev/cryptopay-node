@@ -7,7 +7,7 @@ const apitest = async () => {
   const cryptoPay = new CryptoPay(apiSecret, apiKey, callbackSecret);
 
   try {
-    const res = await cryptoPay.rates().all();
+    const res = await cryptoPay.ratesApi().ratesAll();
     // eslint-disable-next-line no-console
     console.log(res?.data);
   } catch (error) {

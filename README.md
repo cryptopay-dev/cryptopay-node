@@ -74,7 +74,7 @@ This endpoint allows you to create invoices.
 ##### Method call
 
 ```ts
-const resp = await cryptoPay.invoicesApi().invoicesCreate(invoice);
+const resp = await cryptoPay.invoices().create(invoice);
 ```
 
 #### Invoice interface
@@ -207,25 +207,25 @@ const invoice = {
 ### Other methods
 ```ts
     //This endpoint allows you to retrieve a list of all invoices.
-    await cryptoPay.invoicesApi().invoicesList();
+    await cryptoPay.invoices().list();
 
     //This endpoint allows you to retrieve the invoice details by invoice id
-    await cryptoPay.invoicesApi().invoicesRetrieve('invoice_id'); 
+    await cryptoPay.invoices().retrieve('invoice_id'); 
 
     // This endpoint allows you to retrieve invoice details by its custom_id.
-    await cryptoPay.invoicesApi().invoicesRetrieveByCustomId('custom_id');
+    await cryptoPay.invoices().retrieveById('custom_id');
 
     //This endpoint allows you to recalculate invoices.
-    await cryptoPay.invoicesApi().invoicesCreateRecalculation('invoice_id', true) 
+    await cryptoPay.invoices().createRecalculation('invoice_id', true) 
 
     // This endpoint allows you to commit invoice recalculation.
-    await cryptoPay.invoicesApi().invoicesCommitRecalculation('invoice_id','recalculation_id') 
+    await cryptoPay.invoices().commitRecalculation('invoice_id','recalculation_id') 
 
     //This endpoint allows you to create invoice refunds.
-    await cryptoPay.invoicesApi().invoicesCreateRefund('invoice_id') 
+    await cryptoPay.invoices().createRefund('invoice_id') 
 
     //This endpoint allows you to retrieve a list of a particular invoice refunds.
-    await cryptoPay.invoicesApi().invoicesListRefunds('invoice_id')
+    await cryptoPay.invoices().listRefunds('invoice_id')
 
 ```
 
@@ -238,14 +238,14 @@ const invoice = {
 
 
 ```ts
-const resp = await cryptoPay.ratesApi().ratesAll();
+const resp = await cryptoPay.rates().all();
 ```
 
 #### Retrieve a pair rate
 
 
 ```ts
-const resp = await cryptoPay.ratesApi().ratesRetrieve("BTC/EUR");
+const resp = await cryptoPay.rates().retrieve("BTC/EUR");
 ```
 
 
@@ -258,7 +258,7 @@ Every callback request contains a `X-Cryptopay-Signature` header which is needed
 ```ts
     // body must be json, headers are all your headers in response
     //if the callback is valid method returns true 
-    cryptoPay.callbackVerification(body, headers) 
+    cryptoPay.verify(body, headers) 
 ```
 
 ## Contributing

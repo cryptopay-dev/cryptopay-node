@@ -30,7 +30,7 @@ describe('Rates', () => {
   it('Get Retes validation response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(list);
-      const resp = await cryptoPay.rates().ratesAll();
+      const resp = await cryptoPay.rates().all();
       expect(resp).toBeTruthy();
       expect(resp).toEqual(list);
       expect(mockedAxios.request).toHaveBeenCalledWith({
@@ -46,7 +46,7 @@ describe('Rates', () => {
   it('Get Rete  By Pair validation response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(ratesPair);
-      const resp = await cryptoPay.rates().ratesRetrieve('BTC','EUR');
+      const resp = await cryptoPay.rates().retrieve('BTC','EUR');
       expect(resp).toEqual(ratesPair);
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
@@ -61,7 +61,7 @@ describe('Rates', () => {
   it('Get Retes By Pair with wrong params', async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
-      await cryptoPay.rates().ratesRetrieve('wrong','Params');
+      await cryptoPay.rates().retrieve('wrong','Params');
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
@@ -78,7 +78,7 @@ describe('Invoice', () => {
   it('Create invoice validation response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(invoiceCreated);
-      const resp = await cryptoPay.invoices().invoicesCreate(invoiceParamsToTest);
+      const resp = await cryptoPay.invoices().create(invoiceParamsToTest);
       expect(resp).toEqual(invoiceCreated);
       expect(mockedAxios.request).toHaveBeenCalledWith({
         data: JSON.stringify(invoiceParamsToTest),
@@ -94,7 +94,7 @@ describe('Invoice', () => {
   it('Get list invoice has response ', async () => {
     try {
       mockedAxios.request.mockResolvedValue(invoiceList);
-      const resp = await cryptoPay.invoices().invoicesList();
+      const resp = await cryptoPay.invoices().list();
       expect(resp).toEqual(invoiceList);
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
@@ -109,7 +109,7 @@ describe('Invoice', () => {
   it('Get invoice by invoice id validate response ', async () => {
     try {
       mockedAxios.request.mockResolvedValue(invoiceCreated);
-      const resp = await cryptoPay.invoices().invoicesRetrieve(invoiceID);
+      const resp = await cryptoPay.invoices().retrieve(invoiceID);
       expect(resp).toEqual(invoiceCreated);
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
@@ -124,7 +124,7 @@ describe('Invoice', () => {
   it('Get invoice by invoice id with wrong param ', async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
-      await cryptoPay.invoices().invoicesList('wrongParams');
+      await cryptoPay.invoices().list('wrongParams');
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
@@ -139,7 +139,7 @@ describe('Invoice', () => {
   it('Get list invoce by custom id validate response ', async () => {
     try {
       mockedAxios.request.mockResolvedValue(invoiceCreated);
-      const resp = await cryptoPay.invoices().invoicesRetrieveByCustomId(customID);
+      const resp = await cryptoPay.invoices().retrieveByCustomId(customID);
       expect(resp).toBeTruthy();
       expect(resp).toEqual(invoiceCreated);
       expect(mockedAxios.request).toHaveBeenCalledWith({
@@ -155,7 +155,7 @@ describe('Invoice', () => {
   it('Get list invoce by custom id  with wrong param ', async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
-      await cryptoPay.invoices().invoicesRetrieveByCustomId('wrongParams');
+      await cryptoPay.invoices().retrieveByCustomId('wrongParams');
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
@@ -170,7 +170,7 @@ describe('Invoice', () => {
   it('Get list refund list has response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(invoiceList);
-      const resp = await cryptoPay.invoices().invoicesListRefunds(invoiceID);
+      const resp = await cryptoPay.invoices().listRefunds(invoiceID);
       expect(resp).toBeTruthy();
       expect(resp).toEqual(invoiceList);
       expect(mockedAxios.request).toHaveBeenCalledWith({
@@ -186,7 +186,7 @@ describe('Invoice', () => {
   it('Get list refund list with wrong param ', async () => {
     try {
       mockedAxios.request.mockRejectedValue(errorToTest);
-      await cryptoPay.invoices().invoicesListRefunds('wrongParams');
+      await cryptoPay.invoices().listRefunds('wrongParams');
       expect(mockedAxios.request).toHaveBeenCalledWith({
         headers: {},
         method: 'GET',
@@ -201,7 +201,7 @@ describe('Invoice', () => {
   it('Create recalculate invoices has response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(recalculation);
-      const resp = await cryptoPay.invoices().invoicesCreateRecalculation(invoiceID, true);
+      const resp = await cryptoPay.invoices().createRecalculation(invoiceID, true);
       expect(resp).toBeTruthy();
       expect(resp).toEqual(recalculation);
       expect(mockedAxios.request).toHaveBeenCalledWith({
@@ -220,7 +220,7 @@ describe('Invoice', () => {
   it('Create refund invoices has response', async () => {
     try {
       mockedAxios.request.mockResolvedValue(recalculation);
-      const resp = await cryptoPay.invoices().invoicesCreateRefund(invoiceID, address);
+      const resp = await cryptoPay.invoices().createRefund(invoiceID, address);
       expect(resp).toBeTruthy();
       expect(resp).toEqual(recalculation);
       expect(mockedAxios.request).toHaveBeenCalledWith({

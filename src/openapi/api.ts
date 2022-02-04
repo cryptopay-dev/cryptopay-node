@@ -1909,10 +1909,10 @@ export enum TransactionReferenceType {
 
 
 /**
- * AccountsApi - axios parameter creator
+ * Accounts - axios parameter creator
  * @export
  */
-export const AccountsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AccountsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -1920,7 +1920,7 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsList: async (options: any = {}): Promise<RequestArgs> => {
+        list: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/accounts`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1954,9 +1954,9 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsListTransactions: async (accountId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        listTransactions: async (accountId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'accountId' is not null or undefined
-            assertParamExists('accountsListTransactions', 'accountId', accountId)
+            assertParamExists('listTransactions', 'accountId', accountId)
             const localVarPath = `/api/accounts/{account_id}/transactions`
                 .replace(`{${"account_id"}}`, encodeURIComponent(String(accountId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1991,11 +1991,11 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
 };
 
 /**
- * AccountsApi - functional programming interface
+ * Accounts - functional programming interface
  * @export
  */
-export const AccountsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = AccountsApiAxiosParamCreator(configuration)
+export const AccountsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AccountsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -2003,8 +2003,8 @@ export const AccountsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async accountsList(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AccountListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsList(options);
+        async list(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AccountListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2015,19 +2015,19 @@ export const AccountsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async accountsListTransactions(accountId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TransactionListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.accountsListTransactions(accountId, startingAfter, options);
+        async listTransactions(accountId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TransactionListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listTransactions(accountId, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * AccountsApi - factory interface
+ * Accounts - factory interface
  * @export
  */
-export const AccountsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = AccountsApiFp(configuration)
+export const AccountsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AccountsFp(configuration)
     return {
         /**
          * 
@@ -2035,8 +2035,8 @@ export const AccountsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsList(options?: any): AxiosPromise<AccountListResult> {
-            return localVarFp.accountsList(options).then((request) => request(axios, basePath));
+        list(options?: any): AxiosPromise<AccountListResult> {
+            return localVarFp.list(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2046,28 +2046,28 @@ export const AccountsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        accountsListTransactions(accountId: string, startingAfter?: string, options?: any): AxiosPromise<TransactionListResult> {
-            return localVarFp.accountsListTransactions(accountId, startingAfter, options).then((request) => request(axios, basePath));
+        listTransactions(accountId: string, startingAfter?: string, options?: any): AxiosPromise<TransactionListResult> {
+            return localVarFp.listTransactions(accountId, startingAfter, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * AccountsApi - object-oriented interface
+ * Accounts - object-oriented interface
  * @export
- * @class AccountsApi
+ * @class Accounts
  * @extends {BaseAPI}
  */
-export class AccountsApi extends BaseAPI {
+export class Accounts extends BaseAPI {
     /**
      * 
      * @summary List accounts
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AccountsApi
+     * @memberof Accounts
      */
-    public accountsList(options?: any) {
-        return AccountsApiFp(this.configuration).accountsList(options).then((request) => request(this.axios, this.basePath));
+    public list(options?: any) {
+        return AccountsFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2077,19 +2077,19 @@ export class AccountsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AccountsApi
+     * @memberof Accounts
      */
-    public accountsListTransactions(accountId: string, startingAfter?: string, options?: any) {
-        return AccountsApiFp(this.configuration).accountsListTransactions(accountId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public listTransactions(accountId: string, startingAfter?: string, options?: any) {
+        return AccountsFp(this.configuration).listTransactions(accountId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * ChannelsApi - axios parameter creator
+ * Channels - axios parameter creator
  * @export
  */
-export const ChannelsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ChannelsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -2098,9 +2098,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsCreate: async (channelParams: ChannelParams, options: any = {}): Promise<RequestArgs> => {
+        create: async (channelParams: ChannelParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelParams' is not null or undefined
-            assertParamExists('channelsCreate', 'channelParams', channelParams)
+            assertParamExists('create', 'channelParams', channelParams)
             const localVarPath = `/api/channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2137,7 +2137,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsList: async (customerId?: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        list: async (customerId?: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2179,9 +2179,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsListPayments: async (channelId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        listPayments: async (channelId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('channelsListPayments', 'channelId', channelId)
+            assertParamExists('listPayments', 'channelId', channelId)
             const localVarPath = `/api/channels/{channel_id}/payments`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2219,9 +2219,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsRetrieve: async (channelId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieve: async (channelId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('channelsRetrieve', 'channelId', channelId)
+            assertParamExists('retrieve', 'channelId', channelId)
             const localVarPath = `/api/channels/{channel_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2255,9 +2255,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsRetrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customId' is not null or undefined
-            assertParamExists('channelsRetrieveByCustomId', 'customId', customId)
+            assertParamExists('retrieveByCustomId', 'customId', customId)
             const localVarPath = `/api/channels/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2292,11 +2292,11 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsRetrievePayment: async (channelId: string, channelPaymentId: string, options: any = {}): Promise<RequestArgs> => {
+        retrievePayment: async (channelId: string, channelPaymentId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('channelsRetrievePayment', 'channelId', channelId)
+            assertParamExists('retrievePayment', 'channelId', channelId)
             // verify required parameter 'channelPaymentId' is not null or undefined
-            assertParamExists('channelsRetrievePayment', 'channelPaymentId', channelPaymentId)
+            assertParamExists('retrievePayment', 'channelPaymentId', channelPaymentId)
             const localVarPath = `/api/channels/{channel_id}/payments/{channel_payment_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)))
                 .replace(`{${"channel_payment_id"}}`, encodeURIComponent(String(channelPaymentId)));
@@ -2332,11 +2332,11 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsUpdate: async (channelId: string, channelUpdateParams: ChannelUpdateParams, options: any = {}): Promise<RequestArgs> => {
+        update: async (channelId: string, channelUpdateParams: ChannelUpdateParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('channelsUpdate', 'channelId', channelId)
+            assertParamExists('update', 'channelId', channelId)
             // verify required parameter 'channelUpdateParams' is not null or undefined
-            assertParamExists('channelsUpdate', 'channelUpdateParams', channelUpdateParams)
+            assertParamExists('update', 'channelUpdateParams', channelUpdateParams)
             const localVarPath = `/api/channels/{channel_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2370,11 +2370,11 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
 };
 
 /**
- * ChannelsApi - functional programming interface
+ * Channels - functional programming interface
  * @export
  */
-export const ChannelsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ChannelsApiAxiosParamCreator(configuration)
+export const ChannelsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChannelsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -2383,8 +2383,8 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsCreate(channelParams: ChannelParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsCreate(channelParams, options);
+        async create(channelParams: ChannelParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create(channelParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2395,8 +2395,8 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsList(customerId?: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsList(customerId, startingAfter, options);
+        async list(customerId?: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(customerId, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2407,8 +2407,8 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsListPayments(channelId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelPaymentListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsListPayments(channelId, startingAfter, options);
+        async listPayments(channelId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelPaymentListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listPayments(channelId, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2418,8 +2418,8 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsRetrieve(channelId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsRetrieve(channelId, options);
+        async retrieve(channelId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(channelId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2429,8 +2429,8 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsRetrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsRetrieveByCustomId(customId, options);
+        async retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveByCustomId(customId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2441,8 +2441,8 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsRetrievePayment(channelId: string, channelPaymentId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelPaymentResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsRetrievePayment(channelId, channelPaymentId, options);
+        async retrievePayment(channelId: string, channelPaymentId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelPaymentResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrievePayment(channelId, channelPaymentId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2453,19 +2453,19 @@ export const ChannelsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async channelsUpdate(channelId: string, channelUpdateParams: ChannelUpdateParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.channelsUpdate(channelId, channelUpdateParams, options);
+        async update(channelId: string, channelUpdateParams: ChannelUpdateParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.update(channelId, channelUpdateParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * ChannelsApi - factory interface
+ * Channels - factory interface
  * @export
  */
-export const ChannelsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ChannelsApiFp(configuration)
+export const ChannelsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChannelsFp(configuration)
     return {
         /**
          * 
@@ -2474,8 +2474,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsCreate(channelParams: ChannelParams, options?: any): AxiosPromise<ChannelResult> {
-            return localVarFp.channelsCreate(channelParams, options).then((request) => request(axios, basePath));
+        create(channelParams: ChannelParams, options?: any): AxiosPromise<ChannelResult> {
+            return localVarFp.create(channelParams, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2485,8 +2485,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsList(customerId?: string, startingAfter?: string, options?: any): AxiosPromise<ChannelListResult> {
-            return localVarFp.channelsList(customerId, startingAfter, options).then((request) => request(axios, basePath));
+        list(customerId?: string, startingAfter?: string, options?: any): AxiosPromise<ChannelListResult> {
+            return localVarFp.list(customerId, startingAfter, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2496,8 +2496,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsListPayments(channelId: string, startingAfter?: string, options?: any): AxiosPromise<ChannelPaymentListResult> {
-            return localVarFp.channelsListPayments(channelId, startingAfter, options).then((request) => request(axios, basePath));
+        listPayments(channelId: string, startingAfter?: string, options?: any): AxiosPromise<ChannelPaymentListResult> {
+            return localVarFp.listPayments(channelId, startingAfter, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2506,8 +2506,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsRetrieve(channelId: string, options?: any): AxiosPromise<ChannelResult> {
-            return localVarFp.channelsRetrieve(channelId, options).then((request) => request(axios, basePath));
+        retrieve(channelId: string, options?: any): AxiosPromise<ChannelResult> {
+            return localVarFp.retrieve(channelId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2516,8 +2516,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsRetrieveByCustomId(customId: string, options?: any): AxiosPromise<ChannelResult> {
-            return localVarFp.channelsRetrieveByCustomId(customId, options).then((request) => request(axios, basePath));
+        retrieveByCustomId(customId: string, options?: any): AxiosPromise<ChannelResult> {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2527,8 +2527,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsRetrievePayment(channelId: string, channelPaymentId: string, options?: any): AxiosPromise<ChannelPaymentResult> {
-            return localVarFp.channelsRetrievePayment(channelId, channelPaymentId, options).then((request) => request(axios, basePath));
+        retrievePayment(channelId: string, channelPaymentId: string, options?: any): AxiosPromise<ChannelPaymentResult> {
+            return localVarFp.retrievePayment(channelId, channelPaymentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2538,29 +2538,29 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        channelsUpdate(channelId: string, channelUpdateParams: ChannelUpdateParams, options?: any): AxiosPromise<ChannelResult> {
-            return localVarFp.channelsUpdate(channelId, channelUpdateParams, options).then((request) => request(axios, basePath));
+        update(channelId: string, channelUpdateParams: ChannelUpdateParams, options?: any): AxiosPromise<ChannelResult> {
+            return localVarFp.update(channelId, channelUpdateParams, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * ChannelsApi - object-oriented interface
+ * Channels - object-oriented interface
  * @export
- * @class ChannelsApi
+ * @class Channels
  * @extends {BaseAPI}
  */
-export class ChannelsApi extends BaseAPI {
+export class Channels extends BaseAPI {
     /**
      * 
      * @summary Create a channel
      * @param {ChannelParams} channelParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public channelsCreate(channelParams: ChannelParams, options?: any) {
-        return ChannelsApiFp(this.configuration).channelsCreate(channelParams, options).then((request) => request(this.axios, this.basePath));
+    public create(channelParams: ChannelParams, options?: any) {
+        return ChannelsFp(this.configuration).create(channelParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2570,10 +2570,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public channelsList(customerId?: string, startingAfter?: string, options?: any) {
-        return ChannelsApiFp(this.configuration).channelsList(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public list(customerId?: string, startingAfter?: string, options?: any) {
+        return ChannelsFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2583,10 +2583,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public channelsListPayments(channelId: string, startingAfter?: string, options?: any) {
-        return ChannelsApiFp(this.configuration).channelsListPayments(channelId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public listPayments(channelId: string, startingAfter?: string, options?: any) {
+        return ChannelsFp(this.configuration).listPayments(channelId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2595,10 +2595,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} channelId Channel ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public channelsRetrieve(channelId: string, options?: any) {
-        return ChannelsApiFp(this.configuration).channelsRetrieve(channelId, options).then((request) => request(this.axios, this.basePath));
+    public retrieve(channelId: string, options?: any) {
+        return ChannelsFp(this.configuration).retrieve(channelId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2607,10 +2607,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} customId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public channelsRetrieveByCustomId(customId: string, options?: any) {
-        return ChannelsApiFp(this.configuration).channelsRetrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
+    public retrieveByCustomId(customId: string, options?: any) {
+        return ChannelsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2620,10 +2620,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} channelPaymentId Channel payment ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public channelsRetrievePayment(channelId: string, channelPaymentId: string, options?: any) {
-        return ChannelsApiFp(this.configuration).channelsRetrievePayment(channelId, channelPaymentId, options).then((request) => request(this.axios, this.basePath));
+    public retrievePayment(channelId: string, channelPaymentId: string, options?: any) {
+        return ChannelsFp(this.configuration).retrievePayment(channelId, channelPaymentId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2633,19 +2633,19 @@ export class ChannelsApi extends BaseAPI {
      * @param {ChannelUpdateParams} channelUpdateParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public channelsUpdate(channelId: string, channelUpdateParams: ChannelUpdateParams, options?: any) {
-        return ChannelsApiFp(this.configuration).channelsUpdate(channelId, channelUpdateParams, options).then((request) => request(this.axios, this.basePath));
+    public update(channelId: string, channelUpdateParams: ChannelUpdateParams, options?: any) {
+        return ChannelsFp(this.configuration).update(channelId, channelUpdateParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * CoinWithdrawalsApi - axios parameter creator
+ * CoinWithdrawals - axios parameter creator
  * @export
  */
-export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -2654,9 +2654,9 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsCommit: async (coinWithdrawalId: string, options: any = {}): Promise<RequestArgs> => {
+        commit: async (coinWithdrawalId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'coinWithdrawalId' is not null or undefined
-            assertParamExists('coinWithdrawalsCommit', 'coinWithdrawalId', coinWithdrawalId)
+            assertParamExists('commit', 'coinWithdrawalId', coinWithdrawalId)
             const localVarPath = `/api/coin_withdrawals/{coin_withdrawal_id}/commit`
                 .replace(`{${"coin_withdrawal_id"}}`, encodeURIComponent(String(coinWithdrawalId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2690,9 +2690,9 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsCreate: async (coinWithdrawalParams: CoinWithdrawalParams, options: any = {}): Promise<RequestArgs> => {
+        create: async (coinWithdrawalParams: CoinWithdrawalParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'coinWithdrawalParams' is not null or undefined
-            assertParamExists('coinWithdrawalsCreate', 'coinWithdrawalParams', coinWithdrawalParams)
+            assertParamExists('create', 'coinWithdrawalParams', coinWithdrawalParams)
             const localVarPath = `/api/coin_withdrawals`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2729,7 +2729,7 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsList: async (customerId?: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        list: async (customerId?: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/coin_withdrawals`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2769,7 +2769,7 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsListNetworkFees: async (options: any = {}): Promise<RequestArgs> => {
+        listNetworkFees: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/coin_withdrawals/network_fees`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2802,9 +2802,9 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsRetrieve: async (coinWithdrawalId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieve: async (coinWithdrawalId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'coinWithdrawalId' is not null or undefined
-            assertParamExists('coinWithdrawalsRetrieve', 'coinWithdrawalId', coinWithdrawalId)
+            assertParamExists('retrieve', 'coinWithdrawalId', coinWithdrawalId)
             const localVarPath = `/api/coin_withdrawals/{coin_withdrawal_id}`
                 .replace(`{${"coin_withdrawal_id"}}`, encodeURIComponent(String(coinWithdrawalId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2838,9 +2838,9 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsRetrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customId' is not null or undefined
-            assertParamExists('coinWithdrawalsRetrieveByCustomId', 'customId', customId)
+            assertParamExists('retrieveByCustomId', 'customId', customId)
             const localVarPath = `/api/coin_withdrawals/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2871,11 +2871,11 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
 };
 
 /**
- * CoinWithdrawalsApi - functional programming interface
+ * CoinWithdrawals - functional programming interface
  * @export
  */
-export const CoinWithdrawalsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = CoinWithdrawalsApiAxiosParamCreator(configuration)
+export const CoinWithdrawalsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CoinWithdrawalsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -2884,8 +2884,8 @@ export const CoinWithdrawalsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async coinWithdrawalsCommit(coinWithdrawalId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.coinWithdrawalsCommit(coinWithdrawalId, options);
+        async commit(coinWithdrawalId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.commit(coinWithdrawalId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2895,8 +2895,8 @@ export const CoinWithdrawalsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async coinWithdrawalsCreate(coinWithdrawalParams: CoinWithdrawalParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.coinWithdrawalsCreate(coinWithdrawalParams, options);
+        async create(coinWithdrawalParams: CoinWithdrawalParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create(coinWithdrawalParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2907,8 +2907,8 @@ export const CoinWithdrawalsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async coinWithdrawalsList(customerId?: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.coinWithdrawalsList(customerId, startingAfter, options);
+        async list(customerId?: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(customerId, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2917,8 +2917,8 @@ export const CoinWithdrawalsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async coinWithdrawalsListNetworkFees(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.coinWithdrawalsListNetworkFees(options);
+        async listNetworkFees(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listNetworkFees(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2928,8 +2928,8 @@ export const CoinWithdrawalsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async coinWithdrawalsRetrieve(coinWithdrawalId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.coinWithdrawalsRetrieve(coinWithdrawalId, options);
+        async retrieve(coinWithdrawalId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(coinWithdrawalId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2939,19 +2939,19 @@ export const CoinWithdrawalsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async coinWithdrawalsRetrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.coinWithdrawalsRetrieveByCustomId(customId, options);
+        async retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveByCustomId(customId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * CoinWithdrawalsApi - factory interface
+ * CoinWithdrawals - factory interface
  * @export
  */
-export const CoinWithdrawalsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CoinWithdrawalsApiFp(configuration)
+export const CoinWithdrawalsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CoinWithdrawalsFp(configuration)
     return {
         /**
          * 
@@ -2960,8 +2960,8 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsCommit(coinWithdrawalId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
-            return localVarFp.coinWithdrawalsCommit(coinWithdrawalId, options).then((request) => request(axios, basePath));
+        commit(coinWithdrawalId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
+            return localVarFp.commit(coinWithdrawalId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2970,8 +2970,8 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsCreate(coinWithdrawalParams: CoinWithdrawalParams, options?: any): AxiosPromise<CoinWithdrawalResult> {
-            return localVarFp.coinWithdrawalsCreate(coinWithdrawalParams, options).then((request) => request(axios, basePath));
+        create(coinWithdrawalParams: CoinWithdrawalParams, options?: any): AxiosPromise<CoinWithdrawalResult> {
+            return localVarFp.create(coinWithdrawalParams, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2981,8 +2981,8 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsList(customerId?: string, startingAfter?: string, options?: any): AxiosPromise<CoinWithdrawalListResult> {
-            return localVarFp.coinWithdrawalsList(customerId, startingAfter, options).then((request) => request(axios, basePath));
+        list(customerId?: string, startingAfter?: string, options?: any): AxiosPromise<CoinWithdrawalListResult> {
+            return localVarFp.list(customerId, startingAfter, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2990,8 +2990,8 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsListNetworkFees(options?: any): AxiosPromise<NetworkFeeListResult> {
-            return localVarFp.coinWithdrawalsListNetworkFees(options).then((request) => request(axios, basePath));
+        listNetworkFees(options?: any): AxiosPromise<NetworkFeeListResult> {
+            return localVarFp.listNetworkFees(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3000,8 +3000,8 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsRetrieve(coinWithdrawalId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
-            return localVarFp.coinWithdrawalsRetrieve(coinWithdrawalId, options).then((request) => request(axios, basePath));
+        retrieve(coinWithdrawalId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
+            return localVarFp.retrieve(coinWithdrawalId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3010,29 +3010,29 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        coinWithdrawalsRetrieveByCustomId(customId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
-            return localVarFp.coinWithdrawalsRetrieveByCustomId(customId, options).then((request) => request(axios, basePath));
+        retrieveByCustomId(customId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * CoinWithdrawalsApi - object-oriented interface
+ * CoinWithdrawals - object-oriented interface
  * @export
- * @class CoinWithdrawalsApi
+ * @class CoinWithdrawals
  * @extends {BaseAPI}
  */
-export class CoinWithdrawalsApi extends BaseAPI {
+export class CoinWithdrawals extends BaseAPI {
     /**
      * 
      * @summary Commit a withdrawal
      * @param {string} coinWithdrawalId Coin withdrawal ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public coinWithdrawalsCommit(coinWithdrawalId: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).coinWithdrawalsCommit(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
+    public commit(coinWithdrawalId: string, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).commit(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3041,10 +3041,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {CoinWithdrawalParams} coinWithdrawalParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public coinWithdrawalsCreate(coinWithdrawalParams: CoinWithdrawalParams, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).coinWithdrawalsCreate(coinWithdrawalParams, options).then((request) => request(this.axios, this.basePath));
+    public create(coinWithdrawalParams: CoinWithdrawalParams, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).create(coinWithdrawalParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3054,10 +3054,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public coinWithdrawalsList(customerId?: string, startingAfter?: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).coinWithdrawalsList(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public list(customerId?: string, startingAfter?: string, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3065,10 +3065,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @summary List network fees
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public coinWithdrawalsListNetworkFees(options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).coinWithdrawalsListNetworkFees(options).then((request) => request(this.axios, this.basePath));
+    public listNetworkFees(options?: any) {
+        return CoinWithdrawalsFp(this.configuration).listNetworkFees(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3077,10 +3077,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {string} coinWithdrawalId Coin withdrawal ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public coinWithdrawalsRetrieve(coinWithdrawalId: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).coinWithdrawalsRetrieve(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
+    public retrieve(coinWithdrawalId: string, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).retrieve(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3089,19 +3089,19 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {string} customId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public coinWithdrawalsRetrieveByCustomId(customId: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).coinWithdrawalsRetrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
+    public retrieveByCustomId(customId: string, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * CustomersApi - axios parameter creator
+ * Customers - axios parameter creator
  * @export
  */
-export const CustomersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const CustomersAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -3110,9 +3110,9 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersCreate: async (customerParams: CustomerParams, options: any = {}): Promise<RequestArgs> => {
+        create: async (customerParams: CustomerParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customerParams' is not null or undefined
-            assertParamExists('customersCreate', 'customerParams', customerParams)
+            assertParamExists('create', 'customerParams', customerParams)
             const localVarPath = `/api/customers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3148,7 +3148,7 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersList: async (startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        list: async (startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/customers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3185,9 +3185,9 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersRetrieve: async (customerId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieve: async (customerId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customerId' is not null or undefined
-            assertParamExists('customersRetrieve', 'customerId', customerId)
+            assertParamExists('retrieve', 'customerId', customerId)
             const localVarPath = `/api/customers/{customer_id}`
                 .replace(`{${"customer_id"}}`, encodeURIComponent(String(customerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3222,11 +3222,11 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersUpdate: async (customerId: string, customerUpdateParams: CustomerUpdateParams, options: any = {}): Promise<RequestArgs> => {
+        update: async (customerId: string, customerUpdateParams: CustomerUpdateParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customerId' is not null or undefined
-            assertParamExists('customersUpdate', 'customerId', customerId)
+            assertParamExists('update', 'customerId', customerId)
             // verify required parameter 'customerUpdateParams' is not null or undefined
-            assertParamExists('customersUpdate', 'customerUpdateParams', customerUpdateParams)
+            assertParamExists('update', 'customerUpdateParams', customerUpdateParams)
             const localVarPath = `/api/customers/{customer_id}`
                 .replace(`{${"customer_id"}}`, encodeURIComponent(String(customerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3260,11 +3260,11 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
 };
 
 /**
- * CustomersApi - functional programming interface
+ * Customers - functional programming interface
  * @export
  */
-export const CustomersApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = CustomersApiAxiosParamCreator(configuration)
+export const CustomersFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CustomersAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -3273,8 +3273,8 @@ export const CustomersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async customersCreate(customerParams: CustomerParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.customersCreate(customerParams, options);
+        async create(customerParams: CustomerParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create(customerParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3284,8 +3284,8 @@ export const CustomersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async customersList(startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.customersList(startingAfter, options);
+        async list(startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3295,8 +3295,8 @@ export const CustomersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async customersRetrieve(customerId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.customersRetrieve(customerId, options);
+        async retrieve(customerId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(customerId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3307,19 +3307,19 @@ export const CustomersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async customersUpdate(customerId: string, customerUpdateParams: CustomerUpdateParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.customersUpdate(customerId, customerUpdateParams, options);
+        async update(customerId: string, customerUpdateParams: CustomerUpdateParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CustomerResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.update(customerId, customerUpdateParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * CustomersApi - factory interface
+ * Customers - factory interface
  * @export
  */
-export const CustomersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CustomersApiFp(configuration)
+export const CustomersFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CustomersFp(configuration)
     return {
         /**
          * 
@@ -3328,8 +3328,8 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersCreate(customerParams: CustomerParams, options?: any): AxiosPromise<CustomerResult> {
-            return localVarFp.customersCreate(customerParams, options).then((request) => request(axios, basePath));
+        create(customerParams: CustomerParams, options?: any): AxiosPromise<CustomerResult> {
+            return localVarFp.create(customerParams, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3338,8 +3338,8 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersList(startingAfter?: string, options?: any): AxiosPromise<CustomerListResult> {
-            return localVarFp.customersList(startingAfter, options).then((request) => request(axios, basePath));
+        list(startingAfter?: string, options?: any): AxiosPromise<CustomerListResult> {
+            return localVarFp.list(startingAfter, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3348,8 +3348,8 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersRetrieve(customerId: string, options?: any): AxiosPromise<CustomerResult> {
-            return localVarFp.customersRetrieve(customerId, options).then((request) => request(axios, basePath));
+        retrieve(customerId: string, options?: any): AxiosPromise<CustomerResult> {
+            return localVarFp.retrieve(customerId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3359,29 +3359,29 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        customersUpdate(customerId: string, customerUpdateParams: CustomerUpdateParams, options?: any): AxiosPromise<CustomerResult> {
-            return localVarFp.customersUpdate(customerId, customerUpdateParams, options).then((request) => request(axios, basePath));
+        update(customerId: string, customerUpdateParams: CustomerUpdateParams, options?: any): AxiosPromise<CustomerResult> {
+            return localVarFp.update(customerId, customerUpdateParams, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * CustomersApi - object-oriented interface
+ * Customers - object-oriented interface
  * @export
- * @class CustomersApi
+ * @class Customers
  * @extends {BaseAPI}
  */
-export class CustomersApi extends BaseAPI {
+export class Customers extends BaseAPI {
     /**
      * 
      * @summary Create a customer
      * @param {CustomerParams} customerParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
-    public customersCreate(customerParams: CustomerParams, options?: any) {
-        return CustomersApiFp(this.configuration).customersCreate(customerParams, options).then((request) => request(this.axios, this.basePath));
+    public create(customerParams: CustomerParams, options?: any) {
+        return CustomersFp(this.configuration).create(customerParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3390,10 +3390,10 @@ export class CustomersApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
-    public customersList(startingAfter?: string, options?: any) {
-        return CustomersApiFp(this.configuration).customersList(startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public list(startingAfter?: string, options?: any) {
+        return CustomersFp(this.configuration).list(startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3402,10 +3402,10 @@ export class CustomersApi extends BaseAPI {
      * @param {string} customerId The customer\&#39;s reference ID in your system
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
-    public customersRetrieve(customerId: string, options?: any) {
-        return CustomersApiFp(this.configuration).customersRetrieve(customerId, options).then((request) => request(this.axios, this.basePath));
+    public retrieve(customerId: string, options?: any) {
+        return CustomersFp(this.configuration).retrieve(customerId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3415,19 +3415,19 @@ export class CustomersApi extends BaseAPI {
      * @param {CustomerUpdateParams} customerUpdateParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
-    public customersUpdate(customerId: string, customerUpdateParams: CustomerUpdateParams, options?: any) {
-        return CustomersApiFp(this.configuration).customersUpdate(customerId, customerUpdateParams, options).then((request) => request(this.axios, this.basePath));
+    public update(customerId: string, customerUpdateParams: CustomerUpdateParams, options?: any) {
+        return CustomersFp(this.configuration).update(customerId, customerUpdateParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * ExchangeTransfersApi - axios parameter creator
+ * ExchangeTransfers - axios parameter creator
  * @export
  */
-export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ExchangeTransfersAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -3436,9 +3436,9 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeTransfersCommit: async (exchangeTransferId: string, options: any = {}): Promise<RequestArgs> => {
+        commit: async (exchangeTransferId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'exchangeTransferId' is not null or undefined
-            assertParamExists('exchangeTransfersCommit', 'exchangeTransferId', exchangeTransferId)
+            assertParamExists('commit', 'exchangeTransferId', exchangeTransferId)
             const localVarPath = `/api/exchange_transfers/{exchange_transfer_id}/commit`
                 .replace(`{${"exchange_transfer_id"}}`, encodeURIComponent(String(exchangeTransferId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3472,9 +3472,9 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeTransfersCreate: async (exchangeTransferParams: ExchangeTransferParams, options: any = {}): Promise<RequestArgs> => {
+        create: async (exchangeTransferParams: ExchangeTransferParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'exchangeTransferParams' is not null or undefined
-            assertParamExists('exchangeTransfersCreate', 'exchangeTransferParams', exchangeTransferParams)
+            assertParamExists('create', 'exchangeTransferParams', exchangeTransferParams)
             const localVarPath = `/api/exchange_transfers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3510,9 +3510,9 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeTransfersRetrieve: async (exchangeTransferId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieve: async (exchangeTransferId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'exchangeTransferId' is not null or undefined
-            assertParamExists('exchangeTransfersRetrieve', 'exchangeTransferId', exchangeTransferId)
+            assertParamExists('retrieve', 'exchangeTransferId', exchangeTransferId)
             const localVarPath = `/api/exchange_transfers/{exchange_transfer_id}`
                 .replace(`{${"exchange_transfer_id"}}`, encodeURIComponent(String(exchangeTransferId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3543,11 +3543,11 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
 };
 
 /**
- * ExchangeTransfersApi - functional programming interface
+ * ExchangeTransfers - functional programming interface
  * @export
  */
-export const ExchangeTransfersApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ExchangeTransfersApiAxiosParamCreator(configuration)
+export const ExchangeTransfersFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ExchangeTransfersAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -3556,8 +3556,8 @@ export const ExchangeTransfersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exchangeTransfersCommit(exchangeTransferId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeTransferResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exchangeTransfersCommit(exchangeTransferId, options);
+        async commit(exchangeTransferId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeTransferResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.commit(exchangeTransferId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3567,8 +3567,8 @@ export const ExchangeTransfersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exchangeTransfersCreate(exchangeTransferParams: ExchangeTransferParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeTransferResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exchangeTransfersCreate(exchangeTransferParams, options);
+        async create(exchangeTransferParams: ExchangeTransferParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeTransferResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create(exchangeTransferParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3578,19 +3578,19 @@ export const ExchangeTransfersApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exchangeTransfersRetrieve(exchangeTransferId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeTransferResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exchangeTransfersRetrieve(exchangeTransferId, options);
+        async retrieve(exchangeTransferId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeTransferResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(exchangeTransferId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * ExchangeTransfersApi - factory interface
+ * ExchangeTransfers - factory interface
  * @export
  */
-export const ExchangeTransfersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ExchangeTransfersApiFp(configuration)
+export const ExchangeTransfersFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ExchangeTransfersFp(configuration)
     return {
         /**
          * 
@@ -3599,8 +3599,8 @@ export const ExchangeTransfersApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeTransfersCommit(exchangeTransferId: string, options?: any): AxiosPromise<ExchangeTransferResult> {
-            return localVarFp.exchangeTransfersCommit(exchangeTransferId, options).then((request) => request(axios, basePath));
+        commit(exchangeTransferId: string, options?: any): AxiosPromise<ExchangeTransferResult> {
+            return localVarFp.commit(exchangeTransferId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3609,8 +3609,8 @@ export const ExchangeTransfersApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeTransfersCreate(exchangeTransferParams: ExchangeTransferParams, options?: any): AxiosPromise<ExchangeTransferResult> {
-            return localVarFp.exchangeTransfersCreate(exchangeTransferParams, options).then((request) => request(axios, basePath));
+        create(exchangeTransferParams: ExchangeTransferParams, options?: any): AxiosPromise<ExchangeTransferResult> {
+            return localVarFp.create(exchangeTransferParams, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3619,29 +3619,29 @@ export const ExchangeTransfersApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeTransfersRetrieve(exchangeTransferId: string, options?: any): AxiosPromise<ExchangeTransferResult> {
-            return localVarFp.exchangeTransfersRetrieve(exchangeTransferId, options).then((request) => request(axios, basePath));
+        retrieve(exchangeTransferId: string, options?: any): AxiosPromise<ExchangeTransferResult> {
+            return localVarFp.retrieve(exchangeTransferId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * ExchangeTransfersApi - object-oriented interface
+ * ExchangeTransfers - object-oriented interface
  * @export
- * @class ExchangeTransfersApi
+ * @class ExchangeTransfers
  * @extends {BaseAPI}
  */
-export class ExchangeTransfersApi extends BaseAPI {
+export class ExchangeTransfers extends BaseAPI {
     /**
      * 
      * @summary Commit an exchange transfer
      * @param {string} exchangeTransferId Exchange transfer ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ExchangeTransfersApi
+     * @memberof ExchangeTransfers
      */
-    public exchangeTransfersCommit(exchangeTransferId: string, options?: any) {
-        return ExchangeTransfersApiFp(this.configuration).exchangeTransfersCommit(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
+    public commit(exchangeTransferId: string, options?: any) {
+        return ExchangeTransfersFp(this.configuration).commit(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3650,10 +3650,10 @@ export class ExchangeTransfersApi extends BaseAPI {
      * @param {ExchangeTransferParams} exchangeTransferParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ExchangeTransfersApi
+     * @memberof ExchangeTransfers
      */
-    public exchangeTransfersCreate(exchangeTransferParams: ExchangeTransferParams, options?: any) {
-        return ExchangeTransfersApiFp(this.configuration).exchangeTransfersCreate(exchangeTransferParams, options).then((request) => request(this.axios, this.basePath));
+    public create(exchangeTransferParams: ExchangeTransferParams, options?: any) {
+        return ExchangeTransfersFp(this.configuration).create(exchangeTransferParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3662,19 +3662,19 @@ export class ExchangeTransfersApi extends BaseAPI {
      * @param {string} exchangeTransferId Exchange transfer ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ExchangeTransfersApi
+     * @memberof ExchangeTransfers
      */
-    public exchangeTransfersRetrieve(exchangeTransferId: string, options?: any) {
-        return ExchangeTransfersApiFp(this.configuration).exchangeTransfersRetrieve(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
+    public retrieve(exchangeTransferId: string, options?: any) {
+        return ExchangeTransfersFp(this.configuration).retrieve(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * InvoicesApi - axios parameter creator
+ * Invoices - axios parameter creator
  * @export
  */
-export const InvoicesApiAxiosParamCreator = function (configuration?: Configuration) {
+export const InvoicesAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -3684,11 +3684,11 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCommitRecalculation: async (invoiceId: string, recalculationId: string, options: any = {}): Promise<RequestArgs> => {
+        commitRecalculation: async (invoiceId: string, recalculationId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('invoicesCommitRecalculation', 'invoiceId', invoiceId)
+            assertParamExists('commitRecalculation', 'invoiceId', invoiceId)
             // verify required parameter 'recalculationId' is not null or undefined
-            assertParamExists('invoicesCommitRecalculation', 'recalculationId', recalculationId)
+            assertParamExists('commitRecalculation', 'recalculationId', recalculationId)
             const localVarPath = `/api/invoices/{invoice_id}/recalculations/{recalculation_id}/commit`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)))
                 .replace(`{${"recalculation_id"}}`, encodeURIComponent(String(recalculationId)));
@@ -3723,9 +3723,9 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCreate: async (invoiceParams: InvoiceParams, options: any = {}): Promise<RequestArgs> => {
+        create: async (invoiceParams: InvoiceParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceParams' is not null or undefined
-            assertParamExists('invoicesCreate', 'invoiceParams', invoiceParams)
+            assertParamExists('create', 'invoiceParams', invoiceParams)
             const localVarPath = `/api/invoices`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3762,11 +3762,11 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCreateRecalculation: async (invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options: any = {}): Promise<RequestArgs> => {
+        createRecalculation: async (invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('invoicesCreateRecalculation', 'invoiceId', invoiceId)
+            assertParamExists('createRecalculation', 'invoiceId', invoiceId)
             // verify required parameter 'invoiceRecalculationParams' is not null or undefined
-            assertParamExists('invoicesCreateRecalculation', 'invoiceRecalculationParams', invoiceRecalculationParams)
+            assertParamExists('createRecalculation', 'invoiceRecalculationParams', invoiceRecalculationParams)
             const localVarPath = `/api/invoices/{invoice_id}/recalculations`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3804,11 +3804,11 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCreateRefund: async (invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options: any = {}): Promise<RequestArgs> => {
+        createRefund: async (invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('invoicesCreateRefund', 'invoiceId', invoiceId)
+            assertParamExists('createRefund', 'invoiceId', invoiceId)
             // verify required parameter 'invoiceRefundParams' is not null or undefined
-            assertParamExists('invoicesCreateRefund', 'invoiceRefundParams', invoiceRefundParams)
+            assertParamExists('createRefund', 'invoiceRefundParams', invoiceRefundParams)
             const localVarPath = `/api/invoices/{invoice_id}/refunds`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3846,7 +3846,7 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesList: async (customerId?: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        list: async (customerId?: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/invoices`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3887,9 +3887,9 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesListRefunds: async (invoiceId: string, options: any = {}): Promise<RequestArgs> => {
+        listRefunds: async (invoiceId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('invoicesListRefunds', 'invoiceId', invoiceId)
+            assertParamExists('listRefunds', 'invoiceId', invoiceId)
             const localVarPath = `/api/invoices/{invoice_id}/refunds`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3923,9 +3923,9 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesRetrieve: async (invoiceId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieve: async (invoiceId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('invoicesRetrieve', 'invoiceId', invoiceId)
+            assertParamExists('retrieve', 'invoiceId', invoiceId)
             const localVarPath = `/api/invoices/{invoice_id}`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3959,9 +3959,9 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesRetrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customId' is not null or undefined
-            assertParamExists('invoicesRetrieveByCustomId', 'customId', customId)
+            assertParamExists('retrieveByCustomId', 'customId', customId)
             const localVarPath = `/api/invoices/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3992,11 +3992,11 @@ export const InvoicesApiAxiosParamCreator = function (configuration?: Configurat
 };
 
 /**
- * InvoicesApi - functional programming interface
+ * Invoices - functional programming interface
  * @export
  */
-export const InvoicesApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = InvoicesApiAxiosParamCreator(configuration)
+export const InvoicesFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = InvoicesAxiosParamCreator(configuration)
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -4006,8 +4006,8 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesCommitRecalculation(invoiceId: string, recalculationId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRecalculationResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesCommitRecalculation(invoiceId, recalculationId, options);
+        async commitRecalculation(invoiceId: string, recalculationId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRecalculationResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.commitRecalculation(invoiceId, recalculationId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4017,8 +4017,8 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesCreate(invoiceParams: InvoiceParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesCreate(invoiceParams, options);
+        async create(invoiceParams: InvoiceParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create(invoiceParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4029,8 +4029,8 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesCreateRecalculation(invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRecalculationResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesCreateRecalculation(invoiceId, invoiceRecalculationParams, options);
+        async createRecalculation(invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRecalculationResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createRecalculation(invoiceId, invoiceRecalculationParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4041,8 +4041,8 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesCreateRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRefundResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesCreateRefund(invoiceId, invoiceRefundParams, options);
+        async createRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRefundResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createRefund(invoiceId, invoiceRefundParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4053,8 +4053,8 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesList(customerId?: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesList(customerId, startingAfter, options);
+        async list(customerId?: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(customerId, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4064,8 +4064,8 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesListRefunds(invoiceId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRefundListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesListRefunds(invoiceId, options);
+        async listRefunds(invoiceId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRefundListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listRefunds(invoiceId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4075,8 +4075,8 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesRetrieve(invoiceId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesRetrieve(invoiceId, options);
+        async retrieve(invoiceId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(invoiceId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4086,19 +4086,19 @@ export const InvoicesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async invoicesRetrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.invoicesRetrieveByCustomId(customId, options);
+        async retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveByCustomId(customId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * InvoicesApi - factory interface
+ * Invoices - factory interface
  * @export
  */
-export const InvoicesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = InvoicesApiFp(configuration)
+export const InvoicesFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = InvoicesFp(configuration)
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -4108,8 +4108,8 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCommitRecalculation(invoiceId: string, recalculationId: string, options?: any): AxiosPromise<InvoiceRecalculationResult> {
-            return localVarFp.invoicesCommitRecalculation(invoiceId, recalculationId, options).then((request) => request(axios, basePath));
+        commitRecalculation(invoiceId: string, recalculationId: string, options?: any): AxiosPromise<InvoiceRecalculationResult> {
+            return localVarFp.commitRecalculation(invoiceId, recalculationId, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to create invoices.
@@ -4118,8 +4118,8 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCreate(invoiceParams: InvoiceParams, options?: any): AxiosPromise<InvoiceResult> {
-            return localVarFp.invoicesCreate(invoiceParams, options).then((request) => request(axios, basePath));
+        create(invoiceParams: InvoiceParams, options?: any): AxiosPromise<InvoiceResult> {
+            return localVarFp.create(invoiceParams, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to recalculate invoices.
@@ -4129,8 +4129,8 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCreateRecalculation(invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options?: any): AxiosPromise<InvoiceRecalculationResult> {
-            return localVarFp.invoicesCreateRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(axios, basePath));
+        createRecalculation(invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options?: any): AxiosPromise<InvoiceRecalculationResult> {
+            return localVarFp.createRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to create invoice refunds.
@@ -4140,8 +4140,8 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesCreateRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any): AxiosPromise<InvoiceRefundResult> {
-            return localVarFp.invoicesCreateRefund(invoiceId, invoiceRefundParams, options).then((request) => request(axios, basePath));
+        createRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any): AxiosPromise<InvoiceRefundResult> {
+            return localVarFp.createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve a list of all invoices.
@@ -4151,8 +4151,8 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesList(customerId?: string, startingAfter?: string, options?: any): AxiosPromise<InvoiceListResult> {
-            return localVarFp.invoicesList(customerId, startingAfter, options).then((request) => request(axios, basePath));
+        list(customerId?: string, startingAfter?: string, options?: any): AxiosPromise<InvoiceListResult> {
+            return localVarFp.list(customerId, startingAfter, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve a list of a particular invoice refunds.
@@ -4161,8 +4161,8 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesListRefunds(invoiceId: string, options?: any): AxiosPromise<InvoiceRefundListResult> {
-            return localVarFp.invoicesListRefunds(invoiceId, options).then((request) => request(axios, basePath));
+        listRefunds(invoiceId: string, options?: any): AxiosPromise<InvoiceRefundListResult> {
+            return localVarFp.listRefunds(invoiceId, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve the invoice details.
@@ -4171,8 +4171,8 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesRetrieve(invoiceId: string, options?: any): AxiosPromise<InvoiceResult> {
-            return localVarFp.invoicesRetrieve(invoiceId, options).then((request) => request(axios, basePath));
+        retrieve(invoiceId: string, options?: any): AxiosPromise<InvoiceResult> {
+            return localVarFp.retrieve(invoiceId, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve invoice details by its custom_id.
@@ -4181,19 +4181,19 @@ export const InvoicesApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        invoicesRetrieveByCustomId(customId: string, options?: any): AxiosPromise<InvoiceResult> {
-            return localVarFp.invoicesRetrieveByCustomId(customId, options).then((request) => request(axios, basePath));
+        retrieveByCustomId(customId: string, options?: any): AxiosPromise<InvoiceResult> {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * InvoicesApi - object-oriented interface
+ * Invoices - object-oriented interface
  * @export
- * @class InvoicesApi
+ * @class Invoices
  * @extends {BaseAPI}
  */
-export class InvoicesApi extends BaseAPI {
+export class Invoices extends BaseAPI {
     /**
      * This endpoint allows you to commit invoice recalculation.
      * @summary Commit invoice recalculation
@@ -4201,10 +4201,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} recalculationId Recalculation ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesCommitRecalculation(invoiceId: string, recalculationId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesCommitRecalculation(invoiceId, recalculationId, options).then((request) => request(this.axios, this.basePath));
+    public commitRecalculation(invoiceId: string, recalculationId: string, options?: any) {
+        return InvoicesFp(this.configuration).commitRecalculation(invoiceId, recalculationId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4213,10 +4213,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {InvoiceParams} invoiceParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesCreate(invoiceParams: InvoiceParams, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesCreate(invoiceParams, options).then((request) => request(this.axios, this.basePath));
+    public create(invoiceParams: InvoiceParams, options?: any) {
+        return InvoicesFp(this.configuration).create(invoiceParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4226,10 +4226,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {InvoiceRecalculationParams} invoiceRecalculationParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesCreateRecalculation(invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesCreateRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(this.axios, this.basePath));
+    public createRecalculation(invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options?: any) {
+        return InvoicesFp(this.configuration).createRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4239,10 +4239,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {InvoiceRefundParams} invoiceRefundParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesCreateRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesCreateRefund(invoiceId, invoiceRefundParams, options).then((request) => request(this.axios, this.basePath));
+    public createRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any) {
+        return InvoicesFp(this.configuration).createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4252,10 +4252,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesList(customerId?: string, startingAfter?: string, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesList(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public list(customerId?: string, startingAfter?: string, options?: any) {
+        return InvoicesFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4264,10 +4264,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} invoiceId Invoice ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesListRefunds(invoiceId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesListRefunds(invoiceId, options).then((request) => request(this.axios, this.basePath));
+    public listRefunds(invoiceId: string, options?: any) {
+        return InvoicesFp(this.configuration).listRefunds(invoiceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4276,10 +4276,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} invoiceId Invoice ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesRetrieve(invoiceId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesRetrieve(invoiceId, options).then((request) => request(this.axios, this.basePath));
+    public retrieve(invoiceId: string, options?: any) {
+        return InvoicesFp(this.configuration).retrieve(invoiceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4288,19 +4288,19 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} customId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public invoicesRetrieveByCustomId(customId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).invoicesRetrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
+    public retrieveByCustomId(customId: string, options?: any) {
+        return InvoicesFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * RatesApi - axios parameter creator
+ * Rates - axios parameter creator
  * @export
  */
-export const RatesApiAxiosParamCreator = function (configuration?: Configuration) {
+export const RatesAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -4308,7 +4308,7 @@ export const RatesApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ratesAll: async (options: any = {}): Promise<RequestArgs> => {
+        all: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/rates`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4342,11 +4342,11 @@ export const RatesApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ratesRetrieve: async (baseCurrency: string, quoteCurrency: string, options: any = {}): Promise<RequestArgs> => {
+        retrieve: async (baseCurrency: string, quoteCurrency: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'baseCurrency' is not null or undefined
-            assertParamExists('ratesRetrieve', 'baseCurrency', baseCurrency)
+            assertParamExists('retrieve', 'baseCurrency', baseCurrency)
             // verify required parameter 'quoteCurrency' is not null or undefined
-            assertParamExists('ratesRetrieve', 'quoteCurrency', quoteCurrency)
+            assertParamExists('retrieve', 'quoteCurrency', quoteCurrency)
             const localVarPath = `/api/rates/{base_currency}/{quote_currency}`
                 .replace(`{${"base_currency"}}`, encodeURIComponent(String(baseCurrency)))
                 .replace(`{${"quote_currency"}}`, encodeURIComponent(String(quoteCurrency)));
@@ -4378,11 +4378,11 @@ export const RatesApiAxiosParamCreator = function (configuration?: Configuration
 };
 
 /**
- * RatesApi - functional programming interface
+ * Rates - functional programming interface
  * @export
  */
-export const RatesApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = RatesApiAxiosParamCreator(configuration)
+export const RatesFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = RatesAxiosParamCreator(configuration)
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -4390,8 +4390,8 @@ export const RatesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ratesAll(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RatesResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.ratesAll(options);
+        async all(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RatesResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.all(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4402,19 +4402,19 @@ export const RatesApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async ratesRetrieve(baseCurrency: string, quoteCurrency: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RateResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.ratesRetrieve(baseCurrency, quoteCurrency, options);
+        async retrieve(baseCurrency: string, quoteCurrency: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RateResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(baseCurrency, quoteCurrency, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * RatesApi - factory interface
+ * Rates - factory interface
  * @export
  */
-export const RatesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = RatesApiFp(configuration)
+export const RatesFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = RatesFp(configuration)
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -4422,8 +4422,8 @@ export const RatesApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ratesAll(options?: any): AxiosPromise<RatesResult> {
-            return localVarFp.ratesAll(options).then((request) => request(axios, basePath));
+        all(options?: any): AxiosPromise<RatesResult> {
+            return localVarFp.all(options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve a public rate by currency pair.
@@ -4433,28 +4433,28 @@ export const RatesApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        ratesRetrieve(baseCurrency: string, quoteCurrency: string, options?: any): AxiosPromise<RateResult> {
-            return localVarFp.ratesRetrieve(baseCurrency, quoteCurrency, options).then((request) => request(axios, basePath));
+        retrieve(baseCurrency: string, quoteCurrency: string, options?: any): AxiosPromise<RateResult> {
+            return localVarFp.retrieve(baseCurrency, quoteCurrency, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * RatesApi - object-oriented interface
+ * Rates - object-oriented interface
  * @export
- * @class RatesApi
+ * @class Rates
  * @extends {BaseAPI}
  */
-export class RatesApi extends BaseAPI {
+export class Rates extends BaseAPI {
     /**
      * This endpoint allows you to retrieve all public rates.
      * @summary Retrieve all rates
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof RatesApi
+     * @memberof Rates
      */
-    public ratesAll(options?: any) {
-        return RatesApiFp(this.configuration).ratesAll(options).then((request) => request(this.axios, this.basePath));
+    public all(options?: any) {
+        return RatesFp(this.configuration).all(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4464,19 +4464,19 @@ export class RatesApi extends BaseAPI {
      * @param {string} quoteCurrency Quote currency of pair
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof RatesApi
+     * @memberof Rates
      */
-    public ratesRetrieve(baseCurrency: string, quoteCurrency: string, options?: any) {
-        return RatesApiFp(this.configuration).ratesRetrieve(baseCurrency, quoteCurrency, options).then((request) => request(this.axios, this.basePath));
+    public retrieve(baseCurrency: string, quoteCurrency: string, options?: any) {
+        return RatesFp(this.configuration).retrieve(baseCurrency, quoteCurrency, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * RisksApi - axios parameter creator
+ * Risks - axios parameter creator
  * @export
  */
-export const RisksApiAxiosParamCreator = function (configuration?: Configuration) {
+export const RisksAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -4485,9 +4485,9 @@ export const RisksApiAxiosParamCreator = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        risksScore: async (riskParams: RiskParams, options: any = {}): Promise<RequestArgs> => {
+        score: async (riskParams: RiskParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'riskParams' is not null or undefined
-            assertParamExists('risksScore', 'riskParams', riskParams)
+            assertParamExists('score', 'riskParams', riskParams)
             const localVarPath = `/api/risks/score`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4520,11 +4520,11 @@ export const RisksApiAxiosParamCreator = function (configuration?: Configuration
 };
 
 /**
- * RisksApi - functional programming interface
+ * Risks - functional programming interface
  * @export
  */
-export const RisksApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = RisksApiAxiosParamCreator(configuration)
+export const RisksFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = RisksAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -4533,19 +4533,19 @@ export const RisksApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async risksScore(riskParams: RiskParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RiskResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.risksScore(riskParams, options);
+        async score(riskParams: RiskParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RiskResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.score(riskParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * RisksApi - factory interface
+ * Risks - factory interface
  * @export
  */
-export const RisksApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = RisksApiFp(configuration)
+export const RisksFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = RisksFp(configuration)
     return {
         /**
          * 
@@ -4554,38 +4554,38 @@ export const RisksApiFactory = function (configuration?: Configuration, basePath
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        risksScore(riskParams: RiskParams, options?: any): AxiosPromise<RiskResult> {
-            return localVarFp.risksScore(riskParams, options).then((request) => request(axios, basePath));
+        score(riskParams: RiskParams, options?: any): AxiosPromise<RiskResult> {
+            return localVarFp.score(riskParams, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * RisksApi - object-oriented interface
+ * Risks - object-oriented interface
  * @export
- * @class RisksApi
+ * @class Risks
  * @extends {BaseAPI}
  */
-export class RisksApi extends BaseAPI {
+export class Risks extends BaseAPI {
     /**
      * 
      * @summary Score a coin address
      * @param {RiskParams} riskParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof RisksApi
+     * @memberof Risks
      */
-    public risksScore(riskParams: RiskParams, options?: any) {
-        return RisksApiFp(this.configuration).risksScore(riskParams, options).then((request) => request(this.axios, this.basePath));
+    public score(riskParams: RiskParams, options?: any) {
+        return RisksFp(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * TransactionsApi - axios parameter creator
+ * Transactions - axios parameter creator
  * @export
  */
-export const TransactionsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const TransactionsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -4600,7 +4600,7 @@ export const TransactionsApiAxiosParamCreator = function (configuration?: Config
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        transactionsList: async (createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        list: async (createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/transactions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4662,11 +4662,11 @@ export const TransactionsApiAxiosParamCreator = function (configuration?: Config
 };
 
 /**
- * TransactionsApi - functional programming interface
+ * Transactions - functional programming interface
  * @export
  */
-export const TransactionsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = TransactionsApiAxiosParamCreator(configuration)
+export const TransactionsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = TransactionsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -4681,19 +4681,19 @@ export const TransactionsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async transactionsList(createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TransactionListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.transactionsList(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options);
+        async list(createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TransactionListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * TransactionsApi - factory interface
+ * Transactions - factory interface
  * @export
  */
-export const TransactionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = TransactionsApiFp(configuration)
+export const TransactionsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = TransactionsFp(configuration)
     return {
         /**
          * 
@@ -4708,19 +4708,19 @@ export const TransactionsApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        transactionsList(createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options?: any): AxiosPromise<TransactionListResult> {
-            return localVarFp.transactionsList(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(axios, basePath));
+        list(createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options?: any): AxiosPromise<TransactionListResult> {
+            return localVarFp.list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * TransactionsApi - object-oriented interface
+ * Transactions - object-oriented interface
  * @export
- * @class TransactionsApi
+ * @class Transactions
  * @extends {BaseAPI}
  */
-export class TransactionsApi extends BaseAPI {
+export class Transactions extends BaseAPI {
     /**
      * 
      * @summary List transactions
@@ -4733,10 +4733,10 @@ export class TransactionsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof TransactionsApi
+     * @memberof Transactions
      */
-    public transactionsList(createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options?: any) {
-        return TransactionsApiFp(this.configuration).transactionsList(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public list(createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options?: any) {
+        return TransactionsFp(this.configuration).list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

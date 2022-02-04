@@ -22,15 +22,15 @@ export default class CryptoPay {
     }
 
     const customizedAxios = this.customizationAxios();
-    this.InvoicesApi = openApiGeneretedCode.InvoicesApiFactory(undefined, this.url, customizedAxios);
-    this.RatesApi = openApiGeneretedCode.RatesApiFactory(undefined, this.url, customizedAxios);
+    this.InvoicesApi = openApiGeneretedCode.InvoicesFactory(undefined, this.url, customizedAxios);
+    this.RatesApi = openApiGeneretedCode.RatesFactory(undefined, this.url, customizedAxios);
   }
 
-  public invoicesApi = () => {
+  public invoices = () => {
     return this.InvoicesApi;
   };
 
-  public ratesApi = () => {
+  public rates = () => {
     return this.RatesApi;
   };
 

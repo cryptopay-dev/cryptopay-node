@@ -1,14 +1,14 @@
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import dotenv from 'dotenv';
-import * as openApiGeneretedCode from '../src/openapi';
-import { version } from '../package.json';
+import * as openapi from '../src/openapi';
 import { SERVER } from './constants';
+export { SERVER };
 import { CustomErrorCreater } from './helpers/errorCreaterHelper';
 import { IHeaders } from './interfaces';
 dotenv.config();
 
-export default class CryptoPay {
+export default class Cryptopay {
   /* eslint-disable @typescript-eslint/no-explicit-any*/
   private InvoicesApi: any;
   private RatesApi: any;
@@ -22,8 +22,8 @@ export default class CryptoPay {
     }
 
     const customizedAxios = this.customizationAxios();
-    this.InvoicesApi = openApiGeneretedCode.InvoicesFactory(undefined, this.url, customizedAxios);
-    this.RatesApi = openApiGeneretedCode.RatesFactory(undefined, this.url, customizedAxios);
+    this.InvoicesApi = openapi.InvoicesFactory(undefined, this.url, customizedAxios);
+    this.RatesApi = openapi.RatesFactory(undefined, this.url, customizedAxios);
   }
 
   public invoices = () => {
@@ -35,7 +35,7 @@ export default class CryptoPay {
   };
 
   /* eslint-disable @typescript-eslint/no-explicit-any*/
-  public callbackVerification = (body: string, headers: any): boolean => {
+  public verifyCallback = (body: string, headers: any): boolean => {
     this.validateBodyAndHeader(body, headers);
     const expectedSignature = CryptoJS.HmacSHA256(body, this.callbackSecret).toString();
     const signature = headers['x-cryptopay-signature'];
@@ -46,7 +46,7 @@ export default class CryptoPay {
     if (!body) throw new Error('Body is empty');
     try {
       JSON.parse(body);
-    } catch ({message}) {
+    } catch ({ message }) {
       throw new Error(`Invalid JSON in body. Error message: ${message}`);
     }
     if (!headers['x-cryptopay-signature']) throw new Error('Header x-cryptopay-signature is missing or empty');
@@ -91,7 +91,7 @@ export default class CryptoPay {
         Date: date,
         Authorization: `HMAC ${this.apiKey}:${signature}`,
         'Content-Type': contentType,
-        'User-Agent': `Cryptopay NodeJS v${version}`,
+        'User-Agent': `Cryptopay NodeJS`,
       },
     };
   }

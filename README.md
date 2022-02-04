@@ -1,18 +1,18 @@
 # Cryptopay Node Library
 
-Cryptopay - the official Node for the Cryptopay API
+Cryptopay-node - The official NodeJS library for the Cryptopay API
 
 Cryptopay is a payment gateway and business wallet that allows merchants to automate the processes of accepting cryptocurrency payments and payouts from their customers, as well as making currency exchange transactions and receiving data on the transaction history and account balance statuses for reporting.
 
 For more information, please visit [Cryptopay API docs](https://developers.cryptopay.me).
 
-# Table of contents
+## Table of contents
 
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Usage](#usage)
-   * [Invoices](#invoices)
-   * [Rates](#rates)
+  * [Invoices](#invoices)
+  * [Rates](#rates)
 * [Callbacks](#callbacks)
 * [Contributing](#contributing)
 
@@ -21,30 +21,8 @@ For more information, please visit [Cryptopay API docs](https://developers.crypt
 Use this command install node modules:
 
 ```bash
-$ npm install
+npm install cryptopay-node
 ```
-
-Use this command for starting a project in development phase:
-
-```bash
-$ npm start
-```
-
-Use this command to generate code from openapi.yml which should be stored in the project root:
-bash
-```
-bash scriptToGenerateCode.sh
-```
-If you don't have openapi-generator-cli
- bash
-```
-npm install @openapitools/openapi-generator-cli -g
-```
-
-### Requirements
-
-* node v14+
-* npm v8+ 
 
 ## Configuration
 
@@ -54,9 +32,10 @@ Learn mode about API credentials at [Developers guide](https://developers.crypto
 
 ### Configure library
 
-```js
+```ts
+import Cryptopay, { SERVER } from 'cryptopay-node';
 // Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
-const cryptoPay = new CryptoPay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
+const cryptopay = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
 ```
 
 ## Usage
@@ -71,10 +50,10 @@ An invoice is a request for a cryptocurrency payment which contains a unique BTC
 
 This endpoint allows you to create invoices.
 
-##### Method call
+#### Method call
 
 ```ts
-const resp = await cryptoPay.invoices().create(invoice);
+const resp = await cryptopay.invoices().create(invoice);
 ```
 
 #### Invoice interface
@@ -204,31 +183,32 @@ const invoice = {
     "expires_at": "2021-11-11T14:53:47.378Z"
   }
 ```
+
 ### Other methods
+
 ```ts
     //This endpoint allows you to retrieve a list of all invoices.
-    await cryptoPay.invoices().list();
+    await cryptopay.invoices().list();
 
     //This endpoint allows you to retrieve the invoice details by invoice id
-    await cryptoPay.invoices().retrieve('invoice_id'); 
+    await cryptopay.invoices().retrieve('invoice_id'); 
 
     // This endpoint allows you to retrieve invoice details by its custom_id.
-    await cryptoPay.invoices().retrieveByCustomId('custom_id');
+    await cryptopay.invoices().retrieveByCustomId('custom_id');
 
     //This endpoint allows you to recalculate invoices.
-    await cryptoPay.invoices().createRecalculation('invoice_id', true) 
+    await cryptopay.invoices().createRecalculation('invoice_id', true) 
 
     // This endpoint allows you to commit invoice recalculation.
-    await cryptoPay.invoices().commitRecalculation('invoice_id','recalculation_id') 
+    await cryptopay.invoices().commitRecalculation('invoice_id','recalculation_id') 
 
     //This endpoint allows you to create invoice refunds.
-    await cryptoPay.invoices().createRefund('invoice_id') 
+    await cryptopay.invoices().createRefund('invoice_id') 
 
     //This endpoint allows you to retrieve a list of a particular invoice refunds.
-    await cryptoPay.invoices().listRefunds('invoice_id')
+    await cryptopay.invoices().listRefunds('invoice_id')
 
 ```
-
 
 ### Rates
 
@@ -236,18 +216,15 @@ const invoice = {
 
 #### Retrieve all rates
 
-
 ```ts
-const resp = await cryptoPay.rates().all();
+const resp = await cryptopay.rates().all();
 ```
 
 #### Retrieve a pair rate
 
-
 ```ts
-const resp = await cryptoPay.rates().retrieve("BTC/EUR");
+const resp = await cryptopay.rates().retrieve("BTC/EUR");
 ```
-
 
 ## Callbacks
 
@@ -258,12 +235,12 @@ Every callback request contains a `X-Cryptopay-Signature` header which is needed
 ```ts
     // body must be json, headers are all your headers in response
     //if the callback is valid method returns true 
-    cryptoPay.callbackVerification(body, headers) 
+    cryptopay.verifyCallback(body, headers) 
 ```
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/cryptopay-dev/cryptopay-node.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/cryptopay-dev/cryptopay-node>.
 
 ## License
 

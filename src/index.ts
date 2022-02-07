@@ -2,13 +2,13 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import dotenv from 'dotenv';
 import * as openapi from '../src/openapi';
-import { version } from '../package.json';
 import { SERVER } from './constants';
+export { SERVER };
 import { CustomErrorCreater } from './helpers/errorCreaterHelper';
 import { IHeaders } from './interfaces';
 dotenv.config();
 
-export default class CryptoPay {
+export default class Cryptopay {
   /* eslint-disable @typescript-eslint/no-explicit-any*/
   private InvoicesApi: any;
   private RatesApi: any;
@@ -22,8 +22,8 @@ export default class CryptoPay {
     }
 
     const customizedAxios = this.customizationAxios();
-    this.InvoicesApi = openapi.InvoicesApiFactory(this.url, customizedAxios);
-    this.RatesApi = openapi.RatesApiFactory(this.url, customizedAxios);
+    this.InvoicesApi = openapi.InvoicesFactory(undefined, this.url, customizedAxios);
+    this.RatesApi = openapi.RatesFactory(undefined, this.url, customizedAxios);
   }
 
   public invoices = () => {
@@ -35,7 +35,7 @@ export default class CryptoPay {
   };
 
   /* eslint-disable @typescript-eslint/no-explicit-any*/
-  public verify = (body: string, headers: any): boolean => {
+  public verifyCallback = (body: string, headers: any): boolean => {
     this.validateBodyAndHeader(body, headers);
     const expectedSignature = CryptoJS.HmacSHA256(body, this.callbackSecret).toString();
     const signature = headers['x-cryptopay-signature'];
@@ -91,7 +91,7 @@ export default class CryptoPay {
         Date: date,
         Authorization: `HMAC ${this.apiKey}:${signature}`,
         'Content-Type': contentType,
-        'User-Agent': `Cryptopay NodeJS v${version}`,
+        'User-Agent': `Cryptopay NodeJS`,
       },
     };
   }

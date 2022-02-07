@@ -13,13 +13,13 @@
  */
 
 
-import globalAxios, { AxiosInstance, AxiosPromise } from 'axios';
-// @ts-ignore
-import { BaseAPI, BASE_PATH, RequestArgs } from './base';
+import { Configuration } from './configuration';
+import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { assertParamExists, createRequestFunction, DUMMY_BASE_URL, serializeDataIfNeeded, setSearchParams, toPathString } from './common';
-import { Configuration } from './configuration';
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+// @ts-ignore
+import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from './base';
 
 /**
  * 
@@ -1909,10 +1909,10 @@ export enum TransactionReferenceType {
 
 
 /**
- * AccountsApi - axios parameter creator
+ * Accounts - axios parameter creator
  * @export
  */
-export const AccountsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AccountsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -1929,17 +1929,17 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1954,9 +1954,9 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        transactions: async (accountId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        listTransactions: async (accountId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'accountId' is not null or undefined
-            assertParamExists('transactions', 'accountId', accountId);
+            assertParamExists('listTransactions', 'accountId', accountId)
             const localVarPath = `/api/accounts/{account_id}/transactions`
                 .replace(`{${"account_id"}}`, encodeURIComponent(String(accountId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1966,7 +1966,7 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1977,25 +1977,25 @@ export const AccountsApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * AccountsApi - functional programming interface
+ * Accounts - functional programming interface
  * @export
  */
-export const AccountsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = AccountsApiAxiosParamCreator(configuration);
+export const AccountsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = AccountsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -2015,19 +2015,19 @@ export const AccountsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async transactions(accountId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TransactionListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.transactions(accountId, startingAfter, options);
+        async listTransactions(accountId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TransactionListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listTransactions(accountId, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * AccountsApi - factory interface
+ * Accounts - factory interface
  * @export
  */
-export const AccountsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = AccountsApiFp(configuration);
+export const AccountsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = AccountsFp(configuration)
     return {
         /**
          * 
@@ -2046,28 +2046,28 @@ export const AccountsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        transactions(accountId: string, startingAfter?: string, options?: any): AxiosPromise<TransactionListResult> {
-            return localVarFp.transactions(accountId, startingAfter, options).then((request) => request(axios, basePath));
+        listTransactions(accountId: string, startingAfter?: string, options?: any): AxiosPromise<TransactionListResult> {
+            return localVarFp.listTransactions(accountId, startingAfter, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * AccountsApi - object-oriented interface
+ * Accounts - object-oriented interface
  * @export
- * @class AccountsApi
+ * @class Accounts
  * @extends {BaseAPI}
  */
-export class AccountsApi extends BaseAPI {
+export class Accounts extends BaseAPI {
     /**
      * 
      * @summary List accounts
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AccountsApi
+     * @memberof Accounts
      */
     public list(options?: any) {
-        return AccountsApiFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
+        return AccountsFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2077,19 +2077,19 @@ export class AccountsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AccountsApi
+     * @memberof Accounts
      */
-    public transactions(accountId: string, startingAfter?: string, options?: any) {
-        return AccountsApiFp(this.configuration).transactions(accountId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public listTransactions(accountId: string, startingAfter?: string, options?: any) {
+        return AccountsFp(this.configuration).listTransactions(accountId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * ChannelsApi - axios parameter creator
+ * Channels - axios parameter creator
  * @export
  */
-export const ChannelsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ChannelsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -2100,7 +2100,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          */
         create: async (channelParams: ChannelParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelParams' is not null or undefined
-            assertParamExists('create', 'channelParams', channelParams);
+            assertParamExists('create', 'channelParams', channelParams)
             const localVarPath = `/api/channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2109,20 +2109,20 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(channelParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(channelParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2146,7 +2146,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2161,10 +2161,10 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2179,9 +2179,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        payments: async (channelId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        listPayments: async (channelId: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('payments', 'channelId', channelId);
+            assertParamExists('listPayments', 'channelId', channelId)
             const localVarPath = `/api/channels/{channel_id}/payments`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2191,7 +2191,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2202,10 +2202,10 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2221,7 +2221,7 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          */
         retrieve: async (channelId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('retrieve', 'channelId', channelId);
+            assertParamExists('retrieve', 'channelId', channelId)
             const localVarPath = `/api/channels/{channel_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2231,17 +2231,17 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2255,9 +2255,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveById: async (customId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customId' is not null or undefined
-            assertParamExists('retrieveById', 'customId', customId);
+            assertParamExists('retrieveByCustomId', 'customId', customId)
             const localVarPath = `/api/channels/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2267,17 +2267,17 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2294,9 +2294,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          */
         retrievePayment: async (channelId: string, channelPaymentId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('retrievePayment', 'channelId', channelId);
+            assertParamExists('retrievePayment', 'channelId', channelId)
             // verify required parameter 'channelPaymentId' is not null or undefined
-            assertParamExists('retrievePayment', 'channelPaymentId', channelPaymentId);
+            assertParamExists('retrievePayment', 'channelPaymentId', channelPaymentId)
             const localVarPath = `/api/channels/{channel_id}/payments/{channel_payment_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)))
                 .replace(`{${"channel_payment_id"}}`, encodeURIComponent(String(channelPaymentId)));
@@ -2307,17 +2307,17 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2334,9 +2334,9 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
          */
         update: async (channelId: string, channelUpdateParams: ChannelUpdateParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'channelId' is not null or undefined
-            assertParamExists('update', 'channelId', channelId);
+            assertParamExists('update', 'channelId', channelId)
             // verify required parameter 'channelUpdateParams' is not null or undefined
-            assertParamExists('update', 'channelUpdateParams', channelUpdateParams);
+            assertParamExists('update', 'channelUpdateParams', channelUpdateParams)
             const localVarPath = `/api/channels/{channel_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2346,35 +2346,35 @@ export const ChannelsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(channelUpdateParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(channelUpdateParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * ChannelsApi - functional programming interface
+ * Channels - functional programming interface
  * @export
  */
-export const ChannelsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = ChannelsApiAxiosParamCreator(configuration);
+export const ChannelsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChannelsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -2407,8 +2407,8 @@ export const ChannelsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async payments(channelId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelPaymentListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.payments(channelId, startingAfter, options);
+        async listPayments(channelId: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelPaymentListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listPayments(channelId, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2429,8 +2429,8 @@ export const ChannelsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveById(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveById(customId, options);
+        async retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChannelResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveByCustomId(customId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2457,15 +2457,15 @@ export const ChannelsApiFp = function (configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.update(channelId, channelUpdateParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * ChannelsApi - factory interface
+ * Channels - factory interface
  * @export
  */
-export const ChannelsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ChannelsApiFp(configuration);
+export const ChannelsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChannelsFp(configuration)
     return {
         /**
          * 
@@ -2496,8 +2496,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        payments(channelId: string, startingAfter?: string, options?: any): AxiosPromise<ChannelPaymentListResult> {
-            return localVarFp.payments(channelId, startingAfter, options).then((request) => request(axios, basePath));
+        listPayments(channelId: string, startingAfter?: string, options?: any): AxiosPromise<ChannelPaymentListResult> {
+            return localVarFp.listPayments(channelId, startingAfter, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2516,8 +2516,8 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveById(customId: string, options?: any): AxiosPromise<ChannelResult> {
-            return localVarFp.retrieveById(customId, options).then((request) => request(axios, basePath));
+        retrieveByCustomId(customId: string, options?: any): AxiosPromise<ChannelResult> {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2545,22 +2545,22 @@ export const ChannelsApiFactory = function (configuration?: Configuration, baseP
 };
 
 /**
- * ChannelsApi - object-oriented interface
+ * Channels - object-oriented interface
  * @export
- * @class ChannelsApi
+ * @class Channels
  * @extends {BaseAPI}
  */
-export class ChannelsApi extends BaseAPI {
+export class Channels extends BaseAPI {
     /**
      * 
      * @summary Create a channel
      * @param {ChannelParams} channelParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
     public create(channelParams: ChannelParams, options?: any) {
-        return ChannelsApiFp(this.configuration).create(channelParams, options).then((request) => request(this.axios, this.basePath));
+        return ChannelsFp(this.configuration).create(channelParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2570,10 +2570,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
     public list(customerId?: string, startingAfter?: string, options?: any) {
-        return ChannelsApiFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return ChannelsFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2583,10 +2583,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public payments(channelId: string, startingAfter?: string, options?: any) {
-        return ChannelsApiFp(this.configuration).payments(channelId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public listPayments(channelId: string, startingAfter?: string, options?: any) {
+        return ChannelsFp(this.configuration).listPayments(channelId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2595,10 +2595,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} channelId Channel ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
     public retrieve(channelId: string, options?: any) {
-        return ChannelsApiFp(this.configuration).retrieve(channelId, options).then((request) => request(this.axios, this.basePath));
+        return ChannelsFp(this.configuration).retrieve(channelId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2607,10 +2607,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} customId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
-    public retrieveById(customId: string, options?: any) {
-        return ChannelsApiFp(this.configuration).retrieveById(customId, options).then((request) => request(this.axios, this.basePath));
+    public retrieveByCustomId(customId: string, options?: any) {
+        return ChannelsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2620,10 +2620,10 @@ export class ChannelsApi extends BaseAPI {
      * @param {string} channelPaymentId Channel payment ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
     public retrievePayment(channelId: string, channelPaymentId: string, options?: any) {
-        return ChannelsApiFp(this.configuration).retrievePayment(channelId, channelPaymentId, options).then((request) => request(this.axios, this.basePath));
+        return ChannelsFp(this.configuration).retrievePayment(channelId, channelPaymentId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2633,19 +2633,19 @@ export class ChannelsApi extends BaseAPI {
      * @param {ChannelUpdateParams} channelUpdateParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ChannelsApi
+     * @memberof Channels
      */
     public update(channelId: string, channelUpdateParams: ChannelUpdateParams, options?: any) {
-        return ChannelsApiFp(this.configuration).update(channelId, channelUpdateParams, options).then((request) => request(this.axios, this.basePath));
+        return ChannelsFp(this.configuration).update(channelId, channelUpdateParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * CoinWithdrawalsApi - axios parameter creator
+ * CoinWithdrawals - axios parameter creator
  * @export
  */
-export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -2656,7 +2656,7 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          */
         commit: async (coinWithdrawalId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'coinWithdrawalId' is not null or undefined
-            assertParamExists('commit', 'coinWithdrawalId', coinWithdrawalId);
+            assertParamExists('commit', 'coinWithdrawalId', coinWithdrawalId)
             const localVarPath = `/api/coin_withdrawals/{coin_withdrawal_id}/commit`
                 .replace(`{${"coin_withdrawal_id"}}`, encodeURIComponent(String(coinWithdrawalId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2666,17 +2666,17 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2692,7 +2692,7 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          */
         create: async (coinWithdrawalParams: CoinWithdrawalParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'coinWithdrawalParams' is not null or undefined
-            assertParamExists('create', 'coinWithdrawalParams', coinWithdrawalParams);
+            assertParamExists('create', 'coinWithdrawalParams', coinWithdrawalParams)
             const localVarPath = `/api/coin_withdrawals`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2701,20 +2701,20 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(coinWithdrawalParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(coinWithdrawalParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2738,7 +2738,7 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2753,10 +2753,10 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2769,7 +2769,7 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        fees: async (options: any = {}): Promise<RequestArgs> => {
+        listNetworkFees: async (options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/coin_withdrawals/network_fees`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2778,17 +2778,17 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2804,7 +2804,7 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          */
         retrieve: async (coinWithdrawalId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'coinWithdrawalId' is not null or undefined
-            assertParamExists('retrieve', 'coinWithdrawalId', coinWithdrawalId);
+            assertParamExists('retrieve', 'coinWithdrawalId', coinWithdrawalId)
             const localVarPath = `/api/coin_withdrawals/{coin_withdrawal_id}`
                 .replace(`{${"coin_withdrawal_id"}}`, encodeURIComponent(String(coinWithdrawalId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2814,17 +2814,17 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2838,9 +2838,9 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveById: async (customId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customId' is not null or undefined
-            assertParamExists('retrieveById', 'customId', customId);
+            assertParamExists('retrieveByCustomId', 'customId', customId)
             const localVarPath = `/api/coin_withdrawals/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2850,32 +2850,32 @@ export const CoinWithdrawalsApiAxiosParamCreator = function (configuration?: Con
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * CoinWithdrawalsApi - functional programming interface
+ * CoinWithdrawals - functional programming interface
  * @export
  */
-export const CoinWithdrawalsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = CoinWithdrawalsApiAxiosParamCreator(configuration);
+export const CoinWithdrawalsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CoinWithdrawalsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -2917,8 +2917,8 @@ export const CoinWithdrawalsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async fees(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.fees(options);
+        async listNetworkFees(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listNetworkFees(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2939,19 +2939,19 @@ export const CoinWithdrawalsApiFp = function (configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveById(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveById(customId, options);
+        async retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinWithdrawalResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveByCustomId(customId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * CoinWithdrawalsApi - factory interface
+ * CoinWithdrawals - factory interface
  * @export
  */
-export const CoinWithdrawalsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CoinWithdrawalsApiFp(configuration);
+export const CoinWithdrawalsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CoinWithdrawalsFp(configuration)
     return {
         /**
          * 
@@ -2990,8 +2990,8 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        fees(options?: any): AxiosPromise<NetworkFeeListResult> {
-            return localVarFp.fees(options).then((request) => request(axios, basePath));
+        listNetworkFees(options?: any): AxiosPromise<NetworkFeeListResult> {
+            return localVarFp.listNetworkFees(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3010,29 +3010,29 @@ export const CoinWithdrawalsApiFactory = function (configuration?: Configuration
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveById(customId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
-            return localVarFp.retrieveById(customId, options).then((request) => request(axios, basePath));
+        retrieveByCustomId(customId: string, options?: any): AxiosPromise<CoinWithdrawalResult> {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * CoinWithdrawalsApi - object-oriented interface
+ * CoinWithdrawals - object-oriented interface
  * @export
- * @class CoinWithdrawalsApi
+ * @class CoinWithdrawals
  * @extends {BaseAPI}
  */
-export class CoinWithdrawalsApi extends BaseAPI {
+export class CoinWithdrawals extends BaseAPI {
     /**
      * 
      * @summary Commit a withdrawal
      * @param {string} coinWithdrawalId Coin withdrawal ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
     public commit(coinWithdrawalId: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).commit(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
+        return CoinWithdrawalsFp(this.configuration).commit(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3041,10 +3041,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {CoinWithdrawalParams} coinWithdrawalParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
     public create(coinWithdrawalParams: CoinWithdrawalParams, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).create(coinWithdrawalParams, options).then((request) => request(this.axios, this.basePath));
+        return CoinWithdrawalsFp(this.configuration).create(coinWithdrawalParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3054,10 +3054,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
     public list(customerId?: string, startingAfter?: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return CoinWithdrawalsFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3065,10 +3065,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @summary List network fees
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public fees(options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).fees(options).then((request) => request(this.axios, this.basePath));
+    public listNetworkFees(options?: any) {
+        return CoinWithdrawalsFp(this.configuration).listNetworkFees(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3077,10 +3077,10 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {string} coinWithdrawalId Coin withdrawal ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
     public retrieve(coinWithdrawalId: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).retrieve(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
+        return CoinWithdrawalsFp(this.configuration).retrieve(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3089,19 +3089,19 @@ export class CoinWithdrawalsApi extends BaseAPI {
      * @param {string} customId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CoinWithdrawalsApi
+     * @memberof CoinWithdrawals
      */
-    public retrieveById(customId: string, options?: any) {
-        return CoinWithdrawalsApiFp(this.configuration).retrieveById(customId, options).then((request) => request(this.axios, this.basePath));
+    public retrieveByCustomId(customId: string, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * CustomersApi - axios parameter creator
+ * Customers - axios parameter creator
  * @export
  */
-export const CustomersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const CustomersAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -3112,7 +3112,7 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          */
         create: async (customerParams: CustomerParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customerParams' is not null or undefined
-            assertParamExists('create', 'customerParams', customerParams);
+            assertParamExists('create', 'customerParams', customerParams)
             const localVarPath = `/api/customers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3121,20 +3121,20 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(customerParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(customerParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3157,7 +3157,7 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -3168,10 +3168,10 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3187,7 +3187,7 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          */
         retrieve: async (customerId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customerId' is not null or undefined
-            assertParamExists('retrieve', 'customerId', customerId);
+            assertParamExists('retrieve', 'customerId', customerId)
             const localVarPath = `/api/customers/{customer_id}`
                 .replace(`{${"customer_id"}}`, encodeURIComponent(String(customerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3197,17 +3197,17 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3224,9 +3224,9 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
          */
         update: async (customerId: string, customerUpdateParams: CustomerUpdateParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customerId' is not null or undefined
-            assertParamExists('update', 'customerId', customerId);
+            assertParamExists('update', 'customerId', customerId)
             // verify required parameter 'customerUpdateParams' is not null or undefined
-            assertParamExists('update', 'customerUpdateParams', customerUpdateParams);
+            assertParamExists('update', 'customerUpdateParams', customerUpdateParams)
             const localVarPath = `/api/customers/{customer_id}`
                 .replace(`{${"customer_id"}}`, encodeURIComponent(String(customerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3236,35 +3236,35 @@ export const CustomersApiAxiosParamCreator = function (configuration?: Configura
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(customerUpdateParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(customerUpdateParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * CustomersApi - functional programming interface
+ * Customers - functional programming interface
  * @export
  */
-export const CustomersApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = CustomersApiAxiosParamCreator(configuration);
+export const CustomersFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CustomersAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -3311,15 +3311,15 @@ export const CustomersApiFp = function (configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.update(customerId, customerUpdateParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * CustomersApi - factory interface
+ * Customers - factory interface
  * @export
  */
-export const CustomersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = CustomersApiFp(configuration);
+export const CustomersFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CustomersFp(configuration)
     return {
         /**
          * 
@@ -3366,22 +3366,22 @@ export const CustomersApiFactory = function (configuration?: Configuration, base
 };
 
 /**
- * CustomersApi - object-oriented interface
+ * Customers - object-oriented interface
  * @export
- * @class CustomersApi
+ * @class Customers
  * @extends {BaseAPI}
  */
-export class CustomersApi extends BaseAPI {
+export class Customers extends BaseAPI {
     /**
      * 
      * @summary Create a customer
      * @param {CustomerParams} customerParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
     public create(customerParams: CustomerParams, options?: any) {
-        return CustomersApiFp(this.configuration).create(customerParams, options).then((request) => request(this.axios, this.basePath));
+        return CustomersFp(this.configuration).create(customerParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3390,10 +3390,10 @@ export class CustomersApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
     public list(startingAfter?: string, options?: any) {
-        return CustomersApiFp(this.configuration).list(startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return CustomersFp(this.configuration).list(startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3402,10 +3402,10 @@ export class CustomersApi extends BaseAPI {
      * @param {string} customerId The customer\&#39;s reference ID in your system
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
     public retrieve(customerId: string, options?: any) {
-        return CustomersApiFp(this.configuration).retrieve(customerId, options).then((request) => request(this.axios, this.basePath));
+        return CustomersFp(this.configuration).retrieve(customerId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3415,19 +3415,19 @@ export class CustomersApi extends BaseAPI {
      * @param {CustomerUpdateParams} customerUpdateParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof CustomersApi
+     * @memberof Customers
      */
     public update(customerId: string, customerUpdateParams: CustomerUpdateParams, options?: any) {
-        return CustomersApiFp(this.configuration).update(customerId, customerUpdateParams, options).then((request) => request(this.axios, this.basePath));
+        return CustomersFp(this.configuration).update(customerId, customerUpdateParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * ExchangeTransfersApi - axios parameter creator
+ * ExchangeTransfers - axios parameter creator
  * @export
  */
-export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ExchangeTransfersAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -3438,7 +3438,7 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
          */
         commit: async (exchangeTransferId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'exchangeTransferId' is not null or undefined
-            assertParamExists('commit', 'exchangeTransferId', exchangeTransferId);
+            assertParamExists('commit', 'exchangeTransferId', exchangeTransferId)
             const localVarPath = `/api/exchange_transfers/{exchange_transfer_id}/commit`
                 .replace(`{${"exchange_transfer_id"}}`, encodeURIComponent(String(exchangeTransferId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3448,17 +3448,17 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3474,7 +3474,7 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
          */
         create: async (exchangeTransferParams: ExchangeTransferParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'exchangeTransferParams' is not null or undefined
-            assertParamExists('create', 'exchangeTransferParams', exchangeTransferParams);
+            assertParamExists('create', 'exchangeTransferParams', exchangeTransferParams)
             const localVarPath = `/api/exchange_transfers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3483,20 +3483,20 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(exchangeTransferParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(exchangeTransferParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3512,7 +3512,7 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
          */
         retrieve: async (exchangeTransferId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'exchangeTransferId' is not null or undefined
-            assertParamExists('retrieve', 'exchangeTransferId', exchangeTransferId);
+            assertParamExists('retrieve', 'exchangeTransferId', exchangeTransferId)
             const localVarPath = `/api/exchange_transfers/{exchange_transfer_id}`
                 .replace(`{${"exchange_transfer_id"}}`, encodeURIComponent(String(exchangeTransferId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3522,32 +3522,32 @@ export const ExchangeTransfersApiAxiosParamCreator = function (configuration?: C
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * ExchangeTransfersApi - functional programming interface
+ * ExchangeTransfers - functional programming interface
  * @export
  */
-export const ExchangeTransfersApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = ExchangeTransfersApiAxiosParamCreator(configuration);
+export const ExchangeTransfersFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ExchangeTransfersAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -3582,15 +3582,15 @@ export const ExchangeTransfersApiFp = function (configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(exchangeTransferId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * ExchangeTransfersApi - factory interface
+ * ExchangeTransfers - factory interface
  * @export
  */
-export const ExchangeTransfersApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ExchangeTransfersApiFp(configuration);
+export const ExchangeTransfersFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ExchangeTransfersFp(configuration)
     return {
         /**
          * 
@@ -3626,22 +3626,22 @@ export const ExchangeTransfersApiFactory = function (configuration?: Configurati
 };
 
 /**
- * ExchangeTransfersApi - object-oriented interface
+ * ExchangeTransfers - object-oriented interface
  * @export
- * @class ExchangeTransfersApi
+ * @class ExchangeTransfers
  * @extends {BaseAPI}
  */
-export class ExchangeTransfersApi extends BaseAPI {
+export class ExchangeTransfers extends BaseAPI {
     /**
      * 
      * @summary Commit an exchange transfer
      * @param {string} exchangeTransferId Exchange transfer ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ExchangeTransfersApi
+     * @memberof ExchangeTransfers
      */
     public commit(exchangeTransferId: string, options?: any) {
-        return ExchangeTransfersApiFp(this.configuration).commit(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
+        return ExchangeTransfersFp(this.configuration).commit(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3650,10 +3650,10 @@ export class ExchangeTransfersApi extends BaseAPI {
      * @param {ExchangeTransferParams} exchangeTransferParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ExchangeTransfersApi
+     * @memberof ExchangeTransfers
      */
     public create(exchangeTransferParams: ExchangeTransferParams, options?: any) {
-        return ExchangeTransfersApiFp(this.configuration).create(exchangeTransferParams, options).then((request) => request(this.axios, this.basePath));
+        return ExchangeTransfersFp(this.configuration).create(exchangeTransferParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3662,19 +3662,19 @@ export class ExchangeTransfersApi extends BaseAPI {
      * @param {string} exchangeTransferId Exchange transfer ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ExchangeTransfersApi
+     * @memberof ExchangeTransfers
      */
     public retrieve(exchangeTransferId: string, options?: any) {
-        return ExchangeTransfersApiFp(this.configuration).retrieve(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
+        return ExchangeTransfersFp(this.configuration).retrieve(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * InvoicesApi - axios parameter creator
+ * Invoices - axios parameter creator
  * @export
  */
-export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
+export const InvoicesAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -3686,9 +3686,9 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
          */
         commitRecalculation: async (invoiceId: string, recalculationId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('commitRecalculation', 'invoiceId', invoiceId);
+            assertParamExists('commitRecalculation', 'invoiceId', invoiceId)
             // verify required parameter 'recalculationId' is not null or undefined
-            assertParamExists('commitRecalculation', 'recalculationId', recalculationId);
+            assertParamExists('commitRecalculation', 'recalculationId', recalculationId)
             const localVarPath = `/api/invoices/{invoice_id}/recalculations/{recalculation_id}/commit`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)))
                 .replace(`{${"recalculation_id"}}`, encodeURIComponent(String(recalculationId)));
@@ -3699,17 +3699,17 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3725,7 +3725,7 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
          */
         create: async (invoiceParams: InvoiceParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceParams' is not null or undefined
-            assertParamExists('create', 'invoiceParams', invoiceParams);
+            assertParamExists('create', 'invoiceParams', invoiceParams)
             const localVarPath = `/api/invoices`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3734,20 +3734,20 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(invoiceParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(invoiceParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3764,9 +3764,9 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
          */
         createRecalculation: async (invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('createRecalculation', 'invoiceId', invoiceId);
+            assertParamExists('createRecalculation', 'invoiceId', invoiceId)
             // verify required parameter 'invoiceRecalculationParams' is not null or undefined
-            assertParamExists('createRecalculation', 'invoiceRecalculationParams', invoiceRecalculationParams);
+            assertParamExists('createRecalculation', 'invoiceRecalculationParams', invoiceRecalculationParams)
             const localVarPath = `/api/invoices/{invoice_id}/recalculations`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3776,20 +3776,20 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(invoiceRecalculationParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(invoiceRecalculationParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3806,9 +3806,9 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
          */
         createRefund: async (invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('createRefund', 'invoiceId', invoiceId);
+            assertParamExists('createRefund', 'invoiceId', invoiceId)
             // verify required parameter 'invoiceRefundParams' is not null or undefined
-            assertParamExists('createRefund', 'invoiceRefundParams', invoiceRefundParams);
+            assertParamExists('createRefund', 'invoiceRefundParams', invoiceRefundParams)
             const localVarPath = `/api/invoices/{invoice_id}/refunds`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3818,20 +3818,20 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(invoiceRefundParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(invoiceRefundParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3855,7 +3855,7 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -3870,10 +3870,10 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3889,7 +3889,7 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
          */
         listRefunds: async (invoiceId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('listRefunds', 'invoiceId', invoiceId);
+            assertParamExists('listRefunds', 'invoiceId', invoiceId)
             const localVarPath = `/api/invoices/{invoice_id}/refunds`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3899,17 +3899,17 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3925,7 +3925,7 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
          */
         retrieve: async (invoiceId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
-            assertParamExists('retrieve', 'invoiceId', invoiceId);
+            assertParamExists('retrieve', 'invoiceId', invoiceId)
             const localVarPath = `/api/invoices/{invoice_id}`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3935,17 +3935,17 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3959,9 +3959,9 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveById: async (customId: string, options: any = {}): Promise<RequestArgs> => {
+        retrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'customId' is not null or undefined
-            assertParamExists('retrieveById', 'customId', customId);
+            assertParamExists('retrieveByCustomId', 'customId', customId)
             const localVarPath = `/api/invoices/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -3971,32 +3971,32 @@ export const InvoicesApiAxiosParamCreator = (configuration?: Configuration) => {
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * InvoicesApi - functional programming interface
+ * Invoices - functional programming interface
  * @export
  */
-export const InvoicesApiFp = (configuration?: Configuration) => {
-    const localVarAxiosParamCreator = InvoicesApiAxiosParamCreator(configuration);
+export const InvoicesFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = InvoicesAxiosParamCreator(configuration)
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -4086,19 +4086,19 @@ export const InvoicesApiFp = (configuration?: Configuration) => {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async retrieveById(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveById(customId, options);
+        async retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveByCustomId(customId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * InvoicesApi - factory interface
+ * Invoices - factory interface
  * @export
  */
-export const InvoicesApiFactory = function (basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = InvoicesApiFp();
+export const InvoicesFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = InvoicesFp(configuration)
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -4181,19 +4181,19 @@ export const InvoicesApiFactory = function (basePath?: string, axios?: AxiosInst
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        retrieveById(customId: string, options?: any): AxiosPromise<InvoiceResult> {
-            return localVarFp.retrieveById(customId, options).then((request) => request(axios, basePath));
+        retrieveByCustomId(customId: string, options?: any): AxiosPromise<InvoiceResult> {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * InvoicesApi - object-oriented interface
+ * Invoices - object-oriented interface
  * @export
- * @class InvoicesApi
+ * @class Invoices
  * @extends {BaseAPI}
  */
-export class InvoicesApi extends BaseAPI {
+export class Invoices extends BaseAPI {
     /**
      * This endpoint allows you to commit invoice recalculation.
      * @summary Commit invoice recalculation
@@ -4201,10 +4201,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} recalculationId Recalculation ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
     public commitRecalculation(invoiceId: string, recalculationId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).commitRecalculation(invoiceId, recalculationId, options).then((request) => request(this.axios, this.basePath));
+        return InvoicesFp(this.configuration).commitRecalculation(invoiceId, recalculationId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4213,10 +4213,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {InvoiceParams} invoiceParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
     public create(invoiceParams: InvoiceParams, options?: any) {
-        return InvoicesApiFp(this.configuration).create(invoiceParams, options).then((request) => request(this.axios, this.basePath));
+        return InvoicesFp(this.configuration).create(invoiceParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4226,10 +4226,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {InvoiceRecalculationParams} invoiceRecalculationParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
     public createRecalculation(invoiceId: string, invoiceRecalculationParams: InvoiceRecalculationParams, options?: any) {
-        return InvoicesApiFp(this.configuration).createRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(this.axios, this.basePath));
+        return InvoicesFp(this.configuration).createRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4239,10 +4239,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {InvoiceRefundParams} invoiceRefundParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
     public createRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any) {
-        return InvoicesApiFp(this.configuration).createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(this.axios, this.basePath));
+        return InvoicesFp(this.configuration).createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4252,10 +4252,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
     public list(customerId?: string, startingAfter?: string, options?: any) {
-        return InvoicesApiFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return InvoicesFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4264,10 +4264,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} invoiceId Invoice ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
     public listRefunds(invoiceId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).listRefunds(invoiceId, options).then((request) => request(this.axios, this.basePath));
+        return InvoicesFp(this.configuration).listRefunds(invoiceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4276,10 +4276,10 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} invoiceId Invoice ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
     public retrieve(invoiceId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).retrieve(invoiceId, options).then((request) => request(this.axios, this.basePath));
+        return InvoicesFp(this.configuration).retrieve(invoiceId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4288,19 +4288,19 @@ export class InvoicesApi extends BaseAPI {
      * @param {string} customId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof InvoicesApi
+     * @memberof Invoices
      */
-    public retrieveById(customId: string, options?: any) {
-        return InvoicesApiFp(this.configuration).retrieveById(customId, options).then((request) => request(this.axios, this.basePath));
+    public retrieveByCustomId(customId: string, options?: any) {
+        return InvoicesFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * RatesApi - axios parameter creator
+ * Rates - axios parameter creator
  * @export
  */
-export const RatesApiAxiosParamCreator = function (configuration?: Configuration) {
+export const RatesAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -4317,17 +4317,17 @@ export const RatesApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4344,9 +4344,9 @@ export const RatesApiAxiosParamCreator = function (configuration?: Configuration
          */
         retrieve: async (baseCurrency: string, quoteCurrency: string, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'baseCurrency' is not null or undefined
-            assertParamExists('retrieve', 'baseCurrency', baseCurrency);
+            assertParamExists('retrieve', 'baseCurrency', baseCurrency)
             // verify required parameter 'quoteCurrency' is not null or undefined
-            assertParamExists('retrieve', 'quoteCurrency', quoteCurrency);
+            assertParamExists('retrieve', 'quoteCurrency', quoteCurrency)
             const localVarPath = `/api/rates/{base_currency}/{quote_currency}`
                 .replace(`{${"base_currency"}}`, encodeURIComponent(String(baseCurrency)))
                 .replace(`{${"quote_currency"}}`, encodeURIComponent(String(quoteCurrency)));
@@ -4357,32 +4357,32 @@ export const RatesApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * RatesApi - functional programming interface
+ * Rates - functional programming interface
  * @export
  */
-export const RatesApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = RatesApiAxiosParamCreator(configuration);
+export const RatesFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = RatesAxiosParamCreator(configuration)
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -4406,15 +4406,15 @@ export const RatesApiFp = function (configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(baseCurrency, quoteCurrency, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * RatesApi - factory interface
+ * Rates - factory interface
  * @export
  */
-export const RatesApiFactory = function (basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = RatesApiFp();
+export const RatesFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = RatesFp(configuration)
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -4440,21 +4440,21 @@ export const RatesApiFactory = function (basePath?: string, axios?: AxiosInstanc
 };
 
 /**
- * RatesApi - object-oriented interface
+ * Rates - object-oriented interface
  * @export
- * @class RatesApi
+ * @class Rates
  * @extends {BaseAPI}
  */
-export class RatesApi extends BaseAPI {
+export class Rates extends BaseAPI {
     /**
      * This endpoint allows you to retrieve all public rates.
      * @summary Retrieve all rates
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof RatesApi
+     * @memberof Rates
      */
     public all(options?: any) {
-        return RatesApiFp(this.configuration).all(options).then((request) => request(this.axios, this.basePath));
+        return RatesFp(this.configuration).all(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4464,19 +4464,19 @@ export class RatesApi extends BaseAPI {
      * @param {string} quoteCurrency Quote currency of pair
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof RatesApi
+     * @memberof Rates
      */
     public retrieve(baseCurrency: string, quoteCurrency: string, options?: any) {
-        return RatesApiFp(this.configuration).retrieve(baseCurrency, quoteCurrency, options).then((request) => request(this.axios, this.basePath));
+        return RatesFp(this.configuration).retrieve(baseCurrency, quoteCurrency, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * RisksApi - axios parameter creator
+ * Risks - axios parameter creator
  * @export
  */
-export const RisksApiAxiosParamCreator = function (configuration?: Configuration) {
+export const RisksAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -4487,7 +4487,7 @@ export const RisksApiAxiosParamCreator = function (configuration?: Configuration
          */
         score: async (riskParams: RiskParams, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'riskParams' is not null or undefined
-            assertParamExists('score', 'riskParams', riskParams);
+            assertParamExists('score', 'riskParams', riskParams)
             const localVarPath = `/api/risks/score`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4496,35 +4496,35 @@ export const RisksApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(riskParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(riskParams, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * RisksApi - functional programming interface
+ * Risks - functional programming interface
  * @export
  */
-export const RisksApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = RisksApiAxiosParamCreator(configuration);
+export const RisksFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = RisksAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -4537,15 +4537,15 @@ export const RisksApiFp = function (configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.score(riskParams, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * RisksApi - factory interface
+ * Risks - factory interface
  * @export
  */
-export const RisksApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = RisksApiFp(configuration);
+export const RisksFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = RisksFp(configuration)
     return {
         /**
          * 
@@ -4561,31 +4561,31 @@ export const RisksApiFactory = function (configuration?: Configuration, basePath
 };
 
 /**
- * RisksApi - object-oriented interface
+ * Risks - object-oriented interface
  * @export
- * @class RisksApi
+ * @class Risks
  * @extends {BaseAPI}
  */
-export class RisksApi extends BaseAPI {
+export class Risks extends BaseAPI {
     /**
      * 
      * @summary Score a coin address
      * @param {RiskParams} riskParams 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof RisksApi
+     * @memberof Risks
      */
     public score(riskParams: RiskParams, options?: any) {
-        return RisksApiFp(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
+        return RisksFp(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 
 /**
- * TransactionsApi - axios parameter creator
+ * Transactions - axios parameter creator
  * @export
  */
-export const TransactionsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const TransactionsAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -4609,7 +4609,7 @@ export const TransactionsApiAxiosParamCreator = function (configuration?: Config
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -4648,25 +4648,25 @@ export const TransactionsApiAxiosParamCreator = function (configuration?: Config
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         },
-    };
+    }
 };
 
 /**
- * TransactionsApi - functional programming interface
+ * Transactions - functional programming interface
  * @export
  */
-export const TransactionsApiFp = function (configuration?: Configuration) {
-    const localVarAxiosParamCreator = TransactionsApiAxiosParamCreator(configuration);
+export const TransactionsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = TransactionsAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -4685,15 +4685,15 @@ export const TransactionsApiFp = function (configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
-    };
+    }
 };
 
 /**
- * TransactionsApi - factory interface
+ * Transactions - factory interface
  * @export
  */
-export const TransactionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = TransactionsApiFp(configuration);
+export const TransactionsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = TransactionsFp(configuration)
     return {
         /**
          * 
@@ -4715,12 +4715,12 @@ export const TransactionsApiFactory = function (configuration?: Configuration, b
 };
 
 /**
- * TransactionsApi - object-oriented interface
+ * Transactions - object-oriented interface
  * @export
- * @class TransactionsApi
+ * @class Transactions
  * @extends {BaseAPI}
  */
-export class TransactionsApi extends BaseAPI {
+export class Transactions extends BaseAPI {
     /**
      * 
      * @summary List transactions
@@ -4733,10 +4733,10 @@ export class TransactionsApi extends BaseAPI {
      * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof TransactionsApi
+     * @memberof Transactions
      */
     public list(createdAtFrom?: string, createdAtTo?: string, referenceType?: TransactionReferenceType, currency?: string, status?: string, riskLevel?: RiskLevel, startingAfter?: string, options?: any) {
-        return TransactionsApiFp(this.configuration).list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return TransactionsFp(this.configuration).list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

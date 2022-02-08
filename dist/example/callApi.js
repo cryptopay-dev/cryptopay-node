@@ -8,18 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const __1 = __importDefault(require("../"));
+const __1 = require("../");
 const apitest = () => __awaiter(void 0, void 0, void 0, function* () {
     const callbackSecret = process.env.CALLBACK_SECRET || '';
     const apiKey = process.env.API_KEY || '';
     const apiSecret = process.env.API_SECRET || '';
-    const cryptopay = new __1.default(apiSecret, apiKey, callbackSecret);
+    const cryptopay = new __1.Cryptopay(apiSecret, apiKey, callbackSecret);
     try {
-        const res = yield cryptopay.rates().all();
+        const res = yield cryptopay.rates.all();
         // eslint-disable-next-line no-console
         console.log(res === null || res === void 0 ? void 0 : res.data);
     }

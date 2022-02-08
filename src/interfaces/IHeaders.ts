@@ -3,7 +3,6 @@
  * @export
  * @interface IHeaders
  */
-
 export interface IHeaders {
   headers: {
     Date: string;

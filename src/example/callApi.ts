@@ -1,4 +1,4 @@
-import Cryptopay from '../';
+import { Cryptopay } from '../';
 
 const apitest = async () => {
   const callbackSecret = process.env.CALLBACK_SECRET || '';
@@ -7,7 +7,7 @@ const apitest = async () => {
   const cryptopay = new Cryptopay(apiSecret, apiKey, callbackSecret);
 
   try {
-    const res = await cryptopay.rates().all();
+    const res = await cryptopay.rates.all();
     // eslint-disable-next-line no-console
     console.log(res?.data);
   } catch (error) {

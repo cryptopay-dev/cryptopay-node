@@ -34,16 +34,17 @@ exports.DUMMY_BASE_URL = 'https://example.com';
  * @throws {RequiredError}
  * @export
  */
-exports.assertParamExists = function (functionName, paramName, paramValue) {
+const assertParamExists = function (functionName, paramName, paramValue) {
     if (paramValue === null || paramValue === undefined) {
         throw new base_1.RequiredError(paramName, `Required parameter ${paramName} was null or undefined when calling ${functionName}.`);
     }
 };
+exports.assertParamExists = assertParamExists;
 /**
  *
  * @export
  */
-exports.setApiKeyToObject = function (object, keyParamName, configuration) {
+const setApiKeyToObject = function (object, keyParamName, configuration) {
     return __awaiter(this, void 0, void 0, function* () {
         if (configuration && configuration.apiKey) {
             const localVarApiKeyValue = typeof configuration.apiKey === 'function'
@@ -53,20 +54,22 @@ exports.setApiKeyToObject = function (object, keyParamName, configuration) {
         }
     });
 };
+exports.setApiKeyToObject = setApiKeyToObject;
 /**
  *
  * @export
  */
-exports.setBasicAuthToObject = function (object, configuration) {
+const setBasicAuthToObject = function (object, configuration) {
     if (configuration && (configuration.username || configuration.password)) {
         object["auth"] = { username: configuration.username, password: configuration.password };
     }
 };
+exports.setBasicAuthToObject = setBasicAuthToObject;
 /**
  *
  * @export
  */
-exports.setBearerAuthToObject = function (object, configuration) {
+const setBearerAuthToObject = function (object, configuration) {
     return __awaiter(this, void 0, void 0, function* () {
         if (configuration && configuration.accessToken) {
             const accessToken = typeof configuration.accessToken === 'function'
@@ -76,11 +79,12 @@ exports.setBearerAuthToObject = function (object, configuration) {
         }
     });
 };
+exports.setBearerAuthToObject = setBearerAuthToObject;
 /**
  *
  * @export
  */
-exports.setOAuthToObject = function (object, name, scopes, configuration) {
+const setOAuthToObject = function (object, name, scopes, configuration) {
     return __awaiter(this, void 0, void 0, function* () {
         if (configuration && configuration.accessToken) {
             const localVarAccessTokenValue = typeof configuration.accessToken === 'function'
@@ -90,11 +94,12 @@ exports.setOAuthToObject = function (object, name, scopes, configuration) {
         }
     });
 };
+exports.setOAuthToObject = setOAuthToObject;
 /**
  *
  * @export
  */
-exports.setSearchParams = function (url, ...objects) {
+const setSearchParams = function (url, ...objects) {
     const searchParams = new URLSearchParams(url.search);
     for (const object of objects) {
         for (const key in object) {
@@ -111,11 +116,12 @@ exports.setSearchParams = function (url, ...objects) {
     }
     url.search = searchParams.toString();
 };
+exports.setSearchParams = setSearchParams;
 /**
  *
  * @export
  */
-exports.serializeDataIfNeeded = function (value, requestOptions, configuration) {
+const serializeDataIfNeeded = function (value, requestOptions, configuration) {
     const nonString = typeof value !== 'string';
     const needsSerialization = nonString && configuration && configuration.isJsonMime
         ? configuration.isJsonMime(requestOptions.headers['Content-Type'])
@@ -124,20 +130,23 @@ exports.serializeDataIfNeeded = function (value, requestOptions, configuration) 
         ? JSON.stringify(value !== undefined ? value : {})
         : (value || "");
 };
+exports.serializeDataIfNeeded = serializeDataIfNeeded;
 /**
  *
  * @export
  */
-exports.toPathString = function (url) {
+const toPathString = function (url) {
     return url.pathname + url.search + url.hash;
 };
+exports.toPathString = toPathString;
 /**
  *
  * @export
  */
-exports.createRequestFunction = function (axiosArgs, globalAxios, BASE_PATH, configuration) {
+const createRequestFunction = function (axiosArgs, globalAxios, BASE_PATH, configuration) {
     return (axios = globalAxios, basePath = BASE_PATH) => {
         const axiosRequestArgs = Object.assign(Object.assign({}, axiosArgs.options), { url: ((configuration === null || configuration === void 0 ? void 0 : configuration.basePath) || basePath) + axiosArgs.url });
         return axios.request(axiosRequestArgs);
     };
 };
+exports.createRequestFunction = createRequestFunction;

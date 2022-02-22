@@ -65,6 +65,7 @@
     "resolveJsonModule": true
   },
   "include": ["src"],
+  "exclude": ["src/test"],
   "lib": ["es2015"],
   "compileOnSave": true
 }

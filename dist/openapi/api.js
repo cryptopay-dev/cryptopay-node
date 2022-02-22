@@ -25,7 +25,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Transactions = exports.TransactionsFactory = exports.TransactionsFp = exports.TransactionsAxiosParamCreator = exports.Risks = exports.RisksFactory = exports.RisksFp = exports.RisksAxiosParamCreator = exports.Rates = exports.RatesFactory = exports.RatesFp = exports.RatesAxiosParamCreator = exports.Invoices = exports.InvoicesFactory = exports.InvoicesFp = exports.InvoicesAxiosParamCreator = exports.ExchangeTransfers = exports.ExchangeTransfersFactory = exports.ExchangeTransfersFp = exports.ExchangeTransfersAxiosParamCreator = exports.Customers = exports.CustomersFactory = exports.CustomersFp = exports.CustomersAxiosParamCreator = exports.CoinWithdrawals = exports.CoinWithdrawalsFactory = exports.CoinWithdrawalsFp = exports.CoinWithdrawalsAxiosParamCreator = exports.Channels = exports.ChannelsFactory = exports.ChannelsFp = exports.ChannelsAxiosParamCreator = exports.Accounts = exports.AccountsFactory = exports.AccountsFp = exports.AccountsAxiosParamCreator = exports.TransactionReferenceType = exports.RiskParamsTypeEnum = exports.RiskLevel = exports.NetworkFeeLevel = exports.InvoiceStatusContext = exports.InvoiceStatus = exports.InvoiceCallbackEvent = exports.InvoiceCallbackTypeEnum = exports.CoinWithdrawalStatus = exports.CoinWithdrawalCallbackEvent = exports.CoinWithdrawalCallbackTypeEnum = exports.ChannelStatus = exports.ChannelPaymentStatusContext = exports.ChannelPaymentStatus = exports.ChannelPaymentCallbackEvent = exports.ChannelPaymentCallbackTypeEnum = void 0;
+exports.TransactionsFp = exports.TransactionsAxiosParamCreator = exports.Risks = exports.RisksFactory = exports.RisksFp = exports.RisksAxiosParamCreator = exports.Rates = exports.RatesFactory = exports.RatesFp = exports.RatesAxiosParamCreator = exports.Invoices = exports.InvoicesFactory = exports.InvoicesFp = exports.InvoicesAxiosParamCreator = exports.ExchangeTransfers = exports.ExchangeTransfersFactory = exports.ExchangeTransfersFp = exports.ExchangeTransfersAxiosParamCreator = exports.Customers = exports.CustomersFactory = exports.CustomersFp = exports.CustomersAxiosParamCreator = exports.CoinWithdrawals = exports.CoinWithdrawalsFactory = exports.CoinWithdrawalsFp = exports.CoinWithdrawalsAxiosParamCreator = exports.Channels = exports.ChannelsFactory = exports.ChannelsFp = exports.ChannelsAxiosParamCreator = exports.Accounts = exports.AccountsFactory = exports.AccountsFp = exports.AccountsAxiosParamCreator = exports.TransactionReferenceType = exports.RiskParamsTypeEnum = exports.RiskLevel = exports.NetworkFeeLevel = exports.InvoiceStatusContext = exports.InvoiceStatus = exports.InvoiceCallbackEvent = exports.InvoiceCallbackTypeEnum = exports.CoinWithdrawalStatus = exports.CoinWithdrawalCallbackEvent = exports.CoinWithdrawalCallbackTypeEnum = exports.ChannelStatus = exports.ChannelPaymentStatusContext = exports.ChannelPaymentStatus = exports.ChannelPaymentCallbackEvent = exports.ChannelPaymentCallbackTypeEnum = void 0;
+exports.Transactions = exports.TransactionsFactory = void 0;
 const axios_1 = __importDefault(require("axios"));
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -219,7 +220,7 @@ var TransactionReferenceType;
  * Accounts - axios parameter creator
  * @export
  */
-exports.AccountsAxiosParamCreator = function (configuration) {
+const AccountsAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -239,11 +240,11 @@ exports.AccountsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -257,7 +258,7 @@ exports.AccountsAxiosParamCreator = function (configuration) {
          */
         listTransactions: (accountId, startingAfter, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'accountId' is not null or undefined
-            common_1.assertParamExists('listTransactions', 'accountId', accountId);
+            (0, common_1.assertParamExists)('listTransactions', 'accountId', accountId);
             const localVarPath = `/api/accounts/{account_id}/transactions`
                 .replace(`{${"account_id"}}`, encodeURIComponent(String(accountId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -273,22 +274,23 @@ exports.AccountsAxiosParamCreator = function (configuration) {
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
             }
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.AccountsAxiosParamCreator = AccountsAxiosParamCreator;
 /**
  * Accounts - functional programming interface
  * @export
  */
-exports.AccountsFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.AccountsAxiosParamCreator(configuration);
+const AccountsFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.AccountsAxiosParamCreator)(configuration);
     return {
         /**
          *
@@ -299,7 +301,7 @@ exports.AccountsFp = function (configuration) {
         list(options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.list(options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -313,17 +315,18 @@ exports.AccountsFp = function (configuration) {
         listTransactions(accountId, startingAfter, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.listTransactions(accountId, startingAfter, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.AccountsFp = AccountsFp;
 /**
  * Accounts - factory interface
  * @export
  */
-exports.AccountsFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.AccountsFp(configuration);
+const AccountsFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.AccountsFp)(configuration);
     return {
         /**
          *
@@ -347,6 +350,7 @@ exports.AccountsFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.AccountsFactory = AccountsFactory;
 /**
  * Accounts - object-oriented interface
  * @export
@@ -362,7 +366,7 @@ class Accounts extends base_1.BaseAPI {
      * @memberof Accounts
      */
     list(options) {
-        return exports.AccountsFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.AccountsFp)(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -374,7 +378,7 @@ class Accounts extends base_1.BaseAPI {
      * @memberof Accounts
      */
     listTransactions(accountId, startingAfter, options) {
-        return exports.AccountsFp(this.configuration).listTransactions(accountId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.AccountsFp)(this.configuration).listTransactions(accountId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.Accounts = Accounts;
@@ -382,7 +386,7 @@ exports.Accounts = Accounts;
  * Channels - axios parameter creator
  * @export
  */
-exports.ChannelsAxiosParamCreator = function (configuration) {
+const ChannelsAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -393,7 +397,7 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
          */
         create: (channelParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'channelParams' is not null or undefined
-            common_1.assertParamExists('create', 'channelParams', channelParams);
+            (0, common_1.assertParamExists)('create', 'channelParams', channelParams);
             const localVarPath = `/api/channels`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -406,12 +410,12 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(channelParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(channelParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -441,11 +445,11 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
             }
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -459,7 +463,7 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
          */
         listPayments: (channelId, startingAfter, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'channelId' is not null or undefined
-            common_1.assertParamExists('listPayments', 'channelId', channelId);
+            (0, common_1.assertParamExists)('listPayments', 'channelId', channelId);
             const localVarPath = `/api/channels/{channel_id}/payments`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -475,11 +479,11 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
             }
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -492,7 +496,7 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
          */
         retrieve: (channelId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'channelId' is not null or undefined
-            common_1.assertParamExists('retrieve', 'channelId', channelId);
+            (0, common_1.assertParamExists)('retrieve', 'channelId', channelId);
             const localVarPath = `/api/channels/{channel_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -505,11 +509,11 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -522,7 +526,7 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
          */
         retrieveByCustomId: (customId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'customId' is not null or undefined
-            common_1.assertParamExists('retrieveByCustomId', 'customId', customId);
+            (0, common_1.assertParamExists)('retrieveByCustomId', 'customId', customId);
             const localVarPath = `/api/channels/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -535,11 +539,11 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -553,9 +557,9 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
          */
         retrievePayment: (channelId, channelPaymentId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'channelId' is not null or undefined
-            common_1.assertParamExists('retrievePayment', 'channelId', channelId);
+            (0, common_1.assertParamExists)('retrievePayment', 'channelId', channelId);
             // verify required parameter 'channelPaymentId' is not null or undefined
-            common_1.assertParamExists('retrievePayment', 'channelPaymentId', channelPaymentId);
+            (0, common_1.assertParamExists)('retrievePayment', 'channelPaymentId', channelPaymentId);
             const localVarPath = `/api/channels/{channel_id}/payments/{channel_payment_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)))
                 .replace(`{${"channel_payment_id"}}`, encodeURIComponent(String(channelPaymentId)));
@@ -569,11 +573,11 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -587,9 +591,9 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
          */
         update: (channelId, channelUpdateParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'channelId' is not null or undefined
-            common_1.assertParamExists('update', 'channelId', channelId);
+            (0, common_1.assertParamExists)('update', 'channelId', channelId);
             // verify required parameter 'channelUpdateParams' is not null or undefined
-            common_1.assertParamExists('update', 'channelUpdateParams', channelUpdateParams);
+            (0, common_1.assertParamExists)('update', 'channelUpdateParams', channelUpdateParams);
             const localVarPath = `/api/channels/{channel_id}`
                 .replace(`{${"channel_id"}}`, encodeURIComponent(String(channelId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -603,23 +607,24 @@ exports.ChannelsAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(channelUpdateParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(channelUpdateParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.ChannelsAxiosParamCreator = ChannelsAxiosParamCreator;
 /**
  * Channels - functional programming interface
  * @export
  */
-exports.ChannelsFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.ChannelsAxiosParamCreator(configuration);
+const ChannelsFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.ChannelsAxiosParamCreator)(configuration);
     return {
         /**
          *
@@ -631,7 +636,7 @@ exports.ChannelsFp = function (configuration) {
         create(channelParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.create(channelParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -645,7 +650,7 @@ exports.ChannelsFp = function (configuration) {
         list(customerId, startingAfter, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.list(customerId, startingAfter, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -659,7 +664,7 @@ exports.ChannelsFp = function (configuration) {
         listPayments(channelId, startingAfter, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.listPayments(channelId, startingAfter, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -672,7 +677,7 @@ exports.ChannelsFp = function (configuration) {
         retrieve(channelId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieve(channelId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -685,7 +690,7 @@ exports.ChannelsFp = function (configuration) {
         retrieveByCustomId(customId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieveByCustomId(customId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -699,7 +704,7 @@ exports.ChannelsFp = function (configuration) {
         retrievePayment(channelId, channelPaymentId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrievePayment(channelId, channelPaymentId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -713,17 +718,18 @@ exports.ChannelsFp = function (configuration) {
         update(channelId, channelUpdateParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.update(channelId, channelUpdateParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.ChannelsFp = ChannelsFp;
 /**
  * Channels - factory interface
  * @export
  */
-exports.ChannelsFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.ChannelsFp(configuration);
+const ChannelsFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.ChannelsFp)(configuration);
     return {
         /**
          *
@@ -801,6 +807,7 @@ exports.ChannelsFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.ChannelsFactory = ChannelsFactory;
 /**
  * Channels - object-oriented interface
  * @export
@@ -817,7 +824,7 @@ class Channels extends base_1.BaseAPI {
      * @memberof Channels
      */
     create(channelParams, options) {
-        return exports.ChannelsFp(this.configuration).create(channelParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ChannelsFp)(this.configuration).create(channelParams, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -829,7 +836,7 @@ class Channels extends base_1.BaseAPI {
      * @memberof Channels
      */
     list(customerId, startingAfter, options) {
-        return exports.ChannelsFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ChannelsFp)(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -841,7 +848,7 @@ class Channels extends base_1.BaseAPI {
      * @memberof Channels
      */
     listPayments(channelId, startingAfter, options) {
-        return exports.ChannelsFp(this.configuration).listPayments(channelId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ChannelsFp)(this.configuration).listPayments(channelId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -852,7 +859,7 @@ class Channels extends base_1.BaseAPI {
      * @memberof Channels
      */
     retrieve(channelId, options) {
-        return exports.ChannelsFp(this.configuration).retrieve(channelId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ChannelsFp)(this.configuration).retrieve(channelId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -863,7 +870,7 @@ class Channels extends base_1.BaseAPI {
      * @memberof Channels
      */
     retrieveByCustomId(customId, options) {
-        return exports.ChannelsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ChannelsFp)(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -875,7 +882,7 @@ class Channels extends base_1.BaseAPI {
      * @memberof Channels
      */
     retrievePayment(channelId, channelPaymentId, options) {
-        return exports.ChannelsFp(this.configuration).retrievePayment(channelId, channelPaymentId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ChannelsFp)(this.configuration).retrievePayment(channelId, channelPaymentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -887,7 +894,7 @@ class Channels extends base_1.BaseAPI {
      * @memberof Channels
      */
     update(channelId, channelUpdateParams, options) {
-        return exports.ChannelsFp(this.configuration).update(channelId, channelUpdateParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ChannelsFp)(this.configuration).update(channelId, channelUpdateParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.Channels = Channels;
@@ -895,7 +902,7 @@ exports.Channels = Channels;
  * CoinWithdrawals - axios parameter creator
  * @export
  */
-exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
+const CoinWithdrawalsAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -906,7 +913,7 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
          */
         commit: (coinWithdrawalId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'coinWithdrawalId' is not null or undefined
-            common_1.assertParamExists('commit', 'coinWithdrawalId', coinWithdrawalId);
+            (0, common_1.assertParamExists)('commit', 'coinWithdrawalId', coinWithdrawalId);
             const localVarPath = `/api/coin_withdrawals/{coin_withdrawal_id}/commit`
                 .replace(`{${"coin_withdrawal_id"}}`, encodeURIComponent(String(coinWithdrawalId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -919,11 +926,11 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -936,7 +943,7 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
          */
         create: (coinWithdrawalParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'coinWithdrawalParams' is not null or undefined
-            common_1.assertParamExists('create', 'coinWithdrawalParams', coinWithdrawalParams);
+            (0, common_1.assertParamExists)('create', 'coinWithdrawalParams', coinWithdrawalParams);
             const localVarPath = `/api/coin_withdrawals`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -949,12 +956,12 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(coinWithdrawalParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(coinWithdrawalParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -984,11 +991,11 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
             }
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1010,11 +1017,11 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1027,7 +1034,7 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
          */
         retrieve: (coinWithdrawalId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'coinWithdrawalId' is not null or undefined
-            common_1.assertParamExists('retrieve', 'coinWithdrawalId', coinWithdrawalId);
+            (0, common_1.assertParamExists)('retrieve', 'coinWithdrawalId', coinWithdrawalId);
             const localVarPath = `/api/coin_withdrawals/{coin_withdrawal_id}`
                 .replace(`{${"coin_withdrawal_id"}}`, encodeURIComponent(String(coinWithdrawalId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1040,11 +1047,11 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1057,7 +1064,7 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
          */
         retrieveByCustomId: (customId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'customId' is not null or undefined
-            common_1.assertParamExists('retrieveByCustomId', 'customId', customId);
+            (0, common_1.assertParamExists)('retrieveByCustomId', 'customId', customId);
             const localVarPath = `/api/coin_withdrawals/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1070,22 +1077,23 @@ exports.CoinWithdrawalsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.CoinWithdrawalsAxiosParamCreator = CoinWithdrawalsAxiosParamCreator;
 /**
  * CoinWithdrawals - functional programming interface
  * @export
  */
-exports.CoinWithdrawalsFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.CoinWithdrawalsAxiosParamCreator(configuration);
+const CoinWithdrawalsFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.CoinWithdrawalsAxiosParamCreator)(configuration);
     return {
         /**
          *
@@ -1097,7 +1105,7 @@ exports.CoinWithdrawalsFp = function (configuration) {
         commit(coinWithdrawalId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.commit(coinWithdrawalId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1110,7 +1118,7 @@ exports.CoinWithdrawalsFp = function (configuration) {
         create(coinWithdrawalParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.create(coinWithdrawalParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1124,7 +1132,7 @@ exports.CoinWithdrawalsFp = function (configuration) {
         list(customerId, startingAfter, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.list(customerId, startingAfter, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1136,7 +1144,7 @@ exports.CoinWithdrawalsFp = function (configuration) {
         listNetworkFees(options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.listNetworkFees(options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1149,7 +1157,7 @@ exports.CoinWithdrawalsFp = function (configuration) {
         retrieve(coinWithdrawalId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieve(coinWithdrawalId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1162,17 +1170,18 @@ exports.CoinWithdrawalsFp = function (configuration) {
         retrieveByCustomId(customId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieveByCustomId(customId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.CoinWithdrawalsFp = CoinWithdrawalsFp;
 /**
  * CoinWithdrawals - factory interface
  * @export
  */
-exports.CoinWithdrawalsFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.CoinWithdrawalsFp(configuration);
+const CoinWithdrawalsFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.CoinWithdrawalsFp)(configuration);
     return {
         /**
          *
@@ -1236,6 +1245,7 @@ exports.CoinWithdrawalsFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.CoinWithdrawalsFactory = CoinWithdrawalsFactory;
 /**
  * CoinWithdrawals - object-oriented interface
  * @export
@@ -1252,7 +1262,7 @@ class CoinWithdrawals extends base_1.BaseAPI {
      * @memberof CoinWithdrawals
      */
     commit(coinWithdrawalId, options) {
-        return exports.CoinWithdrawalsFp(this.configuration).commit(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CoinWithdrawalsFp)(this.configuration).commit(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1263,7 +1273,7 @@ class CoinWithdrawals extends base_1.BaseAPI {
      * @memberof CoinWithdrawals
      */
     create(coinWithdrawalParams, options) {
-        return exports.CoinWithdrawalsFp(this.configuration).create(coinWithdrawalParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CoinWithdrawalsFp)(this.configuration).create(coinWithdrawalParams, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1275,7 +1285,7 @@ class CoinWithdrawals extends base_1.BaseAPI {
      * @memberof CoinWithdrawals
      */
     list(customerId, startingAfter, options) {
-        return exports.CoinWithdrawalsFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CoinWithdrawalsFp)(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1285,7 +1295,7 @@ class CoinWithdrawals extends base_1.BaseAPI {
      * @memberof CoinWithdrawals
      */
     listNetworkFees(options) {
-        return exports.CoinWithdrawalsFp(this.configuration).listNetworkFees(options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CoinWithdrawalsFp)(this.configuration).listNetworkFees(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1296,7 +1306,7 @@ class CoinWithdrawals extends base_1.BaseAPI {
      * @memberof CoinWithdrawals
      */
     retrieve(coinWithdrawalId, options) {
-        return exports.CoinWithdrawalsFp(this.configuration).retrieve(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CoinWithdrawalsFp)(this.configuration).retrieve(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1307,7 +1317,7 @@ class CoinWithdrawals extends base_1.BaseAPI {
      * @memberof CoinWithdrawals
      */
     retrieveByCustomId(customId, options) {
-        return exports.CoinWithdrawalsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CoinWithdrawalsFp)(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.CoinWithdrawals = CoinWithdrawals;
@@ -1315,7 +1325,7 @@ exports.CoinWithdrawals = CoinWithdrawals;
  * Customers - axios parameter creator
  * @export
  */
-exports.CustomersAxiosParamCreator = function (configuration) {
+const CustomersAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -1326,7 +1336,7 @@ exports.CustomersAxiosParamCreator = function (configuration) {
          */
         create: (customerParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'customerParams' is not null or undefined
-            common_1.assertParamExists('create', 'customerParams', customerParams);
+            (0, common_1.assertParamExists)('create', 'customerParams', customerParams);
             const localVarPath = `/api/customers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -1339,12 +1349,12 @@ exports.CustomersAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(customerParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(customerParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1370,11 +1380,11 @@ exports.CustomersAxiosParamCreator = function (configuration) {
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
             }
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1387,7 +1397,7 @@ exports.CustomersAxiosParamCreator = function (configuration) {
          */
         retrieve: (customerId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'customerId' is not null or undefined
-            common_1.assertParamExists('retrieve', 'customerId', customerId);
+            (0, common_1.assertParamExists)('retrieve', 'customerId', customerId);
             const localVarPath = `/api/customers/{customer_id}`
                 .replace(`{${"customer_id"}}`, encodeURIComponent(String(customerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1400,11 +1410,11 @@ exports.CustomersAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1418,9 +1428,9 @@ exports.CustomersAxiosParamCreator = function (configuration) {
          */
         update: (customerId, customerUpdateParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'customerId' is not null or undefined
-            common_1.assertParamExists('update', 'customerId', customerId);
+            (0, common_1.assertParamExists)('update', 'customerId', customerId);
             // verify required parameter 'customerUpdateParams' is not null or undefined
-            common_1.assertParamExists('update', 'customerUpdateParams', customerUpdateParams);
+            (0, common_1.assertParamExists)('update', 'customerUpdateParams', customerUpdateParams);
             const localVarPath = `/api/customers/{customer_id}`
                 .replace(`{${"customer_id"}}`, encodeURIComponent(String(customerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1434,23 +1444,24 @@ exports.CustomersAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(customerUpdateParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(customerUpdateParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.CustomersAxiosParamCreator = CustomersAxiosParamCreator;
 /**
  * Customers - functional programming interface
  * @export
  */
-exports.CustomersFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.CustomersAxiosParamCreator(configuration);
+const CustomersFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.CustomersAxiosParamCreator)(configuration);
     return {
         /**
          *
@@ -1462,7 +1473,7 @@ exports.CustomersFp = function (configuration) {
         create(customerParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.create(customerParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1475,7 +1486,7 @@ exports.CustomersFp = function (configuration) {
         list(startingAfter, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.list(startingAfter, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1488,7 +1499,7 @@ exports.CustomersFp = function (configuration) {
         retrieve(customerId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieve(customerId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1502,17 +1513,18 @@ exports.CustomersFp = function (configuration) {
         update(customerId, customerUpdateParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.update(customerId, customerUpdateParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.CustomersFp = CustomersFp;
 /**
  * Customers - factory interface
  * @export
  */
-exports.CustomersFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.CustomersFp(configuration);
+const CustomersFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.CustomersFp)(configuration);
     return {
         /**
          *
@@ -1557,6 +1569,7 @@ exports.CustomersFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.CustomersFactory = CustomersFactory;
 /**
  * Customers - object-oriented interface
  * @export
@@ -1573,7 +1586,7 @@ class Customers extends base_1.BaseAPI {
      * @memberof Customers
      */
     create(customerParams, options) {
-        return exports.CustomersFp(this.configuration).create(customerParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CustomersFp)(this.configuration).create(customerParams, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1584,7 +1597,7 @@ class Customers extends base_1.BaseAPI {
      * @memberof Customers
      */
     list(startingAfter, options) {
-        return exports.CustomersFp(this.configuration).list(startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CustomersFp)(this.configuration).list(startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1595,7 +1608,7 @@ class Customers extends base_1.BaseAPI {
      * @memberof Customers
      */
     retrieve(customerId, options) {
-        return exports.CustomersFp(this.configuration).retrieve(customerId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CustomersFp)(this.configuration).retrieve(customerId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1607,7 +1620,7 @@ class Customers extends base_1.BaseAPI {
      * @memberof Customers
      */
     update(customerId, customerUpdateParams, options) {
-        return exports.CustomersFp(this.configuration).update(customerId, customerUpdateParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.CustomersFp)(this.configuration).update(customerId, customerUpdateParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.Customers = Customers;
@@ -1615,7 +1628,7 @@ exports.Customers = Customers;
  * ExchangeTransfers - axios parameter creator
  * @export
  */
-exports.ExchangeTransfersAxiosParamCreator = function (configuration) {
+const ExchangeTransfersAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -1626,7 +1639,7 @@ exports.ExchangeTransfersAxiosParamCreator = function (configuration) {
          */
         commit: (exchangeTransferId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'exchangeTransferId' is not null or undefined
-            common_1.assertParamExists('commit', 'exchangeTransferId', exchangeTransferId);
+            (0, common_1.assertParamExists)('commit', 'exchangeTransferId', exchangeTransferId);
             const localVarPath = `/api/exchange_transfers/{exchange_transfer_id}/commit`
                 .replace(`{${"exchange_transfer_id"}}`, encodeURIComponent(String(exchangeTransferId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1639,11 +1652,11 @@ exports.ExchangeTransfersAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1656,7 +1669,7 @@ exports.ExchangeTransfersAxiosParamCreator = function (configuration) {
          */
         create: (exchangeTransferParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'exchangeTransferParams' is not null or undefined
-            common_1.assertParamExists('create', 'exchangeTransferParams', exchangeTransferParams);
+            (0, common_1.assertParamExists)('create', 'exchangeTransferParams', exchangeTransferParams);
             const localVarPath = `/api/exchange_transfers`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -1669,12 +1682,12 @@ exports.ExchangeTransfersAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(exchangeTransferParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(exchangeTransferParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1687,7 +1700,7 @@ exports.ExchangeTransfersAxiosParamCreator = function (configuration) {
          */
         retrieve: (exchangeTransferId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'exchangeTransferId' is not null or undefined
-            common_1.assertParamExists('retrieve', 'exchangeTransferId', exchangeTransferId);
+            (0, common_1.assertParamExists)('retrieve', 'exchangeTransferId', exchangeTransferId);
             const localVarPath = `/api/exchange_transfers/{exchange_transfer_id}`
                 .replace(`{${"exchange_transfer_id"}}`, encodeURIComponent(String(exchangeTransferId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1700,22 +1713,23 @@ exports.ExchangeTransfersAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.ExchangeTransfersAxiosParamCreator = ExchangeTransfersAxiosParamCreator;
 /**
  * ExchangeTransfers - functional programming interface
  * @export
  */
-exports.ExchangeTransfersFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.ExchangeTransfersAxiosParamCreator(configuration);
+const ExchangeTransfersFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.ExchangeTransfersAxiosParamCreator)(configuration);
     return {
         /**
          *
@@ -1727,7 +1741,7 @@ exports.ExchangeTransfersFp = function (configuration) {
         commit(exchangeTransferId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.commit(exchangeTransferId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1740,7 +1754,7 @@ exports.ExchangeTransfersFp = function (configuration) {
         create(exchangeTransferParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.create(exchangeTransferParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -1753,17 +1767,18 @@ exports.ExchangeTransfersFp = function (configuration) {
         retrieve(exchangeTransferId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieve(exchangeTransferId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.ExchangeTransfersFp = ExchangeTransfersFp;
 /**
  * ExchangeTransfers - factory interface
  * @export
  */
-exports.ExchangeTransfersFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.ExchangeTransfersFp(configuration);
+const ExchangeTransfersFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.ExchangeTransfersFp)(configuration);
     return {
         /**
          *
@@ -1797,6 +1812,7 @@ exports.ExchangeTransfersFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.ExchangeTransfersFactory = ExchangeTransfersFactory;
 /**
  * ExchangeTransfers - object-oriented interface
  * @export
@@ -1813,7 +1829,7 @@ class ExchangeTransfers extends base_1.BaseAPI {
      * @memberof ExchangeTransfers
      */
     commit(exchangeTransferId, options) {
-        return exports.ExchangeTransfersFp(this.configuration).commit(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ExchangeTransfersFp)(this.configuration).commit(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1824,7 +1840,7 @@ class ExchangeTransfers extends base_1.BaseAPI {
      * @memberof ExchangeTransfers
      */
     create(exchangeTransferParams, options) {
-        return exports.ExchangeTransfersFp(this.configuration).create(exchangeTransferParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ExchangeTransfersFp)(this.configuration).create(exchangeTransferParams, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1835,7 +1851,7 @@ class ExchangeTransfers extends base_1.BaseAPI {
      * @memberof ExchangeTransfers
      */
     retrieve(exchangeTransferId, options) {
-        return exports.ExchangeTransfersFp(this.configuration).retrieve(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.ExchangeTransfersFp)(this.configuration).retrieve(exchangeTransferId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.ExchangeTransfers = ExchangeTransfers;
@@ -1843,7 +1859,7 @@ exports.ExchangeTransfers = ExchangeTransfers;
  * Invoices - axios parameter creator
  * @export
  */
-exports.InvoicesAxiosParamCreator = function (configuration) {
+const InvoicesAxiosParamCreator = function (configuration) {
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -1855,9 +1871,9 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
          */
         commitRecalculation: (invoiceId, recalculationId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'invoiceId' is not null or undefined
-            common_1.assertParamExists('commitRecalculation', 'invoiceId', invoiceId);
+            (0, common_1.assertParamExists)('commitRecalculation', 'invoiceId', invoiceId);
             // verify required parameter 'recalculationId' is not null or undefined
-            common_1.assertParamExists('commitRecalculation', 'recalculationId', recalculationId);
+            (0, common_1.assertParamExists)('commitRecalculation', 'recalculationId', recalculationId);
             const localVarPath = `/api/invoices/{invoice_id}/recalculations/{recalculation_id}/commit`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)))
                 .replace(`{${"recalculation_id"}}`, encodeURIComponent(String(recalculationId)));
@@ -1871,11 +1887,11 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1888,7 +1904,7 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
          */
         create: (invoiceParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'invoiceParams' is not null or undefined
-            common_1.assertParamExists('create', 'invoiceParams', invoiceParams);
+            (0, common_1.assertParamExists)('create', 'invoiceParams', invoiceParams);
             const localVarPath = `/api/invoices`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -1901,12 +1917,12 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(invoiceParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(invoiceParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1920,9 +1936,9 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
          */
         createRecalculation: (invoiceId, invoiceRecalculationParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'invoiceId' is not null or undefined
-            common_1.assertParamExists('createRecalculation', 'invoiceId', invoiceId);
+            (0, common_1.assertParamExists)('createRecalculation', 'invoiceId', invoiceId);
             // verify required parameter 'invoiceRecalculationParams' is not null or undefined
-            common_1.assertParamExists('createRecalculation', 'invoiceRecalculationParams', invoiceRecalculationParams);
+            (0, common_1.assertParamExists)('createRecalculation', 'invoiceRecalculationParams', invoiceRecalculationParams);
             const localVarPath = `/api/invoices/{invoice_id}/recalculations`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1936,12 +1952,12 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(invoiceRecalculationParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(invoiceRecalculationParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -1955,9 +1971,9 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
          */
         createRefund: (invoiceId, invoiceRefundParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'invoiceId' is not null or undefined
-            common_1.assertParamExists('createRefund', 'invoiceId', invoiceId);
+            (0, common_1.assertParamExists)('createRefund', 'invoiceId', invoiceId);
             // verify required parameter 'invoiceRefundParams' is not null or undefined
-            common_1.assertParamExists('createRefund', 'invoiceRefundParams', invoiceRefundParams);
+            (0, common_1.assertParamExists)('createRefund', 'invoiceRefundParams', invoiceRefundParams);
             const localVarPath = `/api/invoices/{invoice_id}/refunds`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -1971,12 +1987,12 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(invoiceRefundParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(invoiceRefundParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -2006,11 +2022,11 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
             }
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -2023,7 +2039,7 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
          */
         listRefunds: (invoiceId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'invoiceId' is not null or undefined
-            common_1.assertParamExists('listRefunds', 'invoiceId', invoiceId);
+            (0, common_1.assertParamExists)('listRefunds', 'invoiceId', invoiceId);
             const localVarPath = `/api/invoices/{invoice_id}/refunds`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2036,11 +2052,11 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -2053,7 +2069,7 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
          */
         retrieve: (invoiceId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'invoiceId' is not null or undefined
-            common_1.assertParamExists('retrieve', 'invoiceId', invoiceId);
+            (0, common_1.assertParamExists)('retrieve', 'invoiceId', invoiceId);
             const localVarPath = `/api/invoices/{invoice_id}`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2066,11 +2082,11 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -2083,7 +2099,7 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
          */
         retrieveByCustomId: (customId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'customId' is not null or undefined
-            common_1.assertParamExists('retrieveByCustomId', 'customId', customId);
+            (0, common_1.assertParamExists)('retrieveByCustomId', 'customId', customId);
             const localVarPath = `/api/invoices/custom_id/{custom_id}`
                 .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -2096,22 +2112,23 @@ exports.InvoicesAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.InvoicesAxiosParamCreator = InvoicesAxiosParamCreator;
 /**
  * Invoices - functional programming interface
  * @export
  */
-exports.InvoicesFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.InvoicesAxiosParamCreator(configuration);
+const InvoicesFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.InvoicesAxiosParamCreator)(configuration);
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -2124,7 +2141,7 @@ exports.InvoicesFp = function (configuration) {
         commitRecalculation(invoiceId, recalculationId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.commitRecalculation(invoiceId, recalculationId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2137,7 +2154,7 @@ exports.InvoicesFp = function (configuration) {
         create(invoiceParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.create(invoiceParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2151,7 +2168,7 @@ exports.InvoicesFp = function (configuration) {
         createRecalculation(invoiceId, invoiceRecalculationParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createRecalculation(invoiceId, invoiceRecalculationParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2165,7 +2182,7 @@ exports.InvoicesFp = function (configuration) {
         createRefund(invoiceId, invoiceRefundParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createRefund(invoiceId, invoiceRefundParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2179,7 +2196,7 @@ exports.InvoicesFp = function (configuration) {
         list(customerId, startingAfter, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.list(customerId, startingAfter, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2192,7 +2209,7 @@ exports.InvoicesFp = function (configuration) {
         listRefunds(invoiceId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.listRefunds(invoiceId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2205,7 +2222,7 @@ exports.InvoicesFp = function (configuration) {
         retrieve(invoiceId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieve(invoiceId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2218,17 +2235,18 @@ exports.InvoicesFp = function (configuration) {
         retrieveByCustomId(customId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieveByCustomId(customId, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.InvoicesFp = InvoicesFp;
 /**
  * Invoices - factory interface
  * @export
  */
-exports.InvoicesFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.InvoicesFp(configuration);
+const InvoicesFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.InvoicesFp)(configuration);
     return {
         /**
          * This endpoint allows you to commit invoice recalculation.
@@ -2316,6 +2334,7 @@ exports.InvoicesFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.InvoicesFactory = InvoicesFactory;
 /**
  * Invoices - object-oriented interface
  * @export
@@ -2333,7 +2352,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     commitRecalculation(invoiceId, recalculationId, options) {
-        return exports.InvoicesFp(this.configuration).commitRecalculation(invoiceId, recalculationId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).commitRecalculation(invoiceId, recalculationId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to create invoices.
@@ -2344,7 +2363,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     create(invoiceParams, options) {
-        return exports.InvoicesFp(this.configuration).create(invoiceParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).create(invoiceParams, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to recalculate invoices.
@@ -2356,7 +2375,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     createRecalculation(invoiceId, invoiceRecalculationParams, options) {
-        return exports.InvoicesFp(this.configuration).createRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).createRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to create invoice refunds.
@@ -2368,7 +2387,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     createRefund(invoiceId, invoiceRefundParams, options) {
-        return exports.InvoicesFp(this.configuration).createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to retrieve a list of all invoices.
@@ -2380,7 +2399,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     list(customerId, startingAfter, options) {
-        return exports.InvoicesFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to retrieve a list of a particular invoice refunds.
@@ -2391,7 +2410,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     listRefunds(invoiceId, options) {
-        return exports.InvoicesFp(this.configuration).listRefunds(invoiceId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).listRefunds(invoiceId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to retrieve the invoice details.
@@ -2402,7 +2421,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     retrieve(invoiceId, options) {
-        return exports.InvoicesFp(this.configuration).retrieve(invoiceId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).retrieve(invoiceId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to retrieve invoice details by its custom_id.
@@ -2413,7 +2432,7 @@ class Invoices extends base_1.BaseAPI {
      * @memberof Invoices
      */
     retrieveByCustomId(customId, options) {
-        return exports.InvoicesFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.InvoicesFp)(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.Invoices = Invoices;
@@ -2421,7 +2440,7 @@ exports.Invoices = Invoices;
  * Rates - axios parameter creator
  * @export
  */
-exports.RatesAxiosParamCreator = function (configuration) {
+const RatesAxiosParamCreator = function (configuration) {
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -2441,11 +2460,11 @@ exports.RatesAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
@@ -2459,9 +2478,9 @@ exports.RatesAxiosParamCreator = function (configuration) {
          */
         retrieve: (baseCurrency, quoteCurrency, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'baseCurrency' is not null or undefined
-            common_1.assertParamExists('retrieve', 'baseCurrency', baseCurrency);
+            (0, common_1.assertParamExists)('retrieve', 'baseCurrency', baseCurrency);
             // verify required parameter 'quoteCurrency' is not null or undefined
-            common_1.assertParamExists('retrieve', 'quoteCurrency', quoteCurrency);
+            (0, common_1.assertParamExists)('retrieve', 'quoteCurrency', quoteCurrency);
             const localVarPath = `/api/rates/{base_currency}/{quote_currency}`
                 .replace(`{${"base_currency"}}`, encodeURIComponent(String(baseCurrency)))
                 .replace(`{${"quote_currency"}}`, encodeURIComponent(String(quoteCurrency)));
@@ -2475,22 +2494,23 @@ exports.RatesAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.RatesAxiosParamCreator = RatesAxiosParamCreator;
 /**
  * Rates - functional programming interface
  * @export
  */
-exports.RatesFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.RatesAxiosParamCreator(configuration);
+const RatesFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.RatesAxiosParamCreator)(configuration);
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -2501,7 +2521,7 @@ exports.RatesFp = function (configuration) {
         all(options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.all(options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
         /**
@@ -2515,17 +2535,18 @@ exports.RatesFp = function (configuration) {
         retrieve(baseCurrency, quoteCurrency, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieve(baseCurrency, quoteCurrency, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.RatesFp = RatesFp;
 /**
  * Rates - factory interface
  * @export
  */
-exports.RatesFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.RatesFp(configuration);
+const RatesFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.RatesFp)(configuration);
     return {
         /**
          * This endpoint allows you to retrieve all public rates.
@@ -2549,6 +2570,7 @@ exports.RatesFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.RatesFactory = RatesFactory;
 /**
  * Rates - object-oriented interface
  * @export
@@ -2564,7 +2586,7 @@ class Rates extends base_1.BaseAPI {
      * @memberof Rates
      */
     all(options) {
-        return exports.RatesFp(this.configuration).all(options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.RatesFp)(this.configuration).all(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to retrieve a public rate by currency pair.
@@ -2576,7 +2598,7 @@ class Rates extends base_1.BaseAPI {
      * @memberof Rates
      */
     retrieve(baseCurrency, quoteCurrency, options) {
-        return exports.RatesFp(this.configuration).retrieve(baseCurrency, quoteCurrency, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.RatesFp)(this.configuration).retrieve(baseCurrency, quoteCurrency, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.Rates = Rates;
@@ -2584,7 +2606,7 @@ exports.Rates = Rates;
  * Risks - axios parameter creator
  * @export
  */
-exports.RisksAxiosParamCreator = function (configuration) {
+const RisksAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -2595,7 +2617,7 @@ exports.RisksAxiosParamCreator = function (configuration) {
          */
         score: (riskParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'riskParams' is not null or undefined
-            common_1.assertParamExists('score', 'riskParams', riskParams);
+            (0, common_1.assertParamExists)('score', 'riskParams', riskParams);
             const localVarPath = `/api/risks/score`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2608,23 +2630,24 @@ exports.RisksAxiosParamCreator = function (configuration) {
             const localVarQueryParameter = {};
             // authentication HMAC required
             localVarHeaderParameter['Content-Type'] = 'application/json';
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = common_1.serializeDataIfNeeded(riskParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(riskParams, localVarRequestOptions, configuration);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.RisksAxiosParamCreator = RisksAxiosParamCreator;
 /**
  * Risks - functional programming interface
  * @export
  */
-exports.RisksFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.RisksAxiosParamCreator(configuration);
+const RisksFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.RisksAxiosParamCreator)(configuration);
     return {
         /**
          *
@@ -2636,17 +2659,18 @@ exports.RisksFp = function (configuration) {
         score(riskParams, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.score(riskParams, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.RisksFp = RisksFp;
 /**
  * Risks - factory interface
  * @export
  */
-exports.RisksFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.RisksFp(configuration);
+const RisksFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.RisksFp)(configuration);
     return {
         /**
          *
@@ -2660,6 +2684,7 @@ exports.RisksFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.RisksFactory = RisksFactory;
 /**
  * Risks - object-oriented interface
  * @export
@@ -2676,7 +2701,7 @@ class Risks extends base_1.BaseAPI {
      * @memberof Risks
      */
     score(riskParams, options) {
-        return exports.RisksFp(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.RisksFp)(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.Risks = Risks;
@@ -2684,7 +2709,7 @@ exports.Risks = Risks;
  * Transactions - axios parameter creator
  * @export
  */
-exports.TransactionsAxiosParamCreator = function (configuration) {
+const TransactionsAxiosParamCreator = function (configuration) {
     return {
         /**
          *
@@ -2736,22 +2761,23 @@ exports.TransactionsAxiosParamCreator = function (configuration) {
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
             }
-            common_1.setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
-                url: common_1.toPathString(localVarUrlObj),
+                url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
             };
         }),
     };
 };
+exports.TransactionsAxiosParamCreator = TransactionsAxiosParamCreator;
 /**
  * Transactions - functional programming interface
  * @export
  */
-exports.TransactionsFp = function (configuration) {
-    const localVarAxiosParamCreator = exports.TransactionsAxiosParamCreator(configuration);
+const TransactionsFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.TransactionsAxiosParamCreator)(configuration);
     return {
         /**
          *
@@ -2769,17 +2795,18 @@ exports.TransactionsFp = function (configuration) {
         list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options);
-                return common_1.createRequestFunction(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
+exports.TransactionsFp = TransactionsFp;
 /**
  * Transactions - factory interface
  * @export
  */
-exports.TransactionsFactory = function (configuration, basePath, axios) {
-    const localVarFp = exports.TransactionsFp(configuration);
+const TransactionsFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.TransactionsFp)(configuration);
     return {
         /**
          *
@@ -2799,6 +2826,7 @@ exports.TransactionsFactory = function (configuration, basePath, axios) {
         },
     };
 };
+exports.TransactionsFactory = TransactionsFactory;
 /**
  * Transactions - object-oriented interface
  * @export
@@ -2821,7 +2849,7 @@ class Transactions extends base_1.BaseAPI {
      * @memberof Transactions
      */
     list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options) {
-        return exports.TransactionsFp(this.configuration).list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(this.axios, this.basePath));
+        return (0, exports.TransactionsFp)(this.configuration).list(createdAtFrom, createdAtTo, referenceType, currency, status, riskLevel, startingAfter, options).then((request) => request(this.axios, this.basePath));
     }
 }
 exports.Transactions = Transactions;

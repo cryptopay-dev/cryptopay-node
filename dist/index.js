@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SERVER = void 0;
+exports.Cryptopay = exports.SERVER = void 0;
 const axios_1 = __importDefault(require("axios"));
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -31,6 +31,24 @@ const constants_1 = require("./constants");
 Object.defineProperty(exports, "SERVER", { enumerable: true, get: function () { return constants_1.SERVER; } });
 const errorCreaterHelper_1 = require("./helpers/errorCreaterHelper");
 dotenv_1.default.config();
+/**
+ *
+ * Cryptopay-node - The official NodeJS library for the Cryptopay API
+ * Cryptopay is a payment gateway and business wallet that allows merchants
+ * to automate the processes of accepting cryptocurrency payments and
+ * payouts from their customers, as well as making currency exchange transactions
+ * and receiving data on the transaction history and account balance statuses for reporting.
+ *
+ * For more information, please visit [Cryptopay API docs](https://developers.cryptopay.me).
+ *
+ * Learn mode about API credentials at [Developers guide](https://developers.cryptopay.me/guides/api-credentials)
+ * @example
+ * ```
+ * import Cryptopay, { SERVER } from 'cryptopay-node';
+ * // Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
+ * const cryptopay = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
+ * ```
+ */
 class Cryptopay {
     constructor(apiSecret, apiKey, callbackSecret, url) {
         this.apiSecret = apiSecret;
@@ -38,13 +56,18 @@ class Cryptopay {
         this.callbackSecret = callbackSecret;
         /* eslint-enable @typescript-eslint/no-explicit-any*/
         this.url = constants_1.SERVER.sandbox;
-        this.invoices = () => {
-            return this.InvoicesApi;
-        };
-        this.rates = () => {
-            return this.RatesApi;
-        };
-        /* eslint-disable @typescript-eslint/no-explicit-any*/
+        /**
+         * Callbacks
+         * [Documentation](https://developers.cryptopay.me/guides/api-basics/callbacks)
+         * Every callback request contains a `X-Cryptopay-Signature`
+         * header which is needed to verify webhook body
+         * @example
+         * ```ts
+         * // body must be json, headers are all your headers in response
+         * //if the callback is valid method returns true
+         * cryptopay.verifyCallback(body, headers)
+         * ```
+         */
         this.verifyCallback = (body, headers) => {
             this.validateBodyAndHeader(body, headers);
             const expectedSignature = crypto_js_1.default.HmacSHA256(body, this.callbackSecret).toString();
@@ -75,15 +98,22 @@ class Cryptopay {
             });
             axios_1.default.interceptors.response.use((res) => {
                 return res === null || res === void 0 ? void 0 : res.data;
-            }, (error) => Promise.reject(errorCreaterHelper_1.CustomErrorCreater(error)));
+            }, (error) => Promise.reject((0, errorCreaterHelper_1.CustomErrorCreater)(error)));
             return axios_1.default;
         };
         if (url && Object.values(constants_1.SERVER).includes(url)) {
             this.url = url;
         }
         const customizedAxios = this.customizationAxios();
-        this.InvoicesApi = openapi.InvoicesFactory(undefined, this.url, customizedAxios);
-        this.RatesApi = openapi.RatesFactory(undefined, this.url, customizedAxios);
+        this.accounts = openapi.AccountsFactory(undefined, this.url, customizedAxios);
+        this.channels = openapi.ChannelsFactory(undefined, this.url, customizedAxios);
+        this.coinWithdrawals = openapi.CoinWithdrawalsFactory(undefined, this.url, customizedAxios);
+        this.customers = openapi.CustomersFactory(undefined, this.url, customizedAxios);
+        this.exchangeTransfers = openapi.ExchangeTransfersFactory(undefined, this.url, customizedAxios);
+        this.invoices = openapi.InvoicesFactory(undefined, this.url, customizedAxios);
+        this.rates = openapi.RatesFactory(undefined, this.url, customizedAxios);
+        this.risks = openapi.RisksFactory(undefined, this.url, customizedAxios);
+        this.transactions = openapi.TransactionsFactory(undefined, this.url, customizedAxios);
     }
     /* eslint-disable @typescript-eslint/no-explicit-any*/
     secureCompare(str1, str2) {
@@ -108,4 +138,4 @@ class Cryptopay {
         };
     }
 }
-exports.default = Cryptopay;
+exports.Cryptopay = Cryptopay;

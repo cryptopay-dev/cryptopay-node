@@ -20,7 +20,7 @@
     "cryptopay",
     "api"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/crypto-js": "^4.0.2",
     "@types/jest": "^27.0.2",

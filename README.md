@@ -11,8 +11,6 @@ For more information, please visit [Cryptopay API docs](https://developers.crypt
 * [Installation](#installation)
 * [Configuration](#configuration)
 * [Usage](#usage)
-  * [Invoices](#invoices)
-  * [Rates](#rates)
 * [Callbacks](#callbacks)
 * [Contributing](#contributing)
 
@@ -40,7 +38,7 @@ const cryptopay = new Cryptopay(api_secret, api_key, callback_secret, server, SE
 
 ## Usage
 
-See [Documentation](https://cryptopay-node.github.io/classes/index.Cryptopay.html)
+See [Documentation](https://cryptopay-dev.github.io/cryptopay-node/classes/index.Cryptopay.html)
 
 ## Contributing
 

@@ -26,7 +26,7 @@ exports.Cryptopay = exports.SERVER = void 0;
 const axios_1 = __importDefault(require("axios"));
 const crypto_js_1 = __importDefault(require("crypto-js"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const openapi = __importStar(require("../src/openapi"));
+const openapi = __importStar(require("./openapi"));
 const constants_1 = require("./constants");
 Object.defineProperty(exports, "SERVER", { enumerable: true, get: function () { return constants_1.SERVER; } });
 const errorCreaterHelper_1 = require("./helpers/errorCreaterHelper");
@@ -44,9 +44,10 @@ dotenv_1.default.config();
  * Learn mode about API credentials at [Developers guide](https://developers.cryptopay.me/guides/api-credentials)
  * @example
  * ```
- * import Cryptopay, { SERVER } from 'cryptopay-node';
+ * const { Cryptopay, SERVER } = require('cryptopay-node');
  * // Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
- * const cryptopay = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
+ * const api = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
+ * api.accounts.list().then(console.log);
  * ```
  */
 class Cryptopay {

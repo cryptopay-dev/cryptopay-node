@@ -1,4 +1,4 @@
-import * as openapi from '../src/openapi';
+import * as openapi from './openapi';
 import { SERVER } from './constants';
 export { SERVER };
 import { IHeaders } from './interfaces';
@@ -16,9 +16,10 @@ export { IHeaders };
  * Learn mode about API credentials at [Developers guide](https://developers.cryptopay.me/guides/api-credentials)
  * @example
  * ```
- * import Cryptopay, { SERVER } from 'cryptopay-node';
+ * const { Cryptopay, SERVER } = require('cryptopay-node');
  * // Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
- * const cryptopay = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
+ * const api = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
+ * api.accounts.list().then(console.log);
  * ```
  */
 export declare class Cryptopay {

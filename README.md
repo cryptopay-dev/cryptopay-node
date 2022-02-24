@@ -30,10 +30,10 @@ Learn mode about API credentials at [Developers guide](https://developers.crypto
 
 ### Configure library
 
-```ts
-import Cryptopay, { SERVER } from 'cryptopay-node';
+```js
+const { Cryptopay, SERVER } = require('cryptopay-node');
 // Server is an optional parameter which is imported from constants.ts and switches between sandbox and production.
-const cryptopay = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
+const api = new Cryptopay(api_secret, api_key, callback_secret, server, SERVER.sandbox);
 ```
 
 ## Usage

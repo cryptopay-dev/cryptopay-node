@@ -126,6 +126,12 @@ export interface Channel {
      */
     address: string;
     /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof Channel
+     */
+    network: string;
+    /**
      * Project ID
      * @type {string}
      * @memberof Channel
@@ -199,6 +205,12 @@ export interface ChannelParams {
      * @memberof ChannelParams
      */
     pay_currency: string;
+    /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof ChannelParams
+     */
+    network?: string;
     /**
      * The currency which all incoming transactions will be converted to
      * @type {string}
@@ -332,6 +344,12 @@ export interface ChannelPayment {
      * @memberof ChannelPayment
      */
     address?: string;
+    /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof ChannelPayment
+     */
+    network?: string;
     /**
      * Channel payment creation date and time
      * @type {string}
@@ -521,6 +539,12 @@ export interface CoinWithdrawal {
      */
     address: string;
     /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof CoinWithdrawal
+     */
+    network: string;
+    /**
      * Cryptocurrency transaction ID on the blockchain
      * @type {string}
      * @memberof CoinWithdrawal
@@ -679,6 +703,12 @@ export interface CoinWithdrawalParams {
      */
     received_currency: string;
     /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof CoinWithdrawalParams
+     */
+    network?: string;
+    /**
      * All applicable fees will be deducted from this amount before processing a transaction instead of adding them on top it
      * @type {number}
      * @memberof CoinWithdrawalParams
@@ -774,7 +804,7 @@ export interface Customer {
      * @type {{ [key: string]: string; }}
      * @memberof Customer
      */
-    refund_addresses?: { [key: string]: string; };
+    refund_addresses: { [key: string]: string; };
 }
 /**
  * 
@@ -1031,6 +1061,12 @@ export interface Invoice {
      */
     address: string;
     /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof Invoice
+     */
+    network: string;
+    /**
      * Invoice URI. May be used for generating a QR code
      * @type {string}
      * @memberof Invoice
@@ -1222,6 +1258,12 @@ export interface InvoiceParams {
      * @memberof InvoiceParams
      */
     pay_currency: string;
+    /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof InvoiceParams
+     */
+    network?: string;
     /**
      * The payment reference ID in your system
      * @type {string}
@@ -1431,6 +1473,12 @@ export interface InvoiceRefund {
      */
     address: string | null;
     /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof InvoiceRefund
+     */
+    network: string;
+    /**
      * Cryptocurrency transaction ID on the blockchain
      * @type {string}
      * @memberof InvoiceRefund
@@ -1571,6 +1619,12 @@ export interface NetworkFee {
      * @memberof NetworkFee
      */
     currency: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NetworkFee
+     */
+    network: string;
 }
 /**
  * 

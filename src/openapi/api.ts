@@ -2800,10 +2800,11 @@ export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Config
         /**
          * 
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listNetworkFees: async (options: any = {}): Promise<RequestArgs> => {
+        listNetworkFees: async (allNetworks?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/coin_withdrawals/network_fees`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2817,6 +2818,10 @@ export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Config
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
+
+            if (allNetworks !== undefined) {
+                localVarQueryParameter['all_networks'] = allNetworks;
+            }
 
 
     
@@ -2948,11 +2953,12 @@ export const CoinWithdrawalsFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listNetworkFees(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listNetworkFees(options);
+        async listNetworkFees(allNetworks?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listNetworkFees(allNetworks, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3021,11 +3027,12 @@ export const CoinWithdrawalsFactory = function (configuration?: Configuration, b
         /**
          * 
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listNetworkFees(options?: any): AxiosPromise<NetworkFeeListResult> {
-            return localVarFp.listNetworkFees(options).then((request) => request(axios, basePath));
+        listNetworkFees(allNetworks?: boolean, options?: any): AxiosPromise<NetworkFeeListResult> {
+            return localVarFp.listNetworkFees(allNetworks, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3097,12 +3104,13 @@ export class CoinWithdrawals extends BaseAPI {
     /**
      * 
      * @summary List network fees
+     * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CoinWithdrawals
      */
-    public listNetworkFees(options?: any) {
-        return CoinWithdrawalsFp(this.configuration).listNetworkFees(options).then((request) => request(this.axios, this.basePath));
+    public listNetworkFees(allNetworks?: boolean, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).listNetworkFees(allNetworks, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

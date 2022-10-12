@@ -28,25 +28,25 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
  */
 export interface Account {
     /**
-     * 
+     * Account ID
      * @type {string}
      * @memberof Account
      */
     id: string;
     /**
-     * 
+     * Account currency
      * @type {string}
      * @memberof Account
      */
     currency: string;
     /**
-     * 
+     * Account balance
      * @type {number}
      * @memberof Account
      */
     balance: number;
     /**
-     * 
+     * Project ID which the account belongs to
      * @type {string}
      * @memberof Account
      */
@@ -64,6 +64,12 @@ export interface AccountListResult {
      * @memberof AccountListResult
      */
     data: Array<Account>;
+    /**
+     * 
+     * @type {Pagination}
+     * @memberof AccountListResult
+     */
+    meta: Pagination;
 }
 /**
  * @type Callback
@@ -78,7 +84,7 @@ export type Callback = ChannelPaymentCallback | CoinWithdrawalCallback | Invoice
  */
 export interface Channel {
     /**
-     * 
+     * Channel ID
      * @type {string}
      * @memberof Channel
      */
@@ -90,61 +96,67 @@ export interface Channel {
      */
     status: ChannelStatus;
     /**
-     * 
+     * Channel name
      * @type {string}
      * @memberof Channel
      */
     name: string;
     /**
-     * 
+     * Channel description
      * @type {string}
      * @memberof Channel
      */
     description: string | null;
     /**
-     * 
+     * The cryptocurrency which you want to accept
      * @type {string}
      * @memberof Channel
      */
     pay_currency: string;
     /**
-     * 
+     * The currency which all incoming transactions will be converted to
      * @type {string}
      * @memberof Channel
      */
     receiver_currency: string;
     /**
-     * 
+     * Channel description
      * @type {string}
      * @memberof Channel
      */
     address: string;
     /**
-     * 
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof Channel
+     */
+    network: string;
+    /**
+     * Project ID
      * @type {string}
      * @memberof Channel
      */
     project_id: string;
     /**
-     * 
+     * The channel reference ID in your system
      * @type {string}
      * @memberof Channel
      */
     custom_id: string | null;
     /**
-     * 
+     * The reference ID of your customer
      * @type {string}
      * @memberof Channel
      */
     customer_id: string | null;
     /**
-     * 
+     * Channel URI. May be used for generating a QR code
      * @type {string}
      * @memberof Channel
      */
     uri: string;
     /**
-     * 
+     * Channel hosted page that renders channel details
      * @type {string}
      * @memberof Channel
      */
@@ -176,25 +188,31 @@ export interface ChannelListResult {
  */
 export interface ChannelParams {
     /**
-     * 
+     * Channel name
      * @type {string}
      * @memberof ChannelParams
      */
     name: string;
     /**
-     * 
+     * Channel description
      * @type {string}
      * @memberof ChannelParams
      */
     description?: string;
     /**
-     * 
+     * The cryptocurrency which you want to accept
      * @type {string}
      * @memberof ChannelParams
      */
     pay_currency: string;
     /**
-     * 
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof ChannelParams
+     */
+    network?: string;
+    /**
+     * The currency which all incoming transactions will be converted to
      * @type {string}
      * @memberof ChannelParams
      */
@@ -219,55 +237,55 @@ export interface ChannelParams {
  */
 export interface ChannelPayment {
     /**
-     * 
+     * Channel payment ID
      * @type {string}
      * @memberof ChannelPayment
      */
     id: string;
     /**
-     * 
+     * Channel ID
      * @type {string}
      * @memberof ChannelPayment
      */
     channel_id: string;
     /**
-     * 
+     * Cryptocurrency transaction amount that was received
      * @type {number}
      * @memberof ChannelPayment
      */
     paid_amount: number;
     /**
-     * 
+     * Cryptocurrency type
      * @type {string}
      * @memberof ChannelPayment
      */
     paid_currency: string;
     /**
-     * 
+     * Amount credited to your Cryptopay account
      * @type {number}
      * @memberof ChannelPayment
      */
     received_amount: number;
     /**
-     * 
+     * Account currency
      * @type {string}
      * @memberof ChannelPayment
      */
     received_currency: string;
     /**
-     * 
+     * Processing fee
      * @type {number}
      * @memberof ChannelPayment
      */
     fee: number;
     /**
-     * 
+     * Processing fee currency
      * @type {string}
      * @memberof ChannelPayment
      */
     fee_currency: string;
     /**
-     * 
+     * Cryptocurrency transaction ID on the blockchain
      * @type {string}
      * @memberof ChannelPayment
      */
@@ -309,25 +327,31 @@ export interface ChannelPayment {
      */
     coin_withdrawal_id: string | null;
     /**
-     * 
+     * Channel payment custom_id value inherited from its parent channel
      * @type {string}
      * @memberof ChannelPayment
      */
     custom_id: string | null;
     /**
-     * 
+     * The reference ID of your customer
      * @type {string}
      * @memberof ChannelPayment
      */
     customer_id: string | null;
     /**
-     * 
+     * Channel cryptocurrency address
      * @type {string}
      * @memberof ChannelPayment
      */
     address?: string;
     /**
-     * 
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof ChannelPayment
+     */
+    network?: string;
+    /**
+     * Channel payment creation date and time
      * @type {string}
      * @memberof ChannelPayment
      */
@@ -344,7 +368,7 @@ export interface ChannelPaymentCallback {
      * @type {string}
      * @memberof ChannelPaymentCallback
      */
-    type: ChannelPaymentCallbackTypeEnum;
+    type: string;
     /**
      * 
      * @type {ChannelPaymentCallbackEvent}
@@ -358,15 +382,6 @@ export interface ChannelPaymentCallback {
      */
     data: ChannelPayment;
 }
-
-/**
-    * @export
-    * @enum {string}
-    */
-export enum ChannelPaymentCallbackTypeEnum {
-    ChannelPayment = 'ChannelPayment'
-}
-
 /**
  * 
  * @export
@@ -469,13 +484,13 @@ export enum ChannelStatus {
  */
 export interface ChannelUpdateParams {
     /**
-     * 
+     * Channel name
      * @type {string}
      * @memberof ChannelUpdateParams
      */
     name?: string;
     /**
-     * 
+     * Channel description
      * @type {string}
      * @memberof ChannelUpdateParams
      */
@@ -500,31 +515,37 @@ export interface ChannelUpdateParams {
  */
 export interface CoinWithdrawal {
     /**
-     * 
+     * Coin withdrawal ID
      * @type {string}
      * @memberof CoinWithdrawal
      */
     id: string | null;
     /**
-     * 
+     * Payment reference ID in your system
      * @type {string}
      * @memberof CoinWithdrawal
      */
     custom_id: string | null;
     /**
-     * 
+     * The reference ID of your customer
      * @type {string}
      * @memberof CoinWithdrawal
      */
     customer_id: string | null;
     /**
-     * 
+     * Recipient\'s cryptocurrency wallet address
      * @type {string}
      * @memberof CoinWithdrawal
      */
     address: string;
     /**
-     * 
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof CoinWithdrawal
+     */
+    network: string;
+    /**
+     * Cryptocurrency transaction ID on the blockchain
      * @type {string}
      * @memberof CoinWithdrawal
      */
@@ -536,31 +557,31 @@ export interface CoinWithdrawal {
      */
     status: CoinWithdrawalStatus;
     /**
-     * 
+     * Payment amount. Amount charged from your account
      * @type {number}
      * @memberof CoinWithdrawal
      */
     charged_amount: number;
     /**
-     * 
+     * Account currency the payment has been sent from
      * @type {string}
      * @memberof CoinWithdrawal
      */
     charged_currency: string;
     /**
-     * 
+     * Cryptocurrency transaction amount. Exact amount received by a recipient
      * @type {number}
      * @memberof CoinWithdrawal
      */
     received_amount: number;
     /**
-     * 
+     * Cryptocurrency type
      * @type {string}
      * @memberof CoinWithdrawal
      */
     received_currency: string;
     /**
-     * 
+     * Network fee amount
      * @type {number}
      * @memberof CoinWithdrawal
      */
@@ -596,7 +617,7 @@ export interface CoinWithdrawal {
      */
     risk?: Risk;
     /**
-     * 
+     * Coin withdrawal creation date and time
      * @type {string}
      * @memberof CoinWithdrawal
      */
@@ -613,7 +634,7 @@ export interface CoinWithdrawalCallback {
      * @type {string}
      * @memberof CoinWithdrawalCallback
      */
-    type: CoinWithdrawalCallbackTypeEnum;
+    type: string;
     /**
      * 
      * @type {CoinWithdrawalCallbackEvent}
@@ -627,15 +648,6 @@ export interface CoinWithdrawalCallback {
      */
     data: CoinWithdrawal;
 }
-
-/**
-    * @export
-    * @enum {string}
-    */
-export enum CoinWithdrawalCallbackTypeEnum {
-    CoinWithdrawal = 'CoinWithdrawal'
-}
-
 /**
  * 
  * @export
@@ -673,37 +685,43 @@ export interface CoinWithdrawalListResult {
  */
 export interface CoinWithdrawalParams {
     /**
-     * 
+     * A recipient\'s cryptocurrency wallet address
      * @type {string}
      * @memberof CoinWithdrawalParams
      */
     address: string;
     /**
-     * 
+     * An account currency to send a transaction from
      * @type {string}
      * @memberof CoinWithdrawalParams
      */
     charged_currency: string;
     /**
-     * 
+     * Cryptocurrency type
      * @type {string}
      * @memberof CoinWithdrawalParams
      */
     received_currency: string;
     /**
-     * 
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof CoinWithdrawalParams
+     */
+    network?: string;
+    /**
+     * All applicable fees will be deducted from this amount before processing a transaction instead of adding them on top it
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
     charged_amount?: number | null;
     /**
-     * 
+     * An exact transaction amount to send. All applicable fees will be added on top of this amount and debited from your account
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
     charged_amount_to_send?: number | null;
     /**
-     * 
+     * An exact transaction amount to send. All applicable fees will be added on top of this amount and debited from your account. Use this parameter if you want to send a transaction from cryptocurrency accounts only
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
@@ -727,7 +745,7 @@ export interface CoinWithdrawalParams {
      */
     network_fee_level?: NetworkFeeLevel;
     /**
-     * Set `true` by default. Set `false` for two-step withdrawal and commit it within 30 seconds
+     * Is `false` if omitted. Set `true` by default. Set `false` for two-step withdrawal and commit it within 30 seconds
      * @type {boolean}
      * @memberof CoinWithdrawalParams
      */
@@ -783,10 +801,10 @@ export interface Customer {
     currency: string;
     /**
      * The list of refund addresses where Cryptopay will refund High-Risk transactions to
-     * @type {object}
+     * @type {{ [key: string]: string; }}
      * @memberof Customer
      */
-    refund_addresses?: object;
+    refund_addresses: { [key: string]: string; };
 }
 /**
  * 
@@ -826,11 +844,11 @@ export interface CustomerParams {
      */
     currency: string;
     /**
-     * This object allows you specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
-     * @type {object}
+     * This object allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
+     * @type {{ [key: string]: string; }}
      * @memberof CustomerParams
      */
-    refund_addresses?: object;
+    refund_addresses?: { [key: string]: string; };
 }
 /**
  * 
@@ -858,11 +876,11 @@ export interface CustomerUpdateParams {
      */
     currency?: string;
     /**
-     * This object allows you specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
-     * @type {object}
+     * This object allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
+     * @type {{ [key: string]: string; }}
      * @memberof CustomerUpdateParams
      */
-    refund_addresses?: object;
+    refund_addresses?: { [key: string]: string; };
 }
 /**
  * Exchange details
@@ -902,37 +920,37 @@ export interface Exchange {
  */
 export interface ExchangeTransfer {
     /**
-     * 
+     * Exchange transaction ID
      * @type {string}
      * @memberof ExchangeTransfer
      */
     id: string;
     /**
-     * 
+     * Amount converted
      * @type {number}
      * @memberof ExchangeTransfer
      */
     charged_amount: number;
     /**
-     * 
+     * Account currency the funds converted from
      * @type {string}
      * @memberof ExchangeTransfer
      */
     charged_currency: string;
     /**
-     * 
+     * Amount to be received upon exchange execution
      * @type {number}
      * @memberof ExchangeTransfer
      */
     received_amount: number;
     /**
-     * 
+     * Account currency the funds converted to
      * @type {string}
      * @memberof ExchangeTransfer
      */
     received_currency: string;
     /**
-     * 
+     * Exchange transaction reference ID in your system
      * @type {string}
      * @memberof ExchangeTransfer
      */
@@ -951,37 +969,37 @@ export interface ExchangeTransfer {
  */
 export interface ExchangeTransferParams {
     /**
-     * 
+     * Account currency the funds to be converted from
      * @type {string}
      * @memberof ExchangeTransferParams
      */
     charged_currency: string;
     /**
-     * 
+     * Amount to be converted
      * @type {number}
      * @memberof ExchangeTransferParams
      */
     charged_amount: number | null;
     /**
-     * 
+     * Account currency the funds to be converted to
      * @type {string}
      * @memberof ExchangeTransferParams
      */
     received_currency: string;
     /**
-     * 
+     * Amount to be received upon exchange execution
      * @type {number}
      * @memberof ExchangeTransferParams
      */
     received_amount: number | null;
     /**
-     * 
+     * Exchange transaction reference ID in your system
      * @type {string}
      * @memberof ExchangeTransferParams
      */
     custom_id?: string;
     /**
-     * 
+     * Is `false` if omitted. Set `true` by default. Set `false` for two-step recalculation and commit it within 30 seconds
      * @type {boolean}
      * @memberof ExchangeTransferParams
      */
@@ -1042,6 +1060,12 @@ export interface Invoice {
      * @memberof Invoice
      */
     address: string;
+    /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof Invoice
+     */
+    network: string;
     /**
      * Invoice URI. May be used for generating a QR code
      * @type {string}
@@ -1116,10 +1140,10 @@ export interface Invoice {
     description: string | null;
     /**
      * Key-value data
-     * @type {object}
+     * @type {{ [key: string]: string; }}
      * @memberof Invoice
      */
-    metadata: object | null;
+    metadata: { [key: string]: string; } | null;
     /**
      * URL that a customer will be redirected to upon transaction confirmation
      * @type {string}
@@ -1162,7 +1186,7 @@ export interface InvoiceCallback {
      * @type {string}
      * @memberof InvoiceCallback
      */
-    type: InvoiceCallbackTypeEnum;
+    type: string;
     /**
      * 
      * @type {InvoiceCallbackEvent}
@@ -1176,15 +1200,6 @@ export interface InvoiceCallback {
      */
     data: Invoice;
 }
-
-/**
-    * @export
-    * @enum {string}
-    */
-export enum InvoiceCallbackTypeEnum {
-    Invoice = 'Invoice'
-}
-
 /**
  * 
  * @export
@@ -1244,6 +1259,12 @@ export interface InvoiceParams {
      */
     pay_currency: string;
     /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof InvoiceParams
+     */
+    network?: string;
+    /**
      * The payment reference ID in your system
      * @type {string}
      * @memberof InvoiceParams
@@ -1269,10 +1290,10 @@ export interface InvoiceParams {
     description?: string;
     /**
      * Custom key-valued data
-     * @type {object}
+     * @type {{ [key: string]: string; }}
      * @memberof InvoiceParams
      */
-    metadata?: object;
+    metadata?: { [key: string]: string; };
     /**
      * The URL that the customer will be redirected to upon transaction confirmation
      * @type {string}
@@ -1378,7 +1399,7 @@ export interface InvoiceRecalculation {
  */
 export interface InvoiceRecalculationParams {
     /**
-     * Set `true` by default. Set `false` for two-step recalculation and commit it within 30 seconds
+     * Is `false` if omitted. Set `true` by default. Set `false` for two-step recalculation and commit it within 30 seconds
      * @type {boolean}
      * @memberof InvoiceRecalculationParams
      */
@@ -1451,6 +1472,12 @@ export interface InvoiceRefund {
      * @memberof InvoiceRefund
      */
     address: string | null;
+    /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof InvoiceRefund
+     */
+    network: string;
     /**
      * Cryptocurrency transaction ID on the blockchain
      * @type {string}
@@ -1592,6 +1619,12 @@ export interface NetworkFee {
      * @memberof NetworkFee
      */
     currency: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NetworkFee
+     */
+    network: string;
 }
 /**
  * 
@@ -1745,21 +1778,11 @@ export interface RiskParams {
     currency: string;
     /**
      * 
-     * @type {string}
+     * @type {RiskType}
      * @memberof RiskParams
      */
-    type: RiskParamsTypeEnum;
+    type: RiskType;
 }
-
-/**
-    * @export
-    * @enum {string}
-    */
-export enum RiskParamsTypeEnum {
-    SourceOfFunds = 'source_of_funds',
-    DestinationOfFunds = 'destination_of_funds'
-}
-
 /**
  * 
  * @export
@@ -1774,61 +1797,72 @@ export interface RiskResult {
     data: Risk;
 }
 /**
+ * Risk analysis type
+ * @export
+ * @enum {string}
+ */
+
+export enum RiskType {
+    SourceOfFunds = 'source_of_funds',
+    DestinationOfFunds = 'destination_of_funds'
+}
+
+/**
  * 
  * @export
  * @interface Transaction
  */
 export interface Transaction {
     /**
-     * 
+     * Account transaction ID
      * @type {string}
      * @memberof Transaction
      */
     id: string;
     /**
-     * 
+     * Transaction description
      * @type {string}
      * @memberof Transaction
      */
     custom_id: string | null;
     /**
-     * 
+     * The reference ID of your customer
      * @type {string}
      * @memberof Transaction
      */
     customer_id: string | null;
     /**
-     * 
+     * Transaction amount
      * @type {number}
      * @memberof Transaction
      */
     amount: number;
     /**
-     * 
+     * Transaction currency
      * @type {string}
      * @memberof Transaction
      */
     currency: string;
     /**
-     * 
+     * Account subtotal
      * @type {number}
      * @memberof Transaction
      */
     balance: number;
     /**
-     * 
+     * Transaction fee details
      * @type {number}
      * @memberof Transaction
      */
     fee?: number;
     /**
-     * 
+     * Transaction fee currency
      * @type {string}
      * @memberof Transaction
      */
     fee_currency?: string;
     /**
-     * 
+     * Transaction reference ID in Cryptopay
      * @type {string}
      * @memberof Transaction
      */
@@ -1840,19 +1874,19 @@ export interface Transaction {
      */
     reference_type: TransactionReferenceType;
     /**
-     * 
+     * Transaction description
      * @type {string}
      * @memberof Transaction
      */
     description: string | null;
     /**
-     * 
+     * Transaction status
      * @type {string}
      * @memberof Transaction
      */
     status: string | null;
     /**
-     * 
+     * Transaction status context
      * @type {string}
      * @memberof Transaction
      */
@@ -1864,7 +1898,7 @@ export interface Transaction {
      */
     risk?: Risk;
     /**
-     * 
+     * Transaction creation date and time
      * @type {string}
      * @memberof Transaction
      */
@@ -2766,10 +2800,11 @@ export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Config
         /**
          * 
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listNetworkFees: async (options: any = {}): Promise<RequestArgs> => {
+        listNetworkFees: async (allNetworks?: boolean, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/coin_withdrawals/network_fees`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2783,6 +2818,10 @@ export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Config
             const localVarQueryParameter = {} as any;
 
             // authentication HMAC required
+
+            if (allNetworks !== undefined) {
+                localVarQueryParameter['all_networks'] = allNetworks;
+            }
 
 
     
@@ -2914,11 +2953,12 @@ export const CoinWithdrawalsFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async listNetworkFees(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.listNetworkFees(options);
+        async listNetworkFees(allNetworks?: boolean, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<NetworkFeeListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.listNetworkFees(allNetworks, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2987,11 +3027,12 @@ export const CoinWithdrawalsFactory = function (configuration?: Configuration, b
         /**
          * 
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listNetworkFees(options?: any): AxiosPromise<NetworkFeeListResult> {
-            return localVarFp.listNetworkFees(options).then((request) => request(axios, basePath));
+        listNetworkFees(allNetworks?: boolean, options?: any): AxiosPromise<NetworkFeeListResult> {
+            return localVarFp.listNetworkFees(allNetworks, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3063,12 +3104,13 @@ export class CoinWithdrawals extends BaseAPI {
     /**
      * 
      * @summary List network fees
+     * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CoinWithdrawals
      */
-    public listNetworkFees(options?: any) {
-        return CoinWithdrawalsFp(this.configuration).listNetworkFees(options).then((request) => request(this.axios, this.basePath));
+    public listNetworkFees(allNetworks?: boolean, options?: any) {
+        return CoinWithdrawalsFp(this.configuration).listNetworkFees(allNetworks, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -31,6 +31,7 @@ export declare class Cryptopay {
     coinWithdrawals: ReturnType<typeof openapi.CoinWithdrawalsFactory>;
     customers: ReturnType<typeof openapi.CustomersFactory>;
     exchangeTransfers: ReturnType<typeof openapi.ExchangeTransfersFactory>;
+    coins: ReturnType<typeof openapi.CoinsFactory>;
     /**
      * An invoice is a request for a cryptocurrency payment
      * which contains a unique BTC, LTC, ETH or XRP address

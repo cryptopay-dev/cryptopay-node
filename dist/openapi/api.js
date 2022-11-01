@@ -25,22 +25,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransactionsFp = exports.TransactionsAxiosParamCreator = exports.Risks = exports.RisksFactory = exports.RisksFp = exports.RisksAxiosParamCreator = exports.Rates = exports.RatesFactory = exports.RatesFp = exports.RatesAxiosParamCreator = exports.Invoices = exports.InvoicesFactory = exports.InvoicesFp = exports.InvoicesAxiosParamCreator = exports.ExchangeTransfers = exports.ExchangeTransfersFactory = exports.ExchangeTransfersFp = exports.ExchangeTransfersAxiosParamCreator = exports.Customers = exports.CustomersFactory = exports.CustomersFp = exports.CustomersAxiosParamCreator = exports.CoinWithdrawals = exports.CoinWithdrawalsFactory = exports.CoinWithdrawalsFp = exports.CoinWithdrawalsAxiosParamCreator = exports.Channels = exports.ChannelsFactory = exports.ChannelsFp = exports.ChannelsAxiosParamCreator = exports.Accounts = exports.AccountsFactory = exports.AccountsFp = exports.AccountsAxiosParamCreator = exports.TransactionReferenceType = exports.RiskParamsTypeEnum = exports.RiskLevel = exports.NetworkFeeLevel = exports.InvoiceStatusContext = exports.InvoiceStatus = exports.InvoiceCallbackEvent = exports.InvoiceCallbackTypeEnum = exports.CoinWithdrawalStatus = exports.CoinWithdrawalCallbackEvent = exports.CoinWithdrawalCallbackTypeEnum = exports.ChannelStatus = exports.ChannelPaymentStatusContext = exports.ChannelPaymentStatus = exports.ChannelPaymentCallbackEvent = exports.ChannelPaymentCallbackTypeEnum = void 0;
-exports.Transactions = exports.TransactionsFactory = void 0;
+exports.TransactionsAxiosParamCreator = exports.Risks = exports.RisksFactory = exports.RisksFp = exports.RisksAxiosParamCreator = exports.Rates = exports.RatesFactory = exports.RatesFp = exports.RatesAxiosParamCreator = exports.Invoices = exports.InvoicesFactory = exports.InvoicesFp = exports.InvoicesAxiosParamCreator = exports.ExchangeTransfers = exports.ExchangeTransfersFactory = exports.ExchangeTransfersFp = exports.ExchangeTransfersAxiosParamCreator = exports.Customers = exports.CustomersFactory = exports.CustomersFp = exports.CustomersAxiosParamCreator = exports.Coins = exports.CoinsFactory = exports.CoinsFp = exports.CoinsAxiosParamCreator = exports.CoinWithdrawals = exports.CoinWithdrawalsFactory = exports.CoinWithdrawalsFp = exports.CoinWithdrawalsAxiosParamCreator = exports.Channels = exports.ChannelsFactory = exports.ChannelsFp = exports.ChannelsAxiosParamCreator = exports.Accounts = exports.AccountsFactory = exports.AccountsFp = exports.AccountsAxiosParamCreator = exports.TransactionReferenceType = exports.RiskType = exports.RiskLevel = exports.NetworkFeeLevel = exports.InvoiceStatusContext = exports.InvoiceStatus = exports.InvoiceCallbackEvent = exports.CoinWithdrawalStatus = exports.CoinWithdrawalCallbackEvent = exports.ChannelStatus = exports.ChannelPaymentStatusContext = exports.ChannelPaymentStatus = exports.ChannelPaymentCallbackEvent = void 0;
+exports.Transactions = exports.TransactionsFactory = exports.TransactionsFp = void 0;
 const axios_1 = __importDefault(require("axios"));
 // Some imports not used depending on template conditions
 // @ts-ignore
 const common_1 = require("./common");
 // @ts-ignore
 const base_1 = require("./base");
-/**
-    * @export
-    * @enum {string}
-    */
-var ChannelPaymentCallbackTypeEnum;
-(function (ChannelPaymentCallbackTypeEnum) {
-    ChannelPaymentCallbackTypeEnum["ChannelPayment"] = "ChannelPayment";
-})(ChannelPaymentCallbackTypeEnum = exports.ChannelPaymentCallbackTypeEnum || (exports.ChannelPaymentCallbackTypeEnum = {}));
 /**
  *
  * @export
@@ -88,14 +80,6 @@ var ChannelStatus;
     ChannelStatus["Disabled"] = "disabled";
 })(ChannelStatus = exports.ChannelStatus || (exports.ChannelStatus = {}));
 /**
-    * @export
-    * @enum {string}
-    */
-var CoinWithdrawalCallbackTypeEnum;
-(function (CoinWithdrawalCallbackTypeEnum) {
-    CoinWithdrawalCallbackTypeEnum["CoinWithdrawal"] = "CoinWithdrawal";
-})(CoinWithdrawalCallbackTypeEnum = exports.CoinWithdrawalCallbackTypeEnum || (exports.CoinWithdrawalCallbackTypeEnum = {}));
-/**
  *
  * @export
  * @enum {string}
@@ -121,14 +105,6 @@ var CoinWithdrawalStatus;
     CoinWithdrawalStatus["Failed"] = "failed";
     CoinWithdrawalStatus["Cancelled"] = "cancelled";
 })(CoinWithdrawalStatus = exports.CoinWithdrawalStatus || (exports.CoinWithdrawalStatus = {}));
-/**
-    * @export
-    * @enum {string}
-    */
-var InvoiceCallbackTypeEnum;
-(function (InvoiceCallbackTypeEnum) {
-    InvoiceCallbackTypeEnum["Invoice"] = "Invoice";
-})(InvoiceCallbackTypeEnum = exports.InvoiceCallbackTypeEnum || (exports.InvoiceCallbackTypeEnum = {}));
 /**
  *
  * @export
@@ -191,14 +167,15 @@ var RiskLevel;
     RiskLevel["High"] = "high";
 })(RiskLevel = exports.RiskLevel || (exports.RiskLevel = {}));
 /**
-    * @export
-    * @enum {string}
-    */
-var RiskParamsTypeEnum;
-(function (RiskParamsTypeEnum) {
-    RiskParamsTypeEnum["SourceOfFunds"] = "source_of_funds";
-    RiskParamsTypeEnum["DestinationOfFunds"] = "destination_of_funds";
-})(RiskParamsTypeEnum = exports.RiskParamsTypeEnum || (exports.RiskParamsTypeEnum = {}));
+ * Risk analysis type
+ * @export
+ * @enum {string}
+ */
+var RiskType;
+(function (RiskType) {
+    RiskType["SourceOfFunds"] = "source_of_funds";
+    RiskType["DestinationOfFunds"] = "destination_of_funds";
+})(RiskType = exports.RiskType || (exports.RiskType = {}));
 /**
  *
  * @export
@@ -1002,10 +979,11 @@ const CoinWithdrawalsAxiosParamCreator = function (configuration) {
         /**
          *
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listNetworkFees: (options = {}) => __awaiter(this, void 0, void 0, function* () {
+        listNetworkFees: (allNetworks, options = {}) => __awaiter(this, void 0, void 0, function* () {
             const localVarPath = `/api/coin_withdrawals/network_fees`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -1017,6 +995,9 @@ const CoinWithdrawalsAxiosParamCreator = function (configuration) {
             const localVarHeaderParameter = {};
             const localVarQueryParameter = {};
             // authentication HMAC required
+            if (allNetworks !== undefined) {
+                localVarQueryParameter['all_networks'] = allNetworks;
+            }
             (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
@@ -1138,12 +1119,13 @@ const CoinWithdrawalsFp = function (configuration) {
         /**
          *
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listNetworkFees(options) {
+        listNetworkFees(allNetworks, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.listNetworkFees(options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.listNetworkFees(allNetworks, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -1217,11 +1199,12 @@ const CoinWithdrawalsFactory = function (configuration, basePath, axios) {
         /**
          *
          * @summary List network fees
+         * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        listNetworkFees(options) {
-            return localVarFp.listNetworkFees(options).then((request) => request(axios, basePath));
+        listNetworkFees(allNetworks, options) {
+            return localVarFp.listNetworkFees(allNetworks, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -1290,12 +1273,13 @@ class CoinWithdrawals extends base_1.BaseAPI {
     /**
      *
      * @summary List network fees
+     * @param {boolean} [allNetworks] Is &#x60;false&#x60; if omitted. Set &#x60;true&#x60; to return network fees for all cryptocurrency networks
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CoinWithdrawals
      */
-    listNetworkFees(options) {
-        return (0, exports.CoinWithdrawalsFp)(this.configuration).listNetworkFees(options).then((request) => request(this.axios, this.basePath));
+    listNetworkFees(allNetworks, options) {
+        return (0, exports.CoinWithdrawalsFp)(this.configuration).listNetworkFees(allNetworks, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1321,6 +1305,101 @@ class CoinWithdrawals extends base_1.BaseAPI {
     }
 }
 exports.CoinWithdrawals = CoinWithdrawals;
+/**
+ * Coins - axios parameter creator
+ * @export
+ */
+const CoinsAxiosParamCreator = function (configuration) {
+    return {
+        /**
+         *
+         * @summary List supported coins
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list: (options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/api/coins`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication HMAC required
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+    };
+};
+exports.CoinsAxiosParamCreator = CoinsAxiosParamCreator;
+/**
+ * Coins - functional programming interface
+ * @export
+ */
+const CoinsFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.CoinsAxiosParamCreator)(configuration);
+    return {
+        /**
+         *
+         * @summary List supported coins
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list(options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.list(options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+    };
+};
+exports.CoinsFp = CoinsFp;
+/**
+ * Coins - factory interface
+ * @export
+ */
+const CoinsFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.CoinsFp)(configuration);
+    return {
+        /**
+         *
+         * @summary List supported coins
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list(options) {
+            return localVarFp.list(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+exports.CoinsFactory = CoinsFactory;
+/**
+ * Coins - object-oriented interface
+ * @export
+ * @class Coins
+ * @extends {BaseAPI}
+ */
+class Coins extends base_1.BaseAPI {
+    /**
+     *
+     * @summary List supported coins
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Coins
+     */
+    list(options) {
+        return (0, exports.CoinsFp)(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
+    }
+}
+exports.Coins = Coins;
 /**
  * Customers - axios parameter creator
  * @export

@@ -115,6 +115,7 @@ class Cryptopay {
         this.rates = openapi.RatesFactory(undefined, this.url, customizedAxios);
         this.risks = openapi.RisksFactory(undefined, this.url, customizedAxios);
         this.transactions = openapi.TransactionsFactory(undefined, this.url, customizedAxios);
+        this.coins = openapi.CoinsFactory(undefined, this.url, customizedAxios);
     }
     /* eslint-disable @typescript-eslint/no-explicit-any*/
     secureCompare(str1, str2) {

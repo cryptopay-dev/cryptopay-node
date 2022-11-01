@@ -511,6 +511,131 @@ export interface ChannelUpdateParams {
 /**
  * 
  * @export
+ * @interface ChannelsConfig
+ */
+export interface ChannelsConfig {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ChannelsConfig
+     */
+    enabled: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface Coin
+ */
+export interface Coin {
+    /**
+     * 
+     * @type {string}
+     * @memberof Coin
+     */
+    currency: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Coin
+     */
+    name: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Coin
+     */
+    logo_url: string;
+    /**
+     * 
+     * @type {Array<CoinNetwork>}
+     * @memberof Coin
+     */
+    networks: Array<CoinNetwork>;
+}
+/**
+ * 
+ * @export
+ * @interface CoinDestinationTag
+ */
+export interface CoinDestinationTag {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CoinDestinationTag
+     */
+    required: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoinDestinationTag
+     */
+    name: string;
+}
+/**
+ * 
+ * @export
+ * @interface CoinListResult
+ */
+export interface CoinListResult {
+    /**
+     * 
+     * @type {Array<Coin>}
+     * @memberof CoinListResult
+     */
+    data: Array<Coin>;
+}
+/**
+ * 
+ * @export
+ * @interface CoinNetwork
+ */
+export interface CoinNetwork {
+    /**
+     * 
+     * @type {string}
+     * @memberof CoinNetwork
+     */
+    network: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CoinNetwork
+     */
+    name: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CoinNetwork
+     */
+    precision: number;
+    /**
+     * 
+     * @type {CoinDestinationTag}
+     * @memberof CoinNetwork
+     */
+    destination_tag: CoinDestinationTag | null;
+    /**
+     * 
+     * @type {InvoicesConfig}
+     * @memberof CoinNetwork
+     */
+    invoices: InvoicesConfig;
+    /**
+     * 
+     * @type {ChannelsConfig}
+     * @memberof CoinNetwork
+     */
+    channels: ChannelsConfig;
+    /**
+     * 
+     * @type {CoinWithdrawalsConfig}
+     * @memberof CoinNetwork
+     */
+    coin_withdrawals: CoinWithdrawalsConfig;
+}
+/**
+ * 
+ * @export
  * @interface CoinWithdrawal
  */
 export interface CoinWithdrawal {
@@ -745,7 +870,7 @@ export interface CoinWithdrawalParams {
      */
     network_fee_level?: NetworkFeeLevel;
     /**
-     * Is `false` if omitted. Set `true` by default. Set `false` for two-step withdrawal and commit it within 30 seconds
+     * Is `false` if omitted. Set `true` to turn off two-step withdrawal. Set `false` for two-step withdrawal and commit it within 30 seconds
      * @type {boolean}
      * @memberof CoinWithdrawalParams
      */
@@ -781,6 +906,19 @@ export enum CoinWithdrawalStatus {
     Cancelled = 'cancelled'
 }
 
+/**
+ * 
+ * @export
+ * @interface CoinWithdrawalsConfig
+ */
+export interface CoinWithdrawalsConfig {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CoinWithdrawalsConfig
+     */
+    enabled: boolean;
+}
 /**
  * 
  * @export
@@ -999,7 +1137,7 @@ export interface ExchangeTransferParams {
      */
     custom_id?: string;
     /**
-     * Is `false` if omitted. Set `true` by default. Set `false` for two-step recalculation and commit it within 30 seconds
+     * Is `false` if omitted. Set `true` to turn off two-step exchange. Set `false` for two-step exchange and commit it within 30 seconds
      * @type {boolean}
      * @memberof ExchangeTransferParams
      */
@@ -1399,7 +1537,7 @@ export interface InvoiceRecalculation {
  */
 export interface InvoiceRecalculationParams {
     /**
-     * Is `false` if omitted. Set `true` by default. Set `false` for two-step recalculation and commit it within 30 seconds
+     * Is `false` if omitted. Set `true` to turn off two-step recalculation. Set `false` for two-step recalculation and commit it within 30 seconds
      * @type {boolean}
      * @memberof InvoiceRecalculationParams
      */
@@ -1594,6 +1732,19 @@ export interface InvoiceTransaction {
      * @memberof InvoiceTransaction
      */
     risk?: Risk;
+}
+/**
+ * 
+ * @export
+ * @interface InvoicesConfig
+ */
+export interface InvoicesConfig {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof InvoicesConfig
+     */
+    enabled: boolean;
 }
 /**
  * 
@@ -3135,6 +3286,106 @@ export class CoinWithdrawals extends BaseAPI {
      */
     public retrieveByCustomId(customId: string, options?: any) {
         return CoinWithdrawalsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * Coins - axios parameter creator
+ * @export
+ */
+export const CoinsAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary List supported coins
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/coins`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication HMAC required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * Coins - functional programming interface
+ * @export
+ */
+export const CoinsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CoinsAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary List supported coins
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async list(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CoinListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * Coins - factory interface
+ * @export
+ */
+export const CoinsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CoinsFp(configuration)
+    return {
+        /**
+         * 
+         * @summary List supported coins
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list(options?: any): AxiosPromise<CoinListResult> {
+            return localVarFp.list(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Coins - object-oriented interface
+ * @export
+ * @class Coins
+ * @extends {BaseAPI}
+ */
+export class Coins extends BaseAPI {
+    /**
+     * 
+     * @summary List supported coins
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Coins
+     */
+    public list(options?: any) {
+        return CoinsFp(this.configuration).list(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

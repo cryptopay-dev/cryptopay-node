@@ -939,10 +939,35 @@ export interface Customer {
     currency: string;
     /**
      * The list of refund addresses where Cryptopay will refund High-Risk transactions to
-     * @type {{ [key: string]: string; }}
+     * @type {Array<CustomerAddress>}
      * @memberof Customer
      */
-    refund_addresses: { [key: string]: string; };
+    addresses: Array<CustomerAddress>;
+}
+/**
+ * 
+ * @export
+ * @interface CustomerAddress
+ */
+export interface CustomerAddress {
+    /**
+     * Cryptocurrency address
+     * @type {string}
+     * @memberof CustomerAddress
+     */
+    address: string;
+    /**
+     * Cryptocurrency name
+     * @type {string}
+     * @memberof CustomerAddress
+     */
+    currency: string;
+    /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof CustomerAddress
+     */
+    network: string;
 }
 /**
  * 
@@ -982,11 +1007,11 @@ export interface CustomerParams {
      */
     currency: string;
     /**
-     * This object allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
-     * @type {{ [key: string]: string; }}
+     * This array allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
+     * @type {Array<CustomerAddress>}
      * @memberof CustomerParams
      */
-    refund_addresses?: { [key: string]: string; };
+    addresses?: Array<CustomerAddress>;
 }
 /**
  * 
@@ -1014,11 +1039,11 @@ export interface CustomerUpdateParams {
      */
     currency?: string;
     /**
-     * This object allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
-     * @type {{ [key: string]: string; }}
+     * This array allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
+     * @type {Array<CustomerAddress>}
      * @memberof CustomerUpdateParams
      */
-    refund_addresses?: { [key: string]: string; };
+    addresses?: Array<CustomerAddress>;
 }
 /**
  * Exchange details

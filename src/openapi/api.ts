@@ -75,7 +75,7 @@ export interface AccountListResult {
  * @type Callback
  * @export
  */
-export type Callback = ChannelPaymentCallback | CoinWithdrawalCallback | InvoiceCallback;
+export type Callback = ChannelPaymentCallback | CoinWithdrawalCallback | InvoiceCallback | SubscriptionCallback;
 
 /**
  * 
@@ -1207,6 +1207,12 @@ export interface Invoice {
     customer_id: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof Invoice
+     */
+    subscription_id: string | null;
+    /**
+     * 
      * @type {InvoiceStatus}
      * @memberof Invoice
      */
@@ -1469,6 +1475,12 @@ export interface InvoiceParams {
      * @memberof InvoiceParams
      */
     unsuccess_redirect_url?: string;
+    /**
+     * Email of payer
+     * @type {string}
+     * @memberof InvoiceParams
+     */
+    payer_email?: string;
 }
 /**
  * 
@@ -1981,6 +1993,304 @@ export interface RiskResult {
 export enum RiskType {
     SourceOfFunds = 'source_of_funds',
     DestinationOfFunds = 'destination_of_funds'
+}
+
+/**
+ * 
+ * @export
+ * @interface Subscription
+ */
+export interface Subscription {
+    /**
+     * Subscription ID
+     * @type {string}
+     * @memberof Subscription
+     */
+    id: string;
+    /**
+     * 
+     * @type {SubscriptionStatus}
+     * @memberof Subscription
+     */
+    status: SubscriptionStatus;
+    /**
+     * Subscription reference ID in your system
+     * @type {string}
+     * @memberof Subscription
+     */
+    custom_id: string | null;
+    /**
+     * Subscription name
+     * @type {string}
+     * @memberof Subscription
+     */
+    name: string;
+    /**
+     * Subscription amount
+     * @type {number}
+     * @memberof Subscription
+     */
+    amount: number;
+    /**
+     * Subscription amount currency
+     * @type {string}
+     * @memberof Subscription
+     */
+    currency: string;
+    /**
+     * 
+     * @type {SubscriptionPeriod}
+     * @memberof Subscription
+     */
+    period: SubscriptionPeriod;
+    /**
+     * 
+     * @type {number}
+     * @memberof Subscription
+     */
+    period_quantity: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    current_period_starts_at: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    current_period_ends_at: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Subscription
+     */
+    current_period_paid: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    payer_email: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    payer_name: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    product_name: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    product_description: string | null;
+    /**
+     * The URL that the customer will be redirected to upon transaction confirmation
+     * @type {string}
+     * @memberof Subscription
+     */
+    success_redirect_url: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    unsuccess_redirect_url: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    created_at: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Subscription
+     */
+    cancelled_at: string | null;
+}
+/**
+ * 
+ * @export
+ * @interface SubscriptionCallback
+ */
+export interface SubscriptionCallback {
+    /**
+     * 
+     * @type {string}
+     * @memberof SubscriptionCallback
+     */
+    type: string;
+    /**
+     * 
+     * @type {SubscriptionCallbackEvent}
+     * @memberof SubscriptionCallback
+     */
+    event: SubscriptionCallbackEvent;
+    /**
+     * 
+     * @type {Subscription}
+     * @memberof SubscriptionCallback
+     */
+    data: Subscription;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export enum SubscriptionCallbackEvent {
+    Paid = 'paid',
+    Cancelled = 'cancelled'
+}
+
+/**
+ * 
+ * @export
+ * @interface SubscriptionListResult
+ */
+export interface SubscriptionListResult {
+    /**
+     * 
+     * @type {Array<Subscription>}
+     * @memberof SubscriptionListResult
+     */
+    data: Array<Subscription>;
+    /**
+     * 
+     * @type {Pagination}
+     * @memberof SubscriptionListResult
+     */
+    meta: Pagination;
+}
+/**
+ * 
+ * @export
+ * @interface SubscriptionParams
+ */
+export interface SubscriptionParams {
+    /**
+     * Subscription name
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    name: string;
+    /**
+     * Subscription amount
+     * @type {number}
+     * @memberof SubscriptionParams
+     */
+    amount: number;
+    /**
+     * Subscription amount currency
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    currency: string;
+    /**
+     * 
+     * @type {SubscriptionPeriod}
+     * @memberof SubscriptionParams
+     */
+    period: SubscriptionPeriod;
+    /**
+     * 
+     * @type {number}
+     * @memberof SubscriptionParams
+     */
+    period_quantity: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    starts_at: string;
+    /**
+     * Email of the payer
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    payer_email: string;
+    /**
+     * Name of the payer
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    payer_name?: string;
+    /**
+     * Subscription reference ID in your system
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    custom_id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    product_name?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    product_description?: string;
+    /**
+     * The URL that the customer will be redirected to upon transaction confirmation
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    success_redirect_url?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    unsuccess_redirect_url?: string;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export enum SubscriptionPeriod {
+    Day = 'day',
+    Week = 'week',
+    Month = 'month',
+    Year = 'year'
+}
+
+/**
+ * 
+ * @export
+ * @interface SubscriptionResult
+ */
+export interface SubscriptionResult {
+    /**
+     * 
+     * @type {Subscription}
+     * @memberof SubscriptionResult
+     */
+    data: Subscription;
+}
+/**
+ * Subscription status
+ * @export
+ * @enum {string}
+ */
+
+export enum SubscriptionStatus {
+    Active = 'active',
+    Cancelled = 'cancelled'
 }
 
 /**
@@ -4161,10 +4471,11 @@ export const InvoicesAxiosParamCreator = function (configuration?: Configuration
          * @summary List invoices
          * @param {string} [customerId] The internal ID of your customer that the transaction relates to
          * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {string} [subscriptionId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list: async (customerId?: string, startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+        list: async (customerId?: string, startingAfter?: string, subscriptionId?: string, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/api/invoices`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4185,6 +4496,10 @@ export const InvoicesAxiosParamCreator = function (configuration?: Configuration
 
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
+            }
+
+            if (subscriptionId !== undefined) {
+                localVarQueryParameter['subscription_id'] = subscriptionId;
             }
 
 
@@ -4368,11 +4683,12 @@ export const InvoicesFp = function(configuration?: Configuration) {
          * @summary List invoices
          * @param {string} [customerId] The internal ID of your customer that the transaction relates to
          * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {string} [subscriptionId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async list(customerId?: string, startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceListResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.list(customerId, startingAfter, options);
+        async list(customerId?: string, startingAfter?: string, subscriptionId?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(customerId, startingAfter, subscriptionId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4466,11 +4782,12 @@ export const InvoicesFactory = function (configuration?: Configuration, basePath
          * @summary List invoices
          * @param {string} [customerId] The internal ID of your customer that the transaction relates to
          * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {string} [subscriptionId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list(customerId?: string, startingAfter?: string, options?: any): AxiosPromise<InvoiceListResult> {
-            return localVarFp.list(customerId, startingAfter, options).then((request) => request(axios, basePath));
+        list(customerId?: string, startingAfter?: string, subscriptionId?: string, options?: any): AxiosPromise<InvoiceListResult> {
+            return localVarFp.list(customerId, startingAfter, subscriptionId, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve a list of a particular invoice refunds.
@@ -4568,12 +4885,13 @@ export class Invoices extends BaseAPI {
      * @summary List invoices
      * @param {string} [customerId] The internal ID of your customer that the transaction relates to
      * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {string} [subscriptionId] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof Invoices
      */
-    public list(customerId?: string, startingAfter?: string, options?: any) {
-        return InvoicesFp(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    public list(customerId?: string, startingAfter?: string, subscriptionId?: string, options?: any) {
+        return InvoicesFp(this.configuration).list(customerId, startingAfter, subscriptionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4895,6 +5213,392 @@ export class Risks extends BaseAPI {
      */
     public score(riskParams: RiskParams, options?: any) {
         return RisksFp(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * Subscriptions - axios parameter creator
+ * @export
+ */
+export const SubscriptionsAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Cancel a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancel: async (subscriptionId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'subscriptionId' is not null or undefined
+            assertParamExists('cancel', 'subscriptionId', subscriptionId)
+            const localVarPath = `/api/subscriptions/{subscription_id}/cancel`
+                .replace(`{${"subscription_id"}}`, encodeURIComponent(String(subscriptionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication HMAC required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Create a subscription
+         * @param {SubscriptionParams} subscriptionParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        create: async (subscriptionParams: SubscriptionParams, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'subscriptionParams' is not null or undefined
+            assertParamExists('create', 'subscriptionParams', subscriptionParams)
+            const localVarPath = `/api/subscriptions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication HMAC required
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(subscriptionParams, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary List subscriptions
+         * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list: async (startingAfter?: string, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/api/subscriptions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication HMAC required
+
+            if (startingAfter !== undefined) {
+                localVarQueryParameter['starting_after'] = startingAfter;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Retrieve a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieve: async (subscriptionId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'subscriptionId' is not null or undefined
+            assertParamExists('retrieve', 'subscriptionId', subscriptionId)
+            const localVarPath = `/api/subscriptions/{subscription_id}`
+                .replace(`{${"subscription_id"}}`, encodeURIComponent(String(subscriptionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication HMAC required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Retrieve a subscription by custom_id
+         * @param {string} customId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveByCustomId: async (customId: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'customId' is not null or undefined
+            assertParamExists('retrieveByCustomId', 'customId', customId)
+            const localVarPath = `/api/subscriptions/custom_id/{custom_id}`
+                .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication HMAC required
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * Subscriptions - functional programming interface
+ * @export
+ */
+export const SubscriptionsFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SubscriptionsAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Cancel a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async cancel(subscriptionId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.cancel(subscriptionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Create a subscription
+         * @param {SubscriptionParams} subscriptionParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async create(subscriptionParams: SubscriptionParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.create(subscriptionParams, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary List subscriptions
+         * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async list(startingAfter?: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionListResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.list(startingAfter, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Retrieve a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieve(subscriptionId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieve(subscriptionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Retrieve a subscription by custom_id
+         * @param {string} customId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SubscriptionResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.retrieveByCustomId(customId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * Subscriptions - factory interface
+ * @export
+ */
+export const SubscriptionsFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SubscriptionsFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Cancel a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cancel(subscriptionId: string, options?: any): AxiosPromise<SubscriptionResult> {
+            return localVarFp.cancel(subscriptionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Create a subscription
+         * @param {SubscriptionParams} subscriptionParams 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        create(subscriptionParams: SubscriptionParams, options?: any): AxiosPromise<SubscriptionResult> {
+            return localVarFp.create(subscriptionParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary List subscriptions
+         * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list(startingAfter?: string, options?: any): AxiosPromise<SubscriptionListResult> {
+            return localVarFp.list(startingAfter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Retrieve a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieve(subscriptionId: string, options?: any): AxiosPromise<SubscriptionResult> {
+            return localVarFp.retrieve(subscriptionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Retrieve a subscription by custom_id
+         * @param {string} customId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveByCustomId(customId: string, options?: any): AxiosPromise<SubscriptionResult> {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Subscriptions - object-oriented interface
+ * @export
+ * @class Subscriptions
+ * @extends {BaseAPI}
+ */
+export class Subscriptions extends BaseAPI {
+    /**
+     * 
+     * @summary Cancel a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    public cancel(subscriptionId: string, options?: any) {
+        return SubscriptionsFp(this.configuration).cancel(subscriptionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Create a subscription
+     * @param {SubscriptionParams} subscriptionParams 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    public create(subscriptionParams: SubscriptionParams, options?: any) {
+        return SubscriptionsFp(this.configuration).create(subscriptionParams, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary List subscriptions
+     * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    public list(startingAfter?: string, options?: any) {
+        return SubscriptionsFp(this.configuration).list(startingAfter, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Retrieve a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    public retrieve(subscriptionId: string, options?: any) {
+        return SubscriptionsFp(this.configuration).retrieve(subscriptionId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Retrieve a subscription by custom_id
+     * @param {string} customId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    public retrieveByCustomId(customId: string, options?: any) {
+        return SubscriptionsFp(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

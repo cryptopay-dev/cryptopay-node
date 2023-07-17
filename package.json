@@ -1,6 +1,6 @@
 {
   "name": "cryptopay-node",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Cryptopay is a payment gateway and business wallet that allows merchants to automate the processes of accepting cryptocurrency payments and payouts from their customers, as well as making currency exchange transactions and receiving data on the transaction history and account balance statuses for reporting.",
   "main": "dist/index.js",
   "files": [

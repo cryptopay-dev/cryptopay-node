@@ -74,7 +74,6 @@ export declare class Cryptopay {
      * ```
      */
     rates: ReturnType<typeof openapi.RatesFactory>;
-    risks: ReturnType<typeof openapi.RisksFactory>;
     transactions: ReturnType<typeof openapi.TransactionsFactory>;
     readonly url: string;
     constructor(apiSecret: string, apiKey: string, callbackSecret: string, url?: string);

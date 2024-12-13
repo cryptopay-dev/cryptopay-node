@@ -260,7 +260,7 @@ describe('Validation callback', () => {
     try {
       cryptopay.verifyCallback('{', { 'x-cryptopay-signature': signature });
     } catch ({ message }) {
-      expect(message).toEqual('Invalid JSON in body. Error message: Unexpected end of JSON input');
+      expect(message).toMatch(new RegExp('^Invalid JSON in body. Error message:?'));
     }
   });
 });

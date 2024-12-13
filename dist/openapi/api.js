@@ -25,14 +25,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TransactionsAxiosParamCreator = exports.Risks = exports.RisksFactory = exports.RisksFp = exports.RisksAxiosParamCreator = exports.Rates = exports.RatesFactory = exports.RatesFp = exports.RatesAxiosParamCreator = exports.Invoices = exports.InvoicesFactory = exports.InvoicesFp = exports.InvoicesAxiosParamCreator = exports.ExchangeTransfers = exports.ExchangeTransfersFactory = exports.ExchangeTransfersFp = exports.ExchangeTransfersAxiosParamCreator = exports.Customers = exports.CustomersFactory = exports.CustomersFp = exports.CustomersAxiosParamCreator = exports.Coins = exports.CoinsFactory = exports.CoinsFp = exports.CoinsAxiosParamCreator = exports.CoinWithdrawals = exports.CoinWithdrawalsFactory = exports.CoinWithdrawalsFp = exports.CoinWithdrawalsAxiosParamCreator = exports.Channels = exports.ChannelsFactory = exports.ChannelsFp = exports.ChannelsAxiosParamCreator = exports.Accounts = exports.AccountsFactory = exports.AccountsFp = exports.AccountsAxiosParamCreator = exports.TransactionReferenceType = exports.RiskType = exports.RiskLevel = exports.NetworkFeeLevel = exports.InvoiceStatusContext = exports.InvoiceStatus = exports.InvoiceCallbackEvent = exports.CoinWithdrawalStatus = exports.CoinWithdrawalCallbackEvent = exports.ChannelStatus = exports.ChannelPaymentStatusContext = exports.ChannelPaymentStatus = exports.ChannelPaymentCallbackEvent = void 0;
-exports.Transactions = exports.TransactionsFactory = exports.TransactionsFp = void 0;
+exports.SubscriptionsFp = exports.SubscriptionsAxiosParamCreator = exports.Rates = exports.RatesFactory = exports.RatesFp = exports.RatesAxiosParamCreator = exports.Invoices = exports.InvoicesFactory = exports.InvoicesFp = exports.InvoicesAxiosParamCreator = exports.ExchangeTransfers = exports.ExchangeTransfersFactory = exports.ExchangeTransfersFp = exports.ExchangeTransfersAxiosParamCreator = exports.Customers = exports.CustomersFactory = exports.CustomersFp = exports.CustomersAxiosParamCreator = exports.Coins = exports.CoinsFactory = exports.CoinsFp = exports.CoinsAxiosParamCreator = exports.CoinWithdrawals = exports.CoinWithdrawalsFactory = exports.CoinWithdrawalsFp = exports.CoinWithdrawalsAxiosParamCreator = exports.Channels = exports.ChannelsFactory = exports.ChannelsFp = exports.ChannelsAxiosParamCreator = exports.Accounts = exports.AccountsFactory = exports.AccountsFp = exports.AccountsAxiosParamCreator = exports.TransactionReferenceType = exports.SubscriptionStatus = exports.SubscriptionPeriod = exports.SubscriptionCallbackEvent = exports.RiskLevel = exports.NetworkFeeLevel = exports.InvoiceStatusContext = exports.InvoiceStatus = exports.InvoiceCallbackEvent = exports.CoinWithdrawalStatus = exports.CoinWithdrawalCallbackEvent = exports.ChannelStatus = exports.ChannelPaymentStatusContext = exports.ChannelPaymentStatus = exports.ChannelPaymentCallbackEvent = exports.BeneficiaryType = void 0;
+exports.Transactions = exports.TransactionsFactory = exports.TransactionsFp = exports.TransactionsAxiosParamCreator = exports.Subscriptions = exports.SubscriptionsFactory = void 0;
 const axios_1 = __importDefault(require("axios"));
 // Some imports not used depending on template conditions
 // @ts-ignore
 const common_1 = require("./common");
 // @ts-ignore
 const base_1 = require("./base");
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+var BeneficiaryType;
+(function (BeneficiaryType) {
+    BeneficiaryType["NaturalPerson"] = "natural_person";
+    BeneficiaryType["LegalPerson"] = "legal_person";
+})(BeneficiaryType = exports.BeneficiaryType || (exports.BeneficiaryType = {}));
 /**
  *
  * @export
@@ -167,15 +177,37 @@ var RiskLevel;
     RiskLevel["High"] = "high";
 })(RiskLevel = exports.RiskLevel || (exports.RiskLevel = {}));
 /**
- * Risk analysis type
+ *
  * @export
  * @enum {string}
  */
-var RiskType;
-(function (RiskType) {
-    RiskType["SourceOfFunds"] = "source_of_funds";
-    RiskType["DestinationOfFunds"] = "destination_of_funds";
-})(RiskType = exports.RiskType || (exports.RiskType = {}));
+var SubscriptionCallbackEvent;
+(function (SubscriptionCallbackEvent) {
+    SubscriptionCallbackEvent["Paid"] = "paid";
+    SubscriptionCallbackEvent["Cancelled"] = "cancelled";
+})(SubscriptionCallbackEvent = exports.SubscriptionCallbackEvent || (exports.SubscriptionCallbackEvent = {}));
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+var SubscriptionPeriod;
+(function (SubscriptionPeriod) {
+    SubscriptionPeriod["Day"] = "day";
+    SubscriptionPeriod["Week"] = "week";
+    SubscriptionPeriod["Month"] = "month";
+    SubscriptionPeriod["Year"] = "year";
+})(SubscriptionPeriod = exports.SubscriptionPeriod || (exports.SubscriptionPeriod = {}));
+/**
+ * Subscription status
+ * @export
+ * @enum {string}
+ */
+var SubscriptionStatus;
+(function (SubscriptionStatus) {
+    SubscriptionStatus["Active"] = "active";
+    SubscriptionStatus["Cancelled"] = "cancelled";
+})(SubscriptionStatus = exports.SubscriptionStatus || (exports.SubscriptionStatus = {}));
 /**
  *
  * @export
@@ -912,7 +944,7 @@ const CoinWithdrawalsAxiosParamCreator = function (configuration) {
             };
         }),
         /**
-         *
+         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams
          * @param {*} [options] Override http request option.
@@ -1090,7 +1122,7 @@ const CoinWithdrawalsFp = function (configuration) {
             });
         },
         /**
-         *
+         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams
          * @param {*} [options] Override http request option.
@@ -1176,7 +1208,7 @@ const CoinWithdrawalsFactory = function (configuration, basePath, axios) {
             return localVarFp.commit(coinWithdrawalId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams
          * @param {*} [options] Override http request option.
@@ -1248,7 +1280,7 @@ class CoinWithdrawals extends base_1.BaseAPI {
         return (0, exports.CoinWithdrawalsFp)(this.configuration).commit(coinWithdrawalId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     *
+     * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
      * @summary Create a withdrawal
      * @param {CoinWithdrawalParams} coinWithdrawalParams
      * @param {*} [options] Override http request option.
@@ -2080,10 +2112,11 @@ const InvoicesAxiosParamCreator = function (configuration) {
          * @summary List invoices
          * @param {string} [customerId] The internal ID of your customer that the transaction relates to
          * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {string} [subscriptionId]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list: (customerId, startingAfter, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        list: (customerId, startingAfter, subscriptionId, options = {}) => __awaiter(this, void 0, void 0, function* () {
             const localVarPath = `/api/invoices`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2100,6 +2133,9 @@ const InvoicesAxiosParamCreator = function (configuration) {
             }
             if (startingAfter !== undefined) {
                 localVarQueryParameter['starting_after'] = startingAfter;
+            }
+            if (subscriptionId !== undefined) {
+                localVarQueryParameter['subscription_id'] = subscriptionId;
             }
             (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2269,12 +2305,13 @@ const InvoicesFp = function (configuration) {
          * @summary List invoices
          * @param {string} [customerId] The internal ID of your customer that the transaction relates to
          * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {string} [subscriptionId]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list(customerId, startingAfter, options) {
+        list(customerId, startingAfter, subscriptionId, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.list(customerId, startingAfter, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.list(customerId, startingAfter, subscriptionId, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -2375,11 +2412,12 @@ const InvoicesFactory = function (configuration, basePath, axios) {
          * @summary List invoices
          * @param {string} [customerId] The internal ID of your customer that the transaction relates to
          * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {string} [subscriptionId]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        list(customerId, startingAfter, options) {
-            return localVarFp.list(customerId, startingAfter, options).then((request) => request(axios, basePath));
+        list(customerId, startingAfter, subscriptionId, options) {
+            return localVarFp.list(customerId, startingAfter, subscriptionId, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve a list of a particular invoice refunds.
@@ -2473,12 +2511,13 @@ class Invoices extends base_1.BaseAPI {
      * @summary List invoices
      * @param {string} [customerId] The internal ID of your customer that the transaction relates to
      * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {string} [subscriptionId]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof Invoices
      */
-    list(customerId, startingAfter, options) {
-        return (0, exports.InvoicesFp)(this.configuration).list(customerId, startingAfter, options).then((request) => request(this.axios, this.basePath));
+    list(customerId, startingAfter, subscriptionId, options) {
+        return (0, exports.InvoicesFp)(this.configuration).list(customerId, startingAfter, subscriptionId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * This endpoint allows you to retrieve a list of a particular invoice refunds.
@@ -2682,22 +2721,52 @@ class Rates extends base_1.BaseAPI {
 }
 exports.Rates = Rates;
 /**
- * Risks - axios parameter creator
+ * Subscriptions - axios parameter creator
  * @export
  */
-const RisksAxiosParamCreator = function (configuration) {
+const SubscriptionsAxiosParamCreator = function (configuration) {
     return {
         /**
          *
-         * @summary Score a coin address
-         * @param {RiskParams} riskParams
+         * @summary Cancel a subscription
+         * @param {string} subscriptionId Subscription ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        score: (riskParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'riskParams' is not null or undefined
-            (0, common_1.assertParamExists)('score', 'riskParams', riskParams);
-            const localVarPath = `/api/risks/score`;
+        cancel: (subscriptionId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'subscriptionId' is not null or undefined
+            (0, common_1.assertParamExists)('cancel', 'subscriptionId', subscriptionId);
+            const localVarPath = `/api/subscriptions/{subscription_id}/cancel`
+                .replace(`{${"subscription_id"}}`, encodeURIComponent(String(subscriptionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication HMAC required
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary Create a subscription
+         * @param {SubscriptionParams} subscriptionParams
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        create: (subscriptionParams, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'subscriptionParams' is not null or undefined
+            (0, common_1.assertParamExists)('create', 'subscriptionParams', subscriptionParams);
+            const localVarPath = `/api/subscriptions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
             let baseOptions;
@@ -2712,7 +2781,97 @@ const RisksAxiosParamCreator = function (configuration) {
             (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(riskParams, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(subscriptionParams, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary List subscriptions
+         * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list: (startingAfter, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/api/subscriptions`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication HMAC required
+            if (startingAfter !== undefined) {
+                localVarQueryParameter['starting_after'] = startingAfter;
+            }
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary Retrieve a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieve: (subscriptionId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'subscriptionId' is not null or undefined
+            (0, common_1.assertParamExists)('retrieve', 'subscriptionId', subscriptionId);
+            const localVarPath = `/api/subscriptions/{subscription_id}`
+                .replace(`{${"subscription_id"}}`, encodeURIComponent(String(subscriptionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication HMAC required
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary Retrieve a subscription by custom_id
+         * @param {string} customId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveByCustomId: (customId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'customId' is not null or undefined
+            (0, common_1.assertParamExists)('retrieveByCustomId', 'customId', customId);
+            const localVarPath = `/api/subscriptions/custom_id/{custom_id}`
+                .replace(`{${"custom_id"}}`, encodeURIComponent(String(customId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication HMAC required
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter, options.query);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
                 url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -2720,70 +2879,206 @@ const RisksAxiosParamCreator = function (configuration) {
         }),
     };
 };
-exports.RisksAxiosParamCreator = RisksAxiosParamCreator;
+exports.SubscriptionsAxiosParamCreator = SubscriptionsAxiosParamCreator;
 /**
- * Risks - functional programming interface
+ * Subscriptions - functional programming interface
  * @export
  */
-const RisksFp = function (configuration) {
-    const localVarAxiosParamCreator = (0, exports.RisksAxiosParamCreator)(configuration);
+const SubscriptionsFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.SubscriptionsAxiosParamCreator)(configuration);
     return {
         /**
          *
-         * @summary Score a coin address
-         * @param {RiskParams} riskParams
+         * @summary Cancel a subscription
+         * @param {string} subscriptionId Subscription ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        score(riskParams, options) {
+        cancel(subscriptionId, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.score(riskParams, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.cancel(subscriptionId, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary Create a subscription
+         * @param {SubscriptionParams} subscriptionParams
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        create(subscriptionParams, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.create(subscriptionParams, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary List subscriptions
+         * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list(startingAfter, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.list(startingAfter, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary Retrieve a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieve(subscriptionId, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieve(subscriptionId, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary Retrieve a subscription by custom_id
+         * @param {string} customId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveByCustomId(customId, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.retrieveByCustomId(customId, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
     };
 };
-exports.RisksFp = RisksFp;
+exports.SubscriptionsFp = SubscriptionsFp;
 /**
- * Risks - factory interface
+ * Subscriptions - factory interface
  * @export
  */
-const RisksFactory = function (configuration, basePath, axios) {
-    const localVarFp = (0, exports.RisksFp)(configuration);
+const SubscriptionsFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.SubscriptionsFp)(configuration);
     return {
         /**
          *
-         * @summary Score a coin address
-         * @param {RiskParams} riskParams
+         * @summary Cancel a subscription
+         * @param {string} subscriptionId Subscription ID
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        score(riskParams, options) {
-            return localVarFp.score(riskParams, options).then((request) => request(axios, basePath));
+        cancel(subscriptionId, options) {
+            return localVarFp.cancel(subscriptionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Create a subscription
+         * @param {SubscriptionParams} subscriptionParams
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        create(subscriptionParams, options) {
+            return localVarFp.create(subscriptionParams, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary List subscriptions
+         * @param {string} [startingAfter] Pagination parameter. ID to start after
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        list(startingAfter, options) {
+            return localVarFp.list(startingAfter, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Retrieve a subscription
+         * @param {string} subscriptionId Subscription ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieve(subscriptionId, options) {
+            return localVarFp.retrieve(subscriptionId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Retrieve a subscription by custom_id
+         * @param {string} customId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        retrieveByCustomId(customId, options) {
+            return localVarFp.retrieveByCustomId(customId, options).then((request) => request(axios, basePath));
         },
     };
 };
-exports.RisksFactory = RisksFactory;
+exports.SubscriptionsFactory = SubscriptionsFactory;
 /**
- * Risks - object-oriented interface
+ * Subscriptions - object-oriented interface
  * @export
- * @class Risks
+ * @class Subscriptions
  * @extends {BaseAPI}
  */
-class Risks extends base_1.BaseAPI {
+class Subscriptions extends base_1.BaseAPI {
     /**
      *
-     * @summary Score a coin address
-     * @param {RiskParams} riskParams
+     * @summary Cancel a subscription
+     * @param {string} subscriptionId Subscription ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof Risks
+     * @memberof Subscriptions
      */
-    score(riskParams, options) {
-        return (0, exports.RisksFp)(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
+    cancel(subscriptionId, options) {
+        return (0, exports.SubscriptionsFp)(this.configuration).cancel(subscriptionId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Create a subscription
+     * @param {SubscriptionParams} subscriptionParams
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    create(subscriptionParams, options) {
+        return (0, exports.SubscriptionsFp)(this.configuration).create(subscriptionParams, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary List subscriptions
+     * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    list(startingAfter, options) {
+        return (0, exports.SubscriptionsFp)(this.configuration).list(startingAfter, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Retrieve a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    retrieve(subscriptionId, options) {
+        return (0, exports.SubscriptionsFp)(this.configuration).retrieve(subscriptionId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Retrieve a subscription by custom_id
+     * @param {string} customId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    retrieveByCustomId(customId, options) {
+        return (0, exports.SubscriptionsFp)(this.configuration).retrieveByCustomId(customId, options).then((request) => request(this.axios, this.basePath));
     }
 }
-exports.Risks = Risks;
+exports.Subscriptions = Subscriptions;
 /**
  * Transactions - axios parameter creator
  * @export

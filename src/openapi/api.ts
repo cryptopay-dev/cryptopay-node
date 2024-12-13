@@ -72,6 +72,79 @@ export interface AccountListResult {
     meta: Pagination;
 }
 /**
+ * Beneficiary information.
+ * @export
+ * @interface Beneficiary
+ */
+export interface Beneficiary {
+    /**
+     * 
+     * @type {BeneficiaryType}
+     * @memberof Beneficiary
+     */
+    type: BeneficiaryType;
+    /**
+     * The registered name of the company for a `legal_person` or the full name for a `natural_person`.
+     * @type {string}
+     * @memberof Beneficiary
+     */
+    name: string;
+    /**
+     * 
+     * @type {BeneficiaryAddress}
+     * @memberof Beneficiary
+     */
+    address: BeneficiaryAddress;
+}
+/**
+ * 
+ * @export
+ * @interface BeneficiaryAddress
+ */
+export interface BeneficiaryAddress {
+    /**
+     * The 2-letter ISO country code of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    country: string;
+    /**
+     * The city of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    city?: string;
+    /**
+     * First line of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    line_1?: string;
+    /**
+     * Second line of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    line_2?: string;
+    /**
+     * Postal code of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    post_code?: string;
+}
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export enum BeneficiaryType {
+    NaturalPerson = 'natural_person',
+    LegalPerson = 'legal_person'
+}
+
+/**
  * @type Callback
  * @export
  */
@@ -834,19 +907,19 @@ export interface CoinWithdrawalParams {
      */
     network?: string;
     /**
-     * All applicable fees will be deducted from this amount before processing a transaction instead of adding them on top it
+     * The exact amount to debit from your account in `charged_currency`. All applicable fees will be deducted from this amount before processing a transaction instead of adding them on top it.
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
     charged_amount?: number | null;
     /**
-     * An exact transaction amount to send. All applicable fees will be added on top of this amount and debited from your account
+     * The exact transaction amount to send in `charged_currency`. All applicable fees will be added on top of this amount and debited from your account.
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
     charged_amount_to_send?: number | null;
     /**
-     * An exact transaction amount to send. All applicable fees will be added on top of this amount and debited from your account. Use this parameter if you want to send a transaction from cryptocurrency accounts only
+     * The exact transaction amount to send in `received_currency`. All applicable fees will be added on top of this amount and debited from your account.
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
@@ -875,6 +948,18 @@ export interface CoinWithdrawalParams {
      * @memberof CoinWithdrawalParams
      */
     force_commit?: boolean;
+    /**
+     * Is `false` if omitted. Set `true` to turn on beneficiary data validations
+     * @type {boolean}
+     * @memberof CoinWithdrawalParams
+     */
+    travel_rule_compliant?: boolean;
+    /**
+     * 
+     * @type {Beneficiary}
+     * @memberof CoinWithdrawalParams
+     */
+    beneficiary?: Beneficiary;
 }
 /**
  * 
@@ -1944,55 +2029,6 @@ export enum RiskLevel {
     Low = 'low',
     Medium = 'medium',
     High = 'high'
-}
-
-/**
- * 
- * @export
- * @interface RiskParams
- */
-export interface RiskParams {
-    /**
-     * Cryptocurrency address
-     * @type {string}
-     * @memberof RiskParams
-     */
-    address: string;
-    /**
-     * Cryptocurrency symbol
-     * @type {string}
-     * @memberof RiskParams
-     */
-    currency: string;
-    /**
-     * 
-     * @type {RiskType}
-     * @memberof RiskParams
-     */
-    type: RiskType;
-}
-/**
- * 
- * @export
- * @interface RiskResult
- */
-export interface RiskResult {
-    /**
-     * 
-     * @type {Risk}
-     * @memberof RiskResult
-     */
-    data: Risk;
-}
-/**
- * Risk analysis type
- * @export
- * @enum {string}
- */
-
-export enum RiskType {
-    SourceOfFunds = 'source_of_funds',
-    DestinationOfFunds = 'destination_of_funds'
 }
 
 /**
@@ -3204,7 +3240,7 @@ export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * 
+         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams 
          * @param {*} [options] Override http request option.
@@ -3414,7 +3450,7 @@ export const CoinWithdrawalsFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
+         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams 
          * @param {*} [options] Override http request option.
@@ -3490,7 +3526,7 @@ export const CoinWithdrawalsFactory = function (configuration?: Configuration, b
             return localVarFp.commit(coinWithdrawalId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams 
          * @param {*} [options] Override http request option.
@@ -3563,7 +3599,7 @@ export class CoinWithdrawals extends BaseAPI {
     }
 
     /**
-     * 
+     * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
      * @summary Create a withdrawal
      * @param {CoinWithdrawalParams} coinWithdrawalParams 
      * @param {*} [options] Override http request option.
@@ -5104,115 +5140,6 @@ export class Rates extends BaseAPI {
      */
     public retrieve(baseCurrency: string, quoteCurrency: string, options?: any) {
         return RatesFp(this.configuration).retrieve(baseCurrency, quoteCurrency, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-/**
- * Risks - axios parameter creator
- * @export
- */
-export const RisksAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary Score a coin address
-         * @param {RiskParams} riskParams 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        score: async (riskParams: RiskParams, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'riskParams' is not null or undefined
-            assertParamExists('score', 'riskParams', riskParams)
-            const localVarPath = `/api/risks/score`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication HMAC required
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(riskParams, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * Risks - functional programming interface
- * @export
- */
-export const RisksFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = RisksAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @summary Score a coin address
-         * @param {RiskParams} riskParams 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async score(riskParams: RiskParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RiskResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.score(riskParams, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * Risks - factory interface
- * @export
- */
-export const RisksFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = RisksFp(configuration)
-    return {
-        /**
-         * 
-         * @summary Score a coin address
-         * @param {RiskParams} riskParams 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        score(riskParams: RiskParams, options?: any): AxiosPromise<RiskResult> {
-            return localVarFp.score(riskParams, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Risks - object-oriented interface
- * @export
- * @class Risks
- * @extends {BaseAPI}
- */
-export class Risks extends BaseAPI {
-    /**
-     * 
-     * @summary Score a coin address
-     * @param {RiskParams} riskParams 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof Risks
-     */
-    public score(riskParams: RiskParams, options?: any) {
-        return RisksFp(this.configuration).score(riskParams, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

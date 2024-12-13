@@ -63,10 +63,81 @@ export interface AccountListResult {
     meta: Pagination;
 }
 /**
+ * Beneficiary information.
+ * @export
+ * @interface Beneficiary
+ */
+export interface Beneficiary {
+    /**
+     *
+     * @type {BeneficiaryType}
+     * @memberof Beneficiary
+     */
+    type: BeneficiaryType;
+    /**
+     * The registered name of the company for a `legal_person` or the full name for a `natural_person`.
+     * @type {string}
+     * @memberof Beneficiary
+     */
+    name: string;
+    /**
+     *
+     * @type {BeneficiaryAddress}
+     * @memberof Beneficiary
+     */
+    address: BeneficiaryAddress;
+}
+/**
+ *
+ * @export
+ * @interface BeneficiaryAddress
+ */
+export interface BeneficiaryAddress {
+    /**
+     * The 2-letter ISO country code of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    country: string;
+    /**
+     * The city of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    city?: string;
+    /**
+     * First line of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    line_1?: string;
+    /**
+     * Second line of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    line_2?: string;
+    /**
+     * Postal code of the address.
+     * @type {string}
+     * @memberof BeneficiaryAddress
+     */
+    post_code?: string;
+}
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare enum BeneficiaryType {
+    NaturalPerson = "natural_person",
+    LegalPerson = "legal_person"
+}
+/**
  * @type Callback
  * @export
  */
-export declare type Callback = ChannelPaymentCallback | CoinWithdrawalCallback | InvoiceCallback;
+export declare type Callback = ChannelPaymentCallback | CoinWithdrawalCallback | InvoiceCallback | SubscriptionCallback;
 /**
  *
  * @export
@@ -814,19 +885,19 @@ export interface CoinWithdrawalParams {
      */
     network?: string;
     /**
-     * All applicable fees will be deducted from this amount before processing a transaction instead of adding them on top it
+     * The exact amount to debit from your account in `charged_currency`. All applicable fees will be deducted from this amount before processing a transaction instead of adding them on top it.
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
     charged_amount?: number | null;
     /**
-     * An exact transaction amount to send. All applicable fees will be added on top of this amount and debited from your account
+     * The exact transaction amount to send in `charged_currency`. All applicable fees will be added on top of this amount and debited from your account.
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
     charged_amount_to_send?: number | null;
     /**
-     * An exact transaction amount to send. All applicable fees will be added on top of this amount and debited from your account. Use this parameter if you want to send a transaction from cryptocurrency accounts only
+     * The exact transaction amount to send in `received_currency`. All applicable fees will be added on top of this amount and debited from your account.
      * @type {number}
      * @memberof CoinWithdrawalParams
      */
@@ -855,6 +926,18 @@ export interface CoinWithdrawalParams {
      * @memberof CoinWithdrawalParams
      */
     force_commit?: boolean;
+    /**
+     * Is `false` if omitted. Set `true` to turn on beneficiary data validations
+     * @type {boolean}
+     * @memberof CoinWithdrawalParams
+     */
+    travel_rule_compliant?: boolean;
+    /**
+     *
+     * @type {Beneficiary}
+     * @memberof CoinWithdrawalParams
+     */
+    beneficiary?: Beneficiary;
 }
 /**
  *
@@ -917,12 +1000,35 @@ export interface Customer {
     currency: string;
     /**
      * The list of refund addresses where Cryptopay will refund High-Risk transactions to
-     * @type {{ [key: string]: string; }}
+     * @type {Array<CustomerAddress>}
      * @memberof Customer
      */
-    refund_addresses: {
-        [key: string]: string;
-    };
+    addresses: Array<CustomerAddress>;
+}
+/**
+ *
+ * @export
+ * @interface CustomerAddress
+ */
+export interface CustomerAddress {
+    /**
+     * Cryptocurrency address
+     * @type {string}
+     * @memberof CustomerAddress
+     */
+    address: string;
+    /**
+     * Cryptocurrency name
+     * @type {string}
+     * @memberof CustomerAddress
+     */
+    currency: string;
+    /**
+     * Cryptocurrency network
+     * @type {string}
+     * @memberof CustomerAddress
+     */
+    network: string;
 }
 /**
  *
@@ -962,13 +1068,11 @@ export interface CustomerParams {
      */
     currency: string;
     /**
-     * This object allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
-     * @type {{ [key: string]: string; }}
+     * This array allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
+     * @type {Array<CustomerAddress>}
      * @memberof CustomerParams
      */
-    refund_addresses?: {
-        [key: string]: string;
-    };
+    addresses?: Array<CustomerAddress>;
 }
 /**
  *
@@ -996,13 +1100,11 @@ export interface CustomerUpdateParams {
      */
     currency?: string;
     /**
-     * This object allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
-     * @type {{ [key: string]: string; }}
+     * This array allows you to specify 1 cryptocurrency address for each type of supported cryptocurrencies i.e. BTC, ETH, XRP, LTC and BCH. In case Cryptopay detects a High-Risk transaction, such transaction will not be processed. Instead, it will be sent to the address specified for respective cryptocurrency. If you do not specify any addresses here, High-Risk payments will be put on hold
+     * @type {Array<CustomerAddress>}
      * @memberof CustomerUpdateParams
      */
-    refund_addresses?: {
-        [key: string]: string;
-    };
+    addresses?: Array<CustomerAddress>;
 }
 /**
  * Exchange details
@@ -1164,6 +1266,12 @@ export interface Invoice {
      * @memberof Invoice
      */
     customer_id: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof Invoice
+     */
+    subscription_id: string | null;
     /**
      *
      * @type {InvoiceStatus}
@@ -1430,6 +1538,12 @@ export interface InvoiceParams {
      * @memberof InvoiceParams
      */
     unsuccess_redirect_url?: string;
+    /**
+     * Email of payer
+     * @type {string}
+     * @memberof InvoiceParams
+     */
+    payer_email?: string;
 }
 /**
  *
@@ -1892,49 +2006,294 @@ export declare enum RiskLevel {
 /**
  *
  * @export
- * @interface RiskParams
+ * @interface Subscription
  */
-export interface RiskParams {
+export interface Subscription {
     /**
-     * Cryptocurrency address
+     * Subscription ID
      * @type {string}
-     * @memberof RiskParams
+     * @memberof Subscription
      */
-    address: string;
+    id: string;
     /**
-     * Cryptocurrency symbol
+     *
+     * @type {SubscriptionStatus}
+     * @memberof Subscription
+     */
+    status: SubscriptionStatus;
+    /**
+     * Subscription reference ID in your system
      * @type {string}
-     * @memberof RiskParams
+     * @memberof Subscription
+     */
+    custom_id: string | null;
+    /**
+     * Subscription name
+     * @type {string}
+     * @memberof Subscription
+     */
+    name: string;
+    /**
+     * Subscription amount
+     * @type {number}
+     * @memberof Subscription
+     */
+    amount: number;
+    /**
+     * Subscription amount currency
+     * @type {string}
+     * @memberof Subscription
      */
     currency: string;
     /**
      *
-     * @type {RiskType}
-     * @memberof RiskParams
+     * @type {SubscriptionPeriod}
+     * @memberof Subscription
      */
-    type: RiskType;
+    period: SubscriptionPeriod;
+    /**
+     *
+     * @type {number}
+     * @memberof Subscription
+     */
+    period_quantity: number;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    current_period_starts_at: string;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    current_period_ends_at: string;
+    /**
+     *
+     * @type {boolean}
+     * @memberof Subscription
+     */
+    current_period_paid: boolean;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    payer_email: string;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    payer_name: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    product_name: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    product_description: string | null;
+    /**
+     * The URL that the customer will be redirected to upon transaction confirmation
+     * @type {string}
+     * @memberof Subscription
+     */
+    success_redirect_url: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    unsuccess_redirect_url: string | null;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    created_at: string;
+    /**
+     *
+     * @type {string}
+     * @memberof Subscription
+     */
+    cancelled_at: string | null;
 }
 /**
  *
  * @export
- * @interface RiskResult
+ * @interface SubscriptionCallback
  */
-export interface RiskResult {
+export interface SubscriptionCallback {
     /**
      *
-     * @type {Risk}
-     * @memberof RiskResult
+     * @type {string}
+     * @memberof SubscriptionCallback
      */
-    data: Risk;
+    type: string;
+    /**
+     *
+     * @type {SubscriptionCallbackEvent}
+     * @memberof SubscriptionCallback
+     */
+    event: SubscriptionCallbackEvent;
+    /**
+     *
+     * @type {Subscription}
+     * @memberof SubscriptionCallback
+     */
+    data: Subscription;
 }
 /**
- * Risk analysis type
+ *
  * @export
  * @enum {string}
  */
-export declare enum RiskType {
-    SourceOfFunds = "source_of_funds",
-    DestinationOfFunds = "destination_of_funds"
+export declare enum SubscriptionCallbackEvent {
+    Paid = "paid",
+    Cancelled = "cancelled"
+}
+/**
+ *
+ * @export
+ * @interface SubscriptionListResult
+ */
+export interface SubscriptionListResult {
+    /**
+     *
+     * @type {Array<Subscription>}
+     * @memberof SubscriptionListResult
+     */
+    data: Array<Subscription>;
+    /**
+     *
+     * @type {Pagination}
+     * @memberof SubscriptionListResult
+     */
+    meta: Pagination;
+}
+/**
+ *
+ * @export
+ * @interface SubscriptionParams
+ */
+export interface SubscriptionParams {
+    /**
+     * Subscription name
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    name: string;
+    /**
+     * Subscription amount
+     * @type {number}
+     * @memberof SubscriptionParams
+     */
+    amount: number;
+    /**
+     * Subscription amount currency
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    currency: string;
+    /**
+     *
+     * @type {SubscriptionPeriod}
+     * @memberof SubscriptionParams
+     */
+    period: SubscriptionPeriod;
+    /**
+     *
+     * @type {number}
+     * @memberof SubscriptionParams
+     */
+    period_quantity: number;
+    /**
+     *
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    starts_at: string;
+    /**
+     * Email of the payer
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    payer_email: string;
+    /**
+     * Name of the payer
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    payer_name?: string;
+    /**
+     * Subscription reference ID in your system
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    custom_id?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    product_name?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    product_description?: string;
+    /**
+     * The URL that the customer will be redirected to upon transaction confirmation
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    success_redirect_url?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof SubscriptionParams
+     */
+    unsuccess_redirect_url?: string;
+}
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare enum SubscriptionPeriod {
+    Day = "day",
+    Week = "week",
+    Month = "month",
+    Year = "year"
+}
+/**
+ *
+ * @export
+ * @interface SubscriptionResult
+ */
+export interface SubscriptionResult {
+    /**
+     *
+     * @type {Subscription}
+     * @memberof SubscriptionResult
+     */
+    data: Subscription;
+}
+/**
+ * Subscription status
+ * @export
+ * @enum {string}
+ */
+export declare enum SubscriptionStatus {
+    Active = "active",
+    Cancelled = "cancelled"
 }
 /**
  *
@@ -2447,7 +2806,7 @@ export declare const CoinWithdrawalsAxiosParamCreator: (configuration?: Configur
      */
     commit: (coinWithdrawalId: string, options?: any) => Promise<RequestArgs>;
     /**
-     *
+     * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
      * @summary Create a withdrawal
      * @param {CoinWithdrawalParams} coinWithdrawalParams
      * @param {*} [options] Override http request option.
@@ -2502,7 +2861,7 @@ export declare const CoinWithdrawalsFp: (configuration?: Configuration | undefin
      */
     commit(coinWithdrawalId: string, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<CoinWithdrawalResult>>;
     /**
-     *
+     * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
      * @summary Create a withdrawal
      * @param {CoinWithdrawalParams} coinWithdrawalParams
      * @param {*} [options] Override http request option.
@@ -2557,7 +2916,7 @@ export declare const CoinWithdrawalsFactory: (configuration?: Configuration | un
      */
     commit(coinWithdrawalId: string, options?: any): AxiosPromise<CoinWithdrawalResult>;
     /**
-     *
+     * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
      * @summary Create a withdrawal
      * @param {CoinWithdrawalParams} coinWithdrawalParams
      * @param {*} [options] Override http request option.
@@ -2615,7 +2974,7 @@ export declare class CoinWithdrawals extends BaseAPI {
      */
     commit(coinWithdrawalId: string, options?: any): Promise<import("axios").AxiosResponse<CoinWithdrawalResult>>;
     /**
-     *
+     * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
      * @summary Create a withdrawal
      * @param {CoinWithdrawalParams} coinWithdrawalParams
      * @param {*} [options] Override http request option.
@@ -3048,10 +3407,11 @@ export declare const InvoicesAxiosParamCreator: (configuration?: Configuration |
      * @summary List invoices
      * @param {string} [customerId] The internal ID of your customer that the transaction relates to
      * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {string} [subscriptionId]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    list: (customerId?: string | undefined, startingAfter?: string | undefined, options?: any) => Promise<RequestArgs>;
+    list: (customerId?: string | undefined, startingAfter?: string | undefined, subscriptionId?: string | undefined, options?: any) => Promise<RequestArgs>;
     /**
      * This endpoint allows you to retrieve a list of a particular invoice refunds.
      * @summary List invoice refunds
@@ -3122,10 +3482,11 @@ export declare const InvoicesFp: (configuration?: Configuration | undefined) => 
      * @summary List invoices
      * @param {string} [customerId] The internal ID of your customer that the transaction relates to
      * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {string} [subscriptionId]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    list(customerId?: string | undefined, startingAfter?: string | undefined, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<InvoiceListResult>>;
+    list(customerId?: string | undefined, startingAfter?: string | undefined, subscriptionId?: string | undefined, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<InvoiceListResult>>;
     /**
      * This endpoint allows you to retrieve a list of a particular invoice refunds.
      * @summary List invoice refunds
@@ -3196,10 +3557,11 @@ export declare const InvoicesFactory: (configuration?: Configuration | undefined
      * @summary List invoices
      * @param {string} [customerId] The internal ID of your customer that the transaction relates to
      * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {string} [subscriptionId]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    list(customerId?: string | undefined, startingAfter?: string | undefined, options?: any): AxiosPromise<InvoiceListResult>;
+    list(customerId?: string | undefined, startingAfter?: string | undefined, subscriptionId?: string | undefined, options?: any): AxiosPromise<InvoiceListResult>;
     /**
      * This endpoint allows you to retrieve a list of a particular invoice refunds.
      * @summary List invoice refunds
@@ -3276,11 +3638,12 @@ export declare class Invoices extends BaseAPI {
      * @summary List invoices
      * @param {string} [customerId] The internal ID of your customer that the transaction relates to
      * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {string} [subscriptionId]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof Invoices
      */
-    list(customerId?: string, startingAfter?: string, options?: any): Promise<import("axios").AxiosResponse<InvoiceListResult>>;
+    list(customerId?: string, startingAfter?: string, subscriptionId?: string, options?: any): Promise<import("axios").AxiosResponse<InvoiceListResult>>;
     /**
      * This endpoint allows you to retrieve a list of a particular invoice refunds.
      * @summary List invoice refunds
@@ -3402,63 +3765,195 @@ export declare class Rates extends BaseAPI {
     retrieve(baseCurrency: string, quoteCurrency: string, options?: any): Promise<import("axios").AxiosResponse<RateResult>>;
 }
 /**
- * Risks - axios parameter creator
+ * Subscriptions - axios parameter creator
  * @export
  */
-export declare const RisksAxiosParamCreator: (configuration?: Configuration | undefined) => {
+export declare const SubscriptionsAxiosParamCreator: (configuration?: Configuration | undefined) => {
     /**
      *
-     * @summary Score a coin address
-     * @param {RiskParams} riskParams
+     * @summary Cancel a subscription
+     * @param {string} subscriptionId Subscription ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    score: (riskParams: RiskParams, options?: any) => Promise<RequestArgs>;
-};
-/**
- * Risks - functional programming interface
- * @export
- */
-export declare const RisksFp: (configuration?: Configuration | undefined) => {
+    cancel: (subscriptionId: string, options?: any) => Promise<RequestArgs>;
     /**
      *
-     * @summary Score a coin address
-     * @param {RiskParams} riskParams
+     * @summary Create a subscription
+     * @param {SubscriptionParams} subscriptionParams
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    score(riskParams: RiskParams, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<RiskResult>>;
-};
-/**
- * Risks - factory interface
- * @export
- */
-export declare const RisksFactory: (configuration?: Configuration | undefined, basePath?: string | undefined, axios?: AxiosInstance | undefined) => {
+    create: (subscriptionParams: SubscriptionParams, options?: any) => Promise<RequestArgs>;
     /**
      *
-     * @summary Score a coin address
-     * @param {RiskParams} riskParams
+     * @summary List subscriptions
+     * @param {string} [startingAfter] Pagination parameter. ID to start after
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    score(riskParams: RiskParams, options?: any): AxiosPromise<RiskResult>;
+    list: (startingAfter?: string | undefined, options?: any) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Retrieve a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    retrieve: (subscriptionId: string, options?: any) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Retrieve a subscription by custom_id
+     * @param {string} customId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    retrieveByCustomId: (customId: string, options?: any) => Promise<RequestArgs>;
 };
 /**
- * Risks - object-oriented interface
+ * Subscriptions - functional programming interface
  * @export
- * @class Risks
+ */
+export declare const SubscriptionsFp: (configuration?: Configuration | undefined) => {
+    /**
+     *
+     * @summary Cancel a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    cancel(subscriptionId: string, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<SubscriptionResult>>;
+    /**
+     *
+     * @summary Create a subscription
+     * @param {SubscriptionParams} subscriptionParams
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    create(subscriptionParams: SubscriptionParams, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<SubscriptionResult>>;
+    /**
+     *
+     * @summary List subscriptions
+     * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    list(startingAfter?: string | undefined, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<SubscriptionListResult>>;
+    /**
+     *
+     * @summary Retrieve a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    retrieve(subscriptionId: string, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<SubscriptionResult>>;
+    /**
+     *
+     * @summary Retrieve a subscription by custom_id
+     * @param {string} customId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    retrieveByCustomId(customId: string, options?: any): Promise<(axios?: AxiosInstance | undefined, basePath?: string | undefined) => AxiosPromise<SubscriptionResult>>;
+};
+/**
+ * Subscriptions - factory interface
+ * @export
+ */
+export declare const SubscriptionsFactory: (configuration?: Configuration | undefined, basePath?: string | undefined, axios?: AxiosInstance | undefined) => {
+    /**
+     *
+     * @summary Cancel a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    cancel(subscriptionId: string, options?: any): AxiosPromise<SubscriptionResult>;
+    /**
+     *
+     * @summary Create a subscription
+     * @param {SubscriptionParams} subscriptionParams
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    create(subscriptionParams: SubscriptionParams, options?: any): AxiosPromise<SubscriptionResult>;
+    /**
+     *
+     * @summary List subscriptions
+     * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    list(startingAfter?: string | undefined, options?: any): AxiosPromise<SubscriptionListResult>;
+    /**
+     *
+     * @summary Retrieve a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    retrieve(subscriptionId: string, options?: any): AxiosPromise<SubscriptionResult>;
+    /**
+     *
+     * @summary Retrieve a subscription by custom_id
+     * @param {string} customId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    retrieveByCustomId(customId: string, options?: any): AxiosPromise<SubscriptionResult>;
+};
+/**
+ * Subscriptions - object-oriented interface
+ * @export
+ * @class Subscriptions
  * @extends {BaseAPI}
  */
-export declare class Risks extends BaseAPI {
+export declare class Subscriptions extends BaseAPI {
     /**
      *
-     * @summary Score a coin address
-     * @param {RiskParams} riskParams
+     * @summary Cancel a subscription
+     * @param {string} subscriptionId Subscription ID
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof Risks
+     * @memberof Subscriptions
      */
-    score(riskParams: RiskParams, options?: any): Promise<import("axios").AxiosResponse<RiskResult>>;
+    cancel(subscriptionId: string, options?: any): Promise<import("axios").AxiosResponse<SubscriptionResult>>;
+    /**
+     *
+     * @summary Create a subscription
+     * @param {SubscriptionParams} subscriptionParams
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    create(subscriptionParams: SubscriptionParams, options?: any): Promise<import("axios").AxiosResponse<SubscriptionResult>>;
+    /**
+     *
+     * @summary List subscriptions
+     * @param {string} [startingAfter] Pagination parameter. ID to start after
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    list(startingAfter?: string, options?: any): Promise<import("axios").AxiosResponse<SubscriptionListResult>>;
+    /**
+     *
+     * @summary Retrieve a subscription
+     * @param {string} subscriptionId Subscription ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    retrieve(subscriptionId: string, options?: any): Promise<import("axios").AxiosResponse<SubscriptionResult>>;
+    /**
+     *
+     * @summary Retrieve a subscription by custom_id
+     * @param {string} customId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof Subscriptions
+     */
+    retrieveByCustomId(customId: string, options?: any): Promise<import("axios").AxiosResponse<SubscriptionResult>>;
 }
 /**
  * Transactions - axios parameter creator

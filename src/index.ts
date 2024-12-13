@@ -78,7 +78,6 @@ export class Cryptopay {
    * ```
    */
   public rates: ReturnType<typeof openapi.RatesFactory>;
-  public risks: ReturnType<typeof openapi.RisksFactory>;
   public transactions: ReturnType<typeof openapi.TransactionsFactory>;
   /* eslint-enable @typescript-eslint/no-explicit-any*/
 
@@ -97,7 +96,6 @@ export class Cryptopay {
     this.exchangeTransfers = openapi.ExchangeTransfersFactory(undefined, this.url, customizedAxios);
     this.invoices = openapi.InvoicesFactory(undefined, this.url, customizedAxios);
     this.rates = openapi.RatesFactory(undefined, this.url, customizedAxios);
-    this.risks = openapi.RisksFactory(undefined, this.url, customizedAxios);
     this.transactions = openapi.TransactionsFactory(undefined, this.url, customizedAxios);
     this.coins = openapi.CoinsFactory(undefined, this.url, customizedAxios);
   }
@@ -125,8 +123,10 @@ export class Cryptopay {
     if (!body) throw new Error('Body is empty');
     try {
       JSON.parse(body);
-    } catch ({ message }) {
-      throw new Error(`Invalid JSON in body. Error message: ${message}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Invalid JSON in body. Error message: ${error.message}`);
+      }
     }
     if (!headers['x-cryptopay-signature']) throw new Error('Header x-cryptopay-signature is missing or empty');
   };

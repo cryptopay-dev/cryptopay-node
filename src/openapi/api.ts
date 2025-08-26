@@ -94,7 +94,7 @@ export interface Beneficiary {
      * @type {BeneficiaryAddress}
      * @memberof Beneficiary
      */
-    address: BeneficiaryAddress;
+    address?: BeneficiaryAddress;
 }
 /**
  * 
@@ -107,7 +107,7 @@ export interface BeneficiaryAddress {
      * @type {string}
      * @memberof BeneficiaryAddress
      */
-    country: string;
+    country?: string;
     /**
      * The city of the address.
      * @type {string}
@@ -910,18 +910,21 @@ export interface CoinWithdrawalParams {
      * The exact amount to debit from your account in `charged_currency`. All applicable fees will be deducted from this amount before processing a transaction instead of adding them on top it.
      * @type {number}
      * @memberof CoinWithdrawalParams
+     * @deprecated
      */
     charged_amount?: number | null;
     /**
      * The exact transaction amount to send in `charged_currency`. All applicable fees will be added on top of this amount and debited from your account.
      * @type {number}
      * @memberof CoinWithdrawalParams
+     * @deprecated
      */
     charged_amount_to_send?: number | null;
     /**
      * The exact transaction amount to send in `received_currency`. All applicable fees will be added on top of this amount and debited from your account.
      * @type {number}
      * @memberof CoinWithdrawalParams
+     * @deprecated
      */
     received_amount?: number | null;
     /**
@@ -960,6 +963,30 @@ export interface CoinWithdrawalParams {
      * @memberof CoinWithdrawalParams
      */
     beneficiary?: Beneficiary;
+    /**
+     * Transaction amount for new calculation
+     * @type {number}
+     * @memberof CoinWithdrawalParams
+     */
+    amount?: number;
+    /**
+     * An currency of the transaction amount
+     * @type {string}
+     * @memberof CoinWithdrawalParams
+     */
+    amount_currency?: string;
+    /**
+     * Whether the amount includes processing fee
+     * @type {boolean}
+     * @memberof CoinWithdrawalParams
+     */
+    amount_includes_processing_fee?: boolean;
+    /**
+     * Whether the amount includes network fee
+     * @type {boolean}
+     * @memberof CoinWithdrawalParams
+     */
+    amount_includes_network_fee?: boolean;
 }
 /**
  * 
@@ -1769,19 +1796,6 @@ export interface InvoiceRefundListResult {
      * @memberof InvoiceRefundListResult
      */
     data: Array<InvoiceRefund>;
-}
-/**
- * 
- * @export
- * @interface InvoiceRefundParams
- */
-export interface InvoiceRefundParams {
-    /**
-     * External wallet address. If not specified, the refund will be performed to your cryptocurrency account
-     * @type {string}
-     * @memberof InvoiceRefundParams
-     */
-    address?: string;
 }
 /**
  * 
@@ -3240,7 +3254,7 @@ export const CoinWithdrawalsAxiosParamCreator = function (configuration?: Config
             };
         },
         /**
-         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
+         * To create a withdrawal you must provide either the legacy amount fields (`charged_amount`, `charged_amount_to_send`, `received_amount`) or the new amount fields (`amount`, `amount_currency`, `amount_includes_processing_fee`, `amount_includes_network_fee`). Mixing legacy and new amount fields in one request is not allowed.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams 
          * @param {*} [options] Override http request option.
@@ -3450,7 +3464,7 @@ export const CoinWithdrawalsFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
+         * To create a withdrawal you must provide either the legacy amount fields (`charged_amount`, `charged_amount_to_send`, `received_amount`) or the new amount fields (`amount`, `amount_currency`, `amount_includes_processing_fee`, `amount_includes_network_fee`). Mixing legacy and new amount fields in one request is not allowed.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams 
          * @param {*} [options] Override http request option.
@@ -3526,7 +3540,7 @@ export const CoinWithdrawalsFactory = function (configuration?: Configuration, b
             return localVarFp.commit(coinWithdrawalId, options).then((request) => request(axios, basePath));
         },
         /**
-         * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
+         * To create a withdrawal you must provide either the legacy amount fields (`charged_amount`, `charged_amount_to_send`, `received_amount`) or the new amount fields (`amount`, `amount_currency`, `amount_includes_processing_fee`, `amount_includes_network_fee`). Mixing legacy and new amount fields in one request is not allowed.
          * @summary Create a withdrawal
          * @param {CoinWithdrawalParams} coinWithdrawalParams 
          * @param {*} [options] Override http request option.
@@ -3599,7 +3613,7 @@ export class CoinWithdrawals extends BaseAPI {
     }
 
     /**
-     * To create a withdrawal you need to use either `charged_amount`, `charged_amount_to_send` or `received_amount` parameters in your request body.
+     * To create a withdrawal you must provide either the legacy amount fields (`charged_amount`, `charged_amount_to_send`, `received_amount`) or the new amount fields (`amount`, `amount_currency`, `amount_includes_processing_fee`, `amount_includes_network_fee`). Mixing legacy and new amount fields in one request is not allowed.
      * @summary Create a withdrawal
      * @param {CoinWithdrawalParams} coinWithdrawalParams 
      * @param {*} [options] Override http request option.
@@ -4461,18 +4475,16 @@ export const InvoicesAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * This endpoint allows you to create invoice refunds.
+         * This endpoint allows you to create invoice refunds to your cryptocurrency account.
          * @summary Create invoice refund
          * @param {string} invoiceId Invoice ID
-         * @param {InvoiceRefundParams} invoiceRefundParams 
+         * @param {object} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createRefund: async (invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options: any = {}): Promise<RequestArgs> => {
+        createRefund: async (invoiceId: string, body?: object, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'invoiceId' is not null or undefined
             assertParamExists('createRefund', 'invoiceId', invoiceId)
-            // verify required parameter 'invoiceRefundParams' is not null or undefined
-            assertParamExists('createRefund', 'invoiceRefundParams', invoiceRefundParams)
             const localVarPath = `/api/invoices/{invoice_id}/refunds`
                 .replace(`{${"invoice_id"}}`, encodeURIComponent(String(invoiceId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -4495,7 +4507,7 @@ export const InvoicesAxiosParamCreator = function (configuration?: Configuration
             setSearchParams(localVarUrlObj, localVarQueryParameter, options.query);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(invoiceRefundParams, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4703,15 +4715,15 @@ export const InvoicesFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * This endpoint allows you to create invoice refunds.
+         * This endpoint allows you to create invoice refunds to your cryptocurrency account.
          * @summary Create invoice refund
          * @param {string} invoiceId Invoice ID
-         * @param {InvoiceRefundParams} invoiceRefundParams 
+         * @param {object} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRefundResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createRefund(invoiceId, invoiceRefundParams, options);
+        async createRefund(invoiceId: string, body?: object, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<InvoiceRefundResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createRefund(invoiceId, body, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4803,15 +4815,15 @@ export const InvoicesFactory = function (configuration?: Configuration, basePath
             return localVarFp.createRecalculation(invoiceId, invoiceRecalculationParams, options).then((request) => request(axios, basePath));
         },
         /**
-         * This endpoint allows you to create invoice refunds.
+         * This endpoint allows you to create invoice refunds to your cryptocurrency account.
          * @summary Create invoice refund
          * @param {string} invoiceId Invoice ID
-         * @param {InvoiceRefundParams} invoiceRefundParams 
+         * @param {object} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any): AxiosPromise<InvoiceRefundResult> {
-            return localVarFp.createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(axios, basePath));
+        createRefund(invoiceId: string, body?: object, options?: any): AxiosPromise<InvoiceRefundResult> {
+            return localVarFp.createRefund(invoiceId, body, options).then((request) => request(axios, basePath));
         },
         /**
          * This endpoint allows you to retrieve a list of all invoices.
@@ -4904,16 +4916,16 @@ export class Invoices extends BaseAPI {
     }
 
     /**
-     * This endpoint allows you to create invoice refunds.
+     * This endpoint allows you to create invoice refunds to your cryptocurrency account.
      * @summary Create invoice refund
      * @param {string} invoiceId Invoice ID
-     * @param {InvoiceRefundParams} invoiceRefundParams 
+     * @param {object} [body] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof Invoices
      */
-    public createRefund(invoiceId: string, invoiceRefundParams: InvoiceRefundParams, options?: any) {
-        return InvoicesFp(this.configuration).createRefund(invoiceId, invoiceRefundParams, options).then((request) => request(this.axios, this.basePath));
+    public createRefund(invoiceId: string, body?: object, options?: any) {
+        return InvoicesFp(this.configuration).createRefund(invoiceId, body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
